@@ -46,8 +46,13 @@ jobs:
           NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
           NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}
 
+      # Debug step to see what's in the build output
+      - name: Debug directory content
+        run: ls -la ./out
+
       - name: Add .nojekyll file
         run: touch ./out/.nojekyll
+        
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
@@ -62,4 +67,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2 
+        uses: actions/deploy-pages@v2
