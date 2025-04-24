@@ -1,14 +1,13 @@
 {
-  "homepage": "https://thebcs-family.github.io/wedding_invitation/",
-  "scripts": {
-    "deploy": "gh-pages -d out"
-    "build": "next build",
-    "export": "next export",
-    "deploy": "npm run build && npm run export && gh-pages -d out"
-  }
   "name": "wedding_invitation",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
   "dependencies": {
     "firebase": "^11.6.0",
     "next": "15.3.1",
