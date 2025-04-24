@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { collection, addDoc, query, orderBy, onSnapshot, Timestamp } from 'firebase/firestore';
+import { db } from '../config/firebase';
 
 interface MessageSectionProps {
   isMobile: boolean;
@@ -20,19 +22,35 @@ const MessageSection: React.FC<MessageSectionProps> = ({ isMobile }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
+  useEffect(() => {
+    // Set up real-time listener for messages
+    const q = query(collection(db, 'messages'), orderBy('timestamp', 'desc'));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const newMessages = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        timestamp: doc.data().timestamp.toDate()
+      })) as Message[];
+      setMessages(newMessages);
+    }, (error) => {
+      console.error("Error fetching messages:", error);
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !message.trim()) return;
 
     setIsSubmitting(true);
     try {
-      const newMessage = {
-        id: Date.now().toString(),
+      await addDoc(collection(db, 'messages'), {
         name: name.trim(),
         message: message.trim(),
-        timestamp: new Date()
-      };
-      setMessages(prev => [newMessage, ...prev]);
+        timestamp: Timestamp.now()
+      });
       setName('');
       setMessage('');
       setSubmitStatus('success');
