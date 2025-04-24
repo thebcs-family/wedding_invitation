@@ -23,21 +23,32 @@ const MessageSection: React.FC<MessageSectionProps> = ({ isMobile }) => {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   useEffect(() => {
-    // Set up real-time listener for messages
-    const q = query(collection(db, 'messages'), orderBy('timestamp', 'desc'));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const newMessages = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        timestamp: doc.data().timestamp.toDate()
-      })) as Message[];
-      setMessages(newMessages);
-    }, (error) => {
-      console.error("Error fetching messages:", error);
-    });
+    console.log('Setting up Firestore listener...');
+    try {
+      // Set up real-time listener for messages
+      const q = query(collection(db, 'messages'), orderBy('timestamp', 'desc'));
+      console.log('Query created:', q);
+      
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        console.log('Received Firestore update, docs:', snapshot.docs.length);
+        const newMessages = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          timestamp: doc.data().timestamp.toDate()
+        })) as Message[];
+        setMessages(newMessages);
+      }, (error) => {
+        console.error("Error fetching messages:", error);
+      });
 
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
+      // Cleanup subscription on unmount
+      return () => {
+        console.log('Cleaning up Firestore listener');
+        unsubscribe();
+      };
+    } catch (error) {
+      console.error('Error setting up Firestore listener:', error);
+    }
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,11 +57,13 @@ const MessageSection: React.FC<MessageSectionProps> = ({ isMobile }) => {
 
     setIsSubmitting(true);
     try {
-      await addDoc(collection(db, 'messages'), {
+      console.log('Attempting to add message to Firestore...');
+      const docRef = await addDoc(collection(db, 'messages'), {
         name: name.trim(),
         message: message.trim(),
         timestamp: Timestamp.now()
       });
+      console.log('Message added successfully, doc ID:', docRef.id);
       setName('');
       setMessage('');
       setSubmitStatus('success');
