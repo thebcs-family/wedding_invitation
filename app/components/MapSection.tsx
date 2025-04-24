@@ -2,7 +2,11 @@
 
 import React from 'react';
 
-const MapSection: React.FC = () => {
+interface MapSectionProps {
+  isMobile: boolean;
+}
+
+const MapSection: React.FC<MapSectionProps> = ({ isMobile }) => {
   return (
     <div className="section-container">
       <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
