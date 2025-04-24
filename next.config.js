@@ -4,8 +4,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: process.env.NODE_ENV === 'production' ? '/wedding_invitation' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/wedding_invitation/' : '',
+  basePath: '/wedding_invitation',
+  assetPrefix: '/wedding_invitation/',
   trailingSlash: true,
   // Add this line to ignore ESLint errors during build
   eslint: {
