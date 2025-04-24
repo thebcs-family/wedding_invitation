@@ -1,71 +1,53 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 
-interface LocationProps {
-  country: string;
-  date: string;
-  image: string;
-  isActive: boolean;
+interface LocationsProps {
+  isMobile: boolean;
 }
 
-const LocationCard: React.FC<LocationProps> = ({ country, date, image, isActive }) => {
-  return (
-    <div className={`relative rounded-lg overflow-hidden shadow-lg transition-all duration-300 ${isActive ? 'scale-105' : 'opacity-70'}`}>
-      <div className="aspect-w-16 aspect-h-9">
-        <Image
-          src={image}
-          alt={`Wedding in ${country}`}
-          fill
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-          <h3 className="text-2xl font-bold mb-2">{country}</h3>
-          <p className="text-lg">{date}</p>
-          {!isActive && (
-            <div className="absolute top-4 right-4 bg-white/90 text-primary-green px-3 py-1 rounded-full text-sm font-semibold">
-              Coming Soon
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const Locations: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
+const Locations: React.FC<LocationsProps> = ({ isMobile }) => {
   const locations = [
     {
-      country: 'Korea',
+      name: 'Korea',
       date: 'June 15, 2024',
-      image: '/images/korea.jpg',
-      isActive: true
+      // image: '/images/korea.jpg',
+      description: 'Main Ceremony'
     },
     {
-      country: 'Italy',
+      name: 'Italy',
       date: 'Coming Soon',
-      image: '/images/italy.jpg',
-      isActive: false
+      // image: '/images/italy.jpg',
+      description: 'European Celebration'
     },
     {
-      country: 'Bolivia',
+      name: 'Bolivia',
       date: 'Coming Soon',
-      image: '/images/bolivia.jpg',
-      isActive: false
+      // image: '/images/bolivia.jpg',
+      description: 'South American Celebration'
     }
   ];
 
   return (
     <div className="section-container">
-      <h2 className="text-3xl text-center mb-8" style={{ color: 'var(--primary-green)' }}>
-        Our Wedding Locations
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {locations.map((location, index) => (
-          <LocationCard key={index} {...location} />
-        ))}
+      <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
+        <h2 className="text-3xl text-center mb-8 text-primary-green">Locations</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {locations.map((location, index) => (
+            <div key={index} className="text-center">
+              {/* <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden mb-4">
+                <img
+                  src={location.image}
+                  alt={location.name}
+                  className="w-full h-full object-cover"
+                />
+              </div> */}
+              <h3 className="text-xl font-semibold mb-2">{location.name}</h3>
+              <p className="text-gray-600 mb-1">{location.date}</p>
+              <p className="text-gray-700">{location.description}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
