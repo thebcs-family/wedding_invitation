@@ -1,4 +1,8 @@
 {
+  "homepage": "https://thebcs-family.github.io/wedding_invitation/",
+  "scripts": {
+    "deploy": "gh-pages -d out"
+  }
   "name": "wedding_invitation",
   "version": "0.1.0",
   "private": true,
