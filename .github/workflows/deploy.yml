@@ -45,7 +45,7 @@ jobs:
           echo "Checking for placeholders:"
           grep -o "FIREBASE_[A-Z_]*" secrets.template.js || echo "No matches found"
     
-      - name: Inject Secrets
+      - name: Create secrets.js
         run: |
           cat > secrets.js << 'EOF'
           window.FIREBASE_CONFIG = {
@@ -76,17 +76,11 @@ jobs:
           FIREBASE_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}
           KAKAO_APP_KEY: ${{ secrets.YOUR_KAKAO_APP_KEY }}
 
-      - name: Verify Files
+      - name: Build and Deploy
         run: |
-          echo "Final directory contents:"
-          ls -la
-          echo "Checking secrets.js format:"
-          head -n 1 secrets.js
-
-      - name: Commit and Push Changes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add secrets.js
-          git commit -m "Update secrets.js with injected values"
-          git push
+          # Add your build and deploy commands here
+          # The secrets.js file will be available during the build
+          # but won't be committed to the repository
+          npm install
+          npm run build
+          # Add your deployment commands here
