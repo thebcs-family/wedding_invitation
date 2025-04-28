@@ -47,7 +47,7 @@ jobs:
     
       - name: Create secrets.js
         run: |
-          cat > secrets.js << 'EOF'
+          cat > public/secrets.js << 'EOF'
           window.FIREBASE_CONFIG = {
             apiKey: "$FIREBASE_API_KEY",
             authDomain: "$FIREBASE_AUTH_DOMAIN",
@@ -61,11 +61,11 @@ jobs:
           EOF
           
           # Replace environment variables in the file
-          envsubst < secrets.js > secrets.tmp
-          mv secrets.tmp secrets.js
+          envsubst < public/secrets.js > public/secrets.tmp
+          mv public/secrets.tmp public/secrets.js
           
-          # Verify without showing content
-          echo "secrets.js created successfully"
+          # Verify the file was created
+          echo "secrets.js created in public directory"
         env:
           FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
           FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
@@ -78,9 +78,7 @@ jobs:
 
       - name: Build and Deploy
         run: |
-          # Add your build and deploy commands here
-          # The secrets.js file will be available during the build
-          # but won't be committed to the repository
           npm install
           npm run build
-          # Add your deployment commands here
+          # The secrets.js file will be included in the build output
+          # since it's in the public directory
