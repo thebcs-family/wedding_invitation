@@ -38,6 +38,9 @@ jobs:
 
       - name: Inject Secrets
         run: |
+          echo "Removing existing secrets.js if it exists..."
+          rm -f secrets.js
+          
           echo "Creating secrets.js from template..."
           cp secrets.template.js secrets.js
           
