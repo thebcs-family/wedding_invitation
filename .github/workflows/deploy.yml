@@ -10,19 +10,27 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Inject Kakao and Firebase Keys
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Inject Secrets
         run: |
-          sed -i "s/YOUR_KAKAO_APP_KEY/${{ secrets.KAKAO_APP_KEY }}/g" index.html
-          sed -i "s|process.env.NEXT_PUBLIC_FIREBASE_API_KEY|\"${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}\"|g" index.html
-          sed -i "s|process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN|\"${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}\"|g" index.html
-          sed -i "s|process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID|\"${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}\"|g" index.html
-          sed -i "s|process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET|\"${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}\"|g" index.html
-          sed -i "s|process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID|\"${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}\"|g" index.html
-          sed -i "s|process.env.NEXT_PUBLIC_FIREBASE_APP_ID|\"${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}\"|g" index.html
-          sed -i "s|process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID|\"${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}\"|g" index.html
+          cp secrets.template.js secrets.js
+          sed -i "s|FIREBASE_API_KEY|${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}|g" secrets.js
+          sed -i "s|FIREBASE_AUTH_DOMAIN|${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}|g" secrets.js
+          sed -i "s|FIREBASE_PROJECT_ID|${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}|g" secrets.js
+          sed -i "s|FIREBASE_STORAGE_BUCKET|${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}|g" secrets.js
+          sed -i "s|FIREBASE_MESSAGING_SENDER_ID|${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}|g" secrets.js
+          sed -i "s|FIREBASE_APP_ID|${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}|g" secrets.js
+          sed -i "s|FIREBASE_MEASUREMENT_ID|${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}|g" secrets.js
+          sed -i "s|KAKAO_APP_KEY|${{ secrets.YOUR_KAKAO_APP_KEY }}|g" secrets.js
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
           publish_dir: ./
+          publish_branch: gh-pages
+          commit_message: "Deploy: ${{ github.event.head_commit.message }}"
