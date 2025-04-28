@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -59,10 +61,10 @@ jobs:
           echo "Contents of secrets.js:"
           cat secrets.js
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.ACCESS_TOKEN }}
-          publish_dir: ./
-          publish_branch: gh-pages
-          commit_message: "Deploy: ${{ github.event.head_commit.message }}"
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add secrets.js
+          git commit -m "Update secrets.js with injected values"
+          git push
