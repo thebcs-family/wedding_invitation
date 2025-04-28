@@ -1,10 +1,10 @@
 window.FIREBASE_CONFIG = {
-    apiKey: "FIREBASE_API_KEY",
-    authDomain: "FIREBASE_AUTH_DOMAIN",
-    projectId: "FIREBASE_PROJECT_ID",
-    storageBucket: "FIREBASE_STORAGE_BUCKET",
-    messagingSenderId: "FIREBASE_MESSAGING_SENDER_ID",
-    appId: "FIREBASE_APP_ID",
-    measurementId: "FIREBASE_MEASUREMENT_ID"
+  apiKey: "AIzaSyAGBR348j3Gy0aQToEtCs2O-ZmqspJzsAc",
+  authDomain: "invitationwed-47162.firebaseapp.com",
+  projectId: "invitationwed-47162",
+  storageBucket: "invitationwed-47162.firebasestorage.app",
+  messagingSenderId: "715035683043",
+  appId: "1:715035683043:web:0bb6d6ac831984097b3dd6",
+  measurementId: "G-HFJ8B2D533"
 };
-window.KAKAO_APP_KEY = "KAKAO_APP_KEY"; 
+window.KAKAO_APP_KEY = "bb132f8bc221cfde1f8dd1389dca3c53";
