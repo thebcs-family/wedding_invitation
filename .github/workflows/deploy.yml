@@ -59,6 +59,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add public/secrets.js
+          # Force add the secrets.js file despite .gitignore
+          git add -f public/secrets.js
           git commit -m "Update secrets.js with injected values"
           git push
