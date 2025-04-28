@@ -24,27 +24,6 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Debug Environment
-        run: |
-          echo "Current directory: $(pwd)"
-          echo "Files in directory:"
-          ls -la
-          echo "Checking secrets.template.js:"
-          cat secrets.template.js
-    
-      - name: Debug Template
-        run: |
-          echo "Template content:"
-          cat secrets.template.js
-          echo ""
-          echo "Checking for placeholders:"
-          grep -o "FIREBASE_[A-Z_]*" secrets.template.js || echo "No matches found"
-    
       - name: Create secrets.js
         run: |
           cat > public/secrets.js << 'EOF'
@@ -76,9 +55,10 @@ jobs:
           FIREBASE_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}
           KAKAO_APP_KEY: ${{ secrets.YOUR_KAKAO_APP_KEY }}
 
-      - name: Build and Deploy
-        run: |
-          npm install
-          npm run build
-          # The secrets.js file will be included in the build output
-          # since it's in the public directory
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          publish_dir: ./
+          publish_branch: master
+          force: true
