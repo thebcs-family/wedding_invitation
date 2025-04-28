@@ -26,6 +26,7 @@ jobs:
 
       - name: Create secrets.js
         run: |
+          # Create the secrets.js file in the public directory
           cat > public/secrets.js << 'EOF'
           window.FIREBASE_CONFIG = {
             apiKey: "$FIREBASE_API_KEY",
@@ -43,7 +44,7 @@ jobs:
           envsubst < public/secrets.js > public/secrets.tmp
           mv public/secrets.tmp public/secrets.js
           
-          # Verify the file was created
+          # Verify the file was created without showing its content
           echo "secrets.js created in public directory"
         env:
           FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
@@ -55,11 +56,10 @@ jobs:
           FIREBASE_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}
           KAKAO_APP_KEY: ${{ secrets.YOUR_KAKAO_APP_KEY }}
 
-      - name: Commit and Push Changes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          # Force add the secrets.js file despite .gitignore
-          git add -f public/secrets.js
-          git commit -m "Update secrets.js with injected values"
-          git push
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          publish_dir: ./
+          publish_branch: master
+          force: true
