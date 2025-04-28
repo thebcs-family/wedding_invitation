@@ -55,10 +55,10 @@ jobs:
           FIREBASE_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}
           KAKAO_APP_KEY: ${{ secrets.YOUR_KAKAO_APP_KEY }}
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.ACCESS_TOKEN }}
-          publish_dir: ./
-          publish_branch: master
-          force: true
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add public/secrets.js
+          git commit -m "Update secrets.js with injected values"
+          git push
