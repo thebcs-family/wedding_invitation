@@ -9,6 +9,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - name: Inject Kakao and Firebase Keys
+        run: |
+          sed -i "s/YOUR_KAKAO_APP_KEY/${{ secrets.KAKAO_APP_KEY }}/g" index.html
+          sed -i "s|process.env.NEXT_PUBLIC_FIREBASE_API_KEY|\"${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}\"|g" index.html
+          sed -i "s|process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN|\"${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}\"|g" index.html
+          sed -i "s|process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID|\"${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}\"|g" index.html
+          sed -i "s|process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET|\"${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}\"|g" index.html
+          sed -i "s|process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID|\"${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}\"|g" index.html
+          sed -i "s|process.env.NEXT_PUBLIC_FIREBASE_APP_ID|\"${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}\"|g" index.html
+          sed -i "s|process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID|\"${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}\"|g" index.html
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
