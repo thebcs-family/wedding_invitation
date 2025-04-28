@@ -35,7 +35,15 @@ jobs:
           ls -la
           echo "Checking secrets.template.js:"
           cat secrets.template.js
-
+    
+      - name: Debug Template
+        run: |
+          echo "Template content:"
+          cat secrets.template.js
+          echo ""
+          echo "Checking for placeholders:"
+          grep -o "FIREBASE_[A-Z_]*" secrets.template.js || echo "No matches found"
+    
       - name: Inject Secrets
         run: |
           echo "Removing existing secrets.js if it exists..."
