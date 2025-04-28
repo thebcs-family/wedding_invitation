@@ -27,6 +27,8 @@ yarn-error.log*
 # local env files
 .env*.local
 .env
+secrets.js
+secrets.local.js
 
 # vercel
 .vercel
