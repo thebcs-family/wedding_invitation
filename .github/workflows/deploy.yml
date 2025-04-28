@@ -34,13 +34,21 @@ jobs:
           
           echo "Replacing secrets..."
           # Replace each secret individually and verify
+          echo "Replacing FIREBASE_API_KEY..."
           sed -i "s|FIREBASE_API_KEY|${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}|g" secrets.js
+          echo "Replacing FIREBASE_AUTH_DOMAIN..."
           sed -i "s|FIREBASE_AUTH_DOMAIN|${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}|g" secrets.js
+          echo "Replacing FIREBASE_PROJECT_ID..."
           sed -i "s|FIREBASE_PROJECT_ID|${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}|g" secrets.js
+          echo "Replacing FIREBASE_STORAGE_BUCKET..."
           sed -i "s|FIREBASE_STORAGE_BUCKET|${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}|g" secrets.js
+          echo "Replacing FIREBASE_MESSAGING_SENDER_ID..."
           sed -i "s|FIREBASE_MESSAGING_SENDER_ID|${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}|g" secrets.js
+          echo "Replacing FIREBASE_APP_ID..."
           sed -i "s|FIREBASE_APP_ID|${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}|g" secrets.js
+          echo "Replacing FIREBASE_MEASUREMENT_ID..."
           sed -i "s|FIREBASE_MEASUREMENT_ID|${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}|g" secrets.js
+          echo "Replacing KAKAO_APP_KEY..."
           sed -i "s|KAKAO_APP_KEY|${{ secrets.YOUR_KAKAO_APP_KEY }}|g" secrets.js
           
           echo "Verifying secrets.js:"
@@ -48,9 +56,13 @@ jobs:
           echo "Checking if template placeholders remain:"
           if grep -q "FIREBASE_" secrets.js || grep -q "KAKAO_APP_KEY" secrets.js; then
             echo "ERROR: Some placeholders were not replaced!"
+            echo "Current content of secrets.js:"
+            cat secrets.js
             exit 1
           else
             echo "All placeholders were replaced successfully!"
+            echo "Final content of secrets.js:"
+            cat secrets.js
           fi
 
       - name: Verify Files
