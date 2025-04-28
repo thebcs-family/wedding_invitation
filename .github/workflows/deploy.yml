@@ -26,6 +26,11 @@ jobs:
           sed -i "s|FIREBASE_APP_ID|${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}|g" secrets.js
           sed -i "s|FIREBASE_MEASUREMENT_ID|${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}|g" secrets.js
           sed -i "s|KAKAO_APP_KEY|${{ secrets.YOUR_KAKAO_APP_KEY }}|g" secrets.js
+          # Verify the file was created and contains the secrets
+          echo "Verifying secrets.js:"
+          cat secrets.js
+          echo "Checking if secrets were replaced:"
+          grep -v "FIREBASE_" secrets.js || echo "Secrets not properly replaced!"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
