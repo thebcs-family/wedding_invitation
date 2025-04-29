@@ -40,10 +40,13 @@ jobs:
           EOF
 
       - name: Build
-        run: npm run build
+        run: |
+          npm run build
+          ls -la out
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: out
           branch: gh-pages
+          clean: true
