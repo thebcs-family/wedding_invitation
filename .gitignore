@@ -29,6 +29,7 @@ yarn-error.log*
 .env
 secrets.js
 secrets.local.js
+app/config/secrets.ts
 
 # vercel
 .vercel
