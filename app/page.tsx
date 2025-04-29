@@ -36,6 +36,7 @@ export default function Home() {
     '/images/gallery/photo_3.png',
     '/images/gallery/photo_4.png',
     '/images/gallery/photo_5.png',
+    '/images/gallery/photo_6.png'
   ];
 
   useEffect(() => {
@@ -143,7 +144,7 @@ export default function Home() {
   );
 
   const giftSection = (
-    <section id="gift" className="py-16">
+    <section id="gift" className="py-8">
       <div className="max-w-6xl mx-auto px-4">
         <GiftSection />
       </div>
@@ -151,10 +152,63 @@ export default function Home() {
   );
 
   const gallerySection = (
-    <section id="gallery" className="py-16">
-      <h2 className="text-4xl font-bold text-center mb-8">Our Gallery</h2>
+    <section id="gallery" className="py-0">
       <div className="max-w-6xl mx-auto px-4">
-        <Gallery />
+        <div className={styles.sectionContainer}>
+          <h2 className="text-2xl font-bold mb-12 text-center" style={{ color: 'var(--button-color)' }}>Our Gallery</h2>
+          <div className="relative">
+            <div className="flex justify-center">
+              <div 
+                className="w-[600px] h-[400px] flex items-center justify-center cursor-pointer"
+                onClick={() => setShowImagePopup(true)}
+              >
+                <Image
+                  src={images[currentImageIndex]}
+                  alt={`Gallery ${currentImageIndex + 1}`}
+                  width={600}
+                  height={400}
+                  className="rounded-lg object-contain max-w-full max-h-full"
+                  priority={currentImageIndex === 0}
+                />
+              </div>
+            </div>
+            <div className="absolute left-0 right-0 flex justify-between px-4 top-1/2 -translate-y-1/2">
+              <button
+                onClick={prevImage}
+                className={styles.galleryArrow}
+              >
+                <Image src="/images/arrow_left.png" alt="Previous" width={24} height={24} />
+              </button>
+              <button
+                onClick={nextImage}
+                className={styles.galleryArrow}
+              >
+                <Image src="/images/arrow_right.png" alt="Next" width={24} height={24} />
+              </button>
+            </div>
+          </div>
+          <div className="mt-4 overflow-x-auto">
+            <div className="flex gap-4 min-w-max px-4">
+              {images.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentImageIndex(index)}
+                  className={`w-20 h-16 rounded-lg overflow-hidden flex-shrink-0 ${
+                    index === currentImageIndex ? 'ring-2 ring-[#72999d]' : ''
+                  }`}
+                >
+                  <Image
+                    src={images[index]}
+                    alt={`Thumbnail ${index + 1}`}
+                    width={80}
+                    height={60}
+                    className="object-cover w-full h-full"
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -191,70 +245,14 @@ export default function Home() {
 
       {weddingDetailsSection}
 
-      <section className={`py-16 px-4 ${styles.gallerySection}`}>
-        <div className="max-w-6xl mx-auto">
-          <div className={styles.sectionContainer}>
-            <h2 className="text-2xl font-bold mb-8 text-center" style={{ color: 'var(--button-color)' }}>Our Gallery</h2>
-            <div className="relative">
-              <div className="flex justify-center">
-                <div className="w-[600px] h-[400px] flex items-center justify-center">
-                  <div 
-                    className="relative aspect-[4/3] cursor-pointer"
-                    onClick={() => setShowImagePopup(true)}
-                  >
-                    <Image
-                      src={images[currentImageIndex]}
-                      alt={`Gallery image ${currentImageIndex + 1}`}
-                      fill
-                      className="object-cover rounded-lg"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="absolute left-0 right-0 flex justify-between px-4 top-1/2 -translate-y-1/2">
-                <button
-                  onClick={prevImage}
-                  className={styles.galleryArrow}
-                >
-                  <Image src="/images/arrow_left.png" alt="Previous" width={24} height={24} />
-                </button>
-                <button
-                  onClick={nextImage}
-                  className={styles.galleryArrow}
-                >
-                  <Image src="/images/arrow_right.png" alt="Next" width={24} height={24} />
-                </button>
-              </div>
-            </div>
-            <div className="flex justify-center gap-4 mt-4">
-              {images.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentImageIndex(index)}
-                  className={`w-20 h-16 rounded-lg overflow-hidden ${
-                    index === currentImageIndex ? 'ring-2 ring-[#72999d]' : ''
-                  }`}
-                >
-                  <Image
-                    src={images[index]}
-                    alt={`Thumbnail ${index + 1}`}
-                    width={80}
-                    height={60}
-                    className="object-cover w-full h-full"
-                  />
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      {gallerySection}
 
       {giftSection}
 
-      <section className={`py-16 px-4 ${styles.messagesSection}`}>
+      <section className={`py-8 px-4 ${styles.messagesSection}`}>
         <div className="max-w-6xl mx-auto">
           <div className={styles.sectionContainer}>
-            <h3 className="text-2xl mb-6 text-center">Messages from Our Guests</h3>
+            <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: 'var(--button-color)' }}>Messages from Our Guests</h3>
             <div className="space-y-4 mb-8">
               {messages.map((message) => (
                 <div key={message.id} className="message-item">
@@ -272,7 +270,7 @@ export default function Home() {
               ))}
             </div>
 
-            <h3 className="text-2xl mb-6 text-center">Leave a Message</h3>
+            <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: 'var(--button-color)' }}>Leave a Message</h3>
             <MessageForm 
               onSuccess={handleMessageSubmit}
               onError={handleError}

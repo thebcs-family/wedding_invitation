@@ -36,8 +36,8 @@ const WorldMap: React.FC = () => {
         >
           {hoveredPoint === 'korea' && (
             <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white p-2 rounded-lg shadow-lg whitespace-nowrap">
-              <p className="font-bold">Daejeon, Korea</p>
-              <p className="text-sm">June 14, 2025</p>
+              <p className="font-bold text-sm" style={{ color: '#72999d' }}>Daejeon, Korea</p>
+              <p className="text-xs" style={{ color: '#72999d' }}>June 14, 2025</p>
             </div>
           )}
         </div>
@@ -49,8 +49,8 @@ const WorldMap: React.FC = () => {
         >
           {hoveredPoint === 'bolivia' && (
             <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white p-2 rounded-lg shadow-lg whitespace-nowrap">
-              <p className="font-bold">La Paz, Bolivia</p>
-              <p className="text-sm">Coming Soon</p>
+              <p className="font-bold text-sm" style={{ color: '#72999d' }}>La Paz, Bolivia</p>
+              <p className="text-xs" style={{ color: '#72999d' }}>Coming Soon</p>
             </div>
           )}
         </div>
@@ -62,8 +62,8 @@ const WorldMap: React.FC = () => {
         >
           {hoveredPoint === 'italy' && (
             <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white p-2 rounded-lg shadow-lg whitespace-nowrap">
-              <p className="font-bold">Bologna, Italy</p>
-              <p className="text-sm">Coming Soon</p>
+              <p className="font-bold text-sm" style={{ color: '#72999d' }}>Bologna, Italy</p>
+              <p className="text-xs" style={{ color: '#72999d' }}>Coming Soon</p>
             </div>
           )}
         </div>
