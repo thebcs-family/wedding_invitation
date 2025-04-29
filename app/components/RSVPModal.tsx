@@ -7,10 +7,13 @@ import { db } from '../config/firebase';
 interface RSVPModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSuccess: () => void;
+  onError: (message: string) => void;
 }
 
-export default function RSVPModal({ isOpen, onClose }: RSVPModalProps) {
+export default function RSVPModal({ isOpen, onClose, onSuccess, onError }: RSVPModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [numberOfPeople, setNumberOfPeople] = useState(1);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,14 +27,16 @@ export default function RSVPModal({ isOpen, onClose }: RSVPModalProps) {
       await addDoc(collection(db, 'rsvps'), {
         name: nameInput.value.trim(),
         attendance: attendanceInput.value,
+        numberOfPeople: numberOfPeople,
         timestamp: serverTimestamp()
       });
-      alert('Thank you for your RSVP!');
+      onSuccess();
       onClose();
       form.reset();
+      setNumberOfPeople(1);
     } catch (error) {
       console.error('Error adding RSVP:', error);
-      alert('There was an error submitting your RSVP. Please try again.');
+      onError('There was an error submitting your RSVP. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -66,6 +71,35 @@ export default function RSVPModal({ isOpen, onClose }: RSVPModalProps) {
               <option value="yes">Yes, I will attend</option>
               <option value="no">No, I cannot attend</option>
             </select>
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-2">Number of People</label>
+            <div className="flex items-center space-x-4">
+              <button
+                type="button"
+                onClick={() => setNumberOfPeople(prev => Math.max(1, prev - 1))}
+                className="w-10 h-10 flex items-center justify-center border rounded-lg hover:bg-gray-100"
+                disabled={isSubmitting || numberOfPeople <= 1}
+              >
+                -
+              </button>
+              <input
+                type="number"
+                value={numberOfPeople}
+                onChange={(e) => setNumberOfPeople(Math.max(1, parseInt(e.target.value) || 1))}
+                className="w-20 px-4 py-2 border rounded-lg text-center"
+                min="1"
+                disabled={isSubmitting}
+              />
+              <button
+                type="button"
+                onClick={() => setNumberOfPeople(prev => prev + 1)}
+                className="w-10 h-10 flex items-center justify-center border rounded-lg hover:bg-gray-100"
+                disabled={isSubmitting}
+              >
+                +
+              </button>
+            </div>
           </div>
           <div className="text-center text-sm text-gray-600 mb-4">
             Please confirm your response
