@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styles from '../styles/sections.module.css';
+import Image from 'next/image';
 
 export const Gallery = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -25,10 +26,12 @@ export const Gallery = () => {
         <button className={styles.galleryButton} onClick={prevImage}>
           &lt;
         </button>
-        <img
+        <Image
           src={images[currentImage]}
           alt={`Gallery image ${currentImage + 1}`}
-          className={styles.galleryImage}
+          width={600}
+          height={400}
+          className="object-cover rounded-lg"
         />
         <button className={styles.galleryButton} onClick={nextImage}>
           &gt;
