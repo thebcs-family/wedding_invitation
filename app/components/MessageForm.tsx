@@ -4,7 +4,12 @@ import { useState } from 'react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../config/firebase';
 
-export default function MessageForm() {
+interface MessageFormProps {
+  onSuccess: () => void;
+  onError: (message: string) => void;
+}
+
+export default function MessageForm({ onSuccess, onError }: MessageFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -22,10 +27,10 @@ export default function MessageForm() {
         timestamp: serverTimestamp()
       });
       form.reset();
-      alert('Thank you for your message!');
+      onSuccess();
     } catch (error) {
       console.error('Error adding message:', error);
-      alert('There was an error submitting your message. Please try again.');
+      onError('There was an error submitting your message. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

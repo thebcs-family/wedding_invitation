@@ -19,12 +19,16 @@ import GiftSection from './components/GiftSection';
 import { Gallery } from './components/Gallery';
 import Head from 'next/head';
 import KakaoMap from './components/KakaoMap';
+import Notification from './components/Notification';
+import ImagePopup from './components/ImagePopup';
 
 export default function Home() {
   const [messages, setMessages] = useState<any[]>([]);
   const [showRSVPModal, setShowRSVPModal] = useState(false);
   const [isEnglish, setIsEnglish] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showImagePopup, setShowImagePopup] = useState(false);
+  const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   
   const images = [
     '/images/gallery/photo_1.png',
@@ -155,6 +159,18 @@ export default function Home() {
     </section>
   );
 
+  const handleRSVPSubmit = () => {
+    setNotification({ message: 'Thank you for your RSVP!', type: 'success' });
+  };
+
+  const handleMessageSubmit = () => {
+    setNotification({ message: 'Thank you for your message!', type: 'success' });
+  };
+
+  const handleError = (message: string) => {
+    setNotification({ message, type: 'error' });
+  };
+
   return (
     <main className={`min-h-screen ${styles.variables}`}>
       <header className={styles.headerImage}>
@@ -182,14 +198,17 @@ export default function Home() {
             <div className="relative">
               <div className="flex justify-center">
                 <div className="w-[600px] h-[400px] flex items-center justify-center">
-                  <Image
-                    src={images[currentImageIndex]}
-                    alt={`Gallery ${currentImageIndex + 1}`}
-                    width={600}
-                    height={400}
-                    className="rounded-lg object-contain max-w-full max-h-full"
-                    priority={currentImageIndex === 0}
-                  />
+                  <div 
+                    className="relative aspect-[4/3] cursor-pointer"
+                    onClick={() => setShowImagePopup(true)}
+                  >
+                    <Image
+                      src={images[currentImageIndex]}
+                      alt={`Gallery image ${currentImageIndex + 1}`}
+                      fill
+                      className="object-cover rounded-lg"
+                    />
+                  </div>
                 </div>
               </div>
               <div className="absolute left-0 right-0 flex justify-between px-4 top-1/2 -translate-y-1/2">
@@ -254,7 +273,10 @@ export default function Home() {
             </div>
 
             <h3 className="text-2xl mb-6 text-center">Leave a Message</h3>
-            <MessageForm />
+            <MessageForm 
+              onSuccess={handleMessageSubmit}
+              onError={handleError}
+            />
           </div>
         </div>
       </section>
@@ -270,7 +292,27 @@ export default function Home() {
       </footer>
 
       <MusicPlayer />
-      <RSVPModal isOpen={showRSVPModal} onClose={() => setShowRSVPModal(false)} />
+      <RSVPModal 
+        isOpen={showRSVPModal} 
+        onClose={() => setShowRSVPModal(false)}
+        onSuccess={handleRSVPSubmit}
+        onError={handleError}
+      />
+
+      {showImagePopup && (
+        <ImagePopup
+          imageUrl={images[currentImageIndex]}
+          onClose={() => setShowImagePopup(false)}
+        />
+      )}
+
+      {notification && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
+      )}
     </main>
   );
 }
