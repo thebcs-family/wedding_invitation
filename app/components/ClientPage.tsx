@@ -21,6 +21,8 @@ import Head from 'next/head';
 import KakaoMap from './KakaoMap';
 import Notification from './Notification';
 import ImagePopup from './ImagePopup';
+import AnimatedSection from './AnimatedSection';
+import AnimatedWaves from './AnimatedWaves';
 
 interface ClientPageProps {
   images: string[];
@@ -150,67 +152,80 @@ export default function ClientPage({ images }: ClientPageProps) {
 
   return (
     <main className={`min-h-screen ${styles.variables}`}>
-      <header className={styles.headerImage}>
-        <div className={styles.headerOverlay}></div>
-        <div className={styles.headerContent}>
-          <h1 className="text-4xl md:text-6xl font-bold mb-5 text-white">Wedding Invitation</h1>
-          <p className="text-3xl md:text-4xl font-light mb-4 text-white">Federico & Cecilia</p>
-          <p className="text-2xl md:text-3xl text-white">Save the Date</p>
-        </div>
-      </header>
+      <AnimatedSection>
+        <header className={`${styles.headerImage} relative`}>
+          <div className={styles.headerOverlay}></div>
+          <div className={styles.headerContent}>
+            <h1 className="text-4xl md:text-6xl font-bold mb-5 text-white">Wedding Invitation</h1>
+            <p className="text-3xl md:text-4xl font-light mb-4 text-white">Federico & Cecilia</p>
+            <p className="text-2xl md:text-3xl text-white">Save the Date</p>
+          </div>
+          <AnimatedWaves />
+        </header>
+      </AnimatedSection>
       
-      <section className={`py-16 px-4 ${styles.worldMapSection}`}>
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold mb-12 text-center" style={{ color: 'var(--button-color)' }}>Our Journey</h2>
-          <WorldMap />
-        </div>
-      </section>
+      <AnimatedSection>
+        <section className={`py-16 px-4 ${styles.worldMapSection}`}>
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-2xl font-bold mb-12 text-center" style={{ color: 'var(--button-color)' }}>Our Journey</h2>
+            <WorldMap />
+          </div>
+        </section>
+      </AnimatedSection>
 
-      {weddingDetailsSection}
+      <AnimatedSection>
+        {weddingDetailsSection}
+      </AnimatedSection>
 
-      <Gallery images={images} />
+      <AnimatedSection>
+        <Gallery images={images} />
+      </AnimatedSection>
 
       {/*{giftSection}*/}
 
-      <section className={`py-8 px-4 ${styles.messagesSection}`}>
-        <div className="max-w-6xl mx-auto">
-          <div className={styles.sectionContainer}>
-            <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: 'var(--button-color)' }}>Messages from Our Guests</h3>
-            <div className="space-y-4 mb-8">
-              {messages.map((message) => (
-                <div key={message.id} className="message-item">
-                  <div className="message-header">
-                    <div className="message-author">
-                      <span className="text-[#b6cfa6] mr-2">♥</span>
-                      {message.name}
+      <AnimatedSection>
+        <section className={`py-8 px-4 ${styles.messagesSection}`}>
+          <div className="max-w-6xl mx-auto">
+            <div className={styles.sectionContainer}>
+              <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: 'var(--button-color)' }}>Messages from Our Guests</h3>
+              <div className="space-y-4 mb-8">
+                {messages.map((message) => (
+                  <div key={message.id} className="message-item">
+                    <div className="message-header">
+                      <div className="message-author">
+                        <span className="text-[#b6cfa6] mr-2">♥</span>
+                        {message.name}
+                      </div>
+                      <div className="message-time">
+                        {message.timestamp?.toDate().toLocaleDateString() || 'Just now'}
+                      </div>
                     </div>
-                    <div className="message-time">
-                      {message.timestamp?.toDate().toLocaleDateString() || 'Just now'}
-                    </div>
+                    <div className="message-text">{message.message}</div>
                   </div>
-                  <div className="message-text">{message.message}</div>
-                </div>
-              ))}
+                ))}
+              </div>
+
+              <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: 'var(--button-color)' }}>Leave a Message</h3>
+              <MessageForm 
+                onSuccess={handleMessageSubmit}
+                onError={handleError}
+              />
             </div>
-
-            <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: 'var(--button-color)' }}>Leave a Message</h3>
-            <MessageForm 
-              onSuccess={handleMessageSubmit}
-              onError={handleError}
-            />
           </div>
-        </div>
-      </section>
+        </section>
+      </AnimatedSection>
 
-      <footer className="py-8 text-center">
-        <div className="max-w-6xl mx-auto">
-          <h3 className="text-2xl mb-6">소식공유</h3>
-          <KakaoShare />
-          <p className="text-gray-600 mb-4">Thank you!</p>
-          <div className="text-4xl" style={{ color: 'var(--button-color)' }}>♥</div>
-          <p className="text-gray-600 mt-8">Developed by Federico Berto & Cecilia Callejas</p>
-        </div>
-      </footer>
+      <AnimatedSection>
+        <footer className="py-8 text-center">
+          <div className="max-w-6xl mx-auto">
+            <h3 className="text-2xl mb-6">소식공유</h3>
+            <KakaoShare />
+            <p className="text-gray-600 mb-4">Thank you!</p>
+            <div className="text-4xl" style={{ color: 'var(--button-color)' }}>♥</div>
+            <p className="text-gray-600 mt-8">Developed by Federico Berto & Cecilia Callejas</p>
+          </div>
+        </footer>
+      </AnimatedSection>
 
       <MusicPlayer />
       <RSVPModal 
