@@ -1,3 +1,8 @@
+# Wedding Website ❤️
+
+
+This is the website for our wedding, deployed on GitHub Pages at [fedececy.com](https://fedececy.com) (without domain name it would be on Github . io [here](https://thebcs-family.github.io/wedding_invitation)).
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -13,6 +18,29 @@ pnpm dev
 # or
 bun dev
 ```
+
+We need also a `secrets.ts` file in `app/config/secrets.ts` with the following content. You can just run this to create a dummy one, which should be replaced with the actual values when deploying:
+
+```bash
+cat > app/config/secrets.ts << 'EOF'
+export const secrets = {
+  firebase: {
+    apiKey: "dummy-firebase-api-key",
+    authDomain: "dummy-project.firebaseapp.com",
+    projectId: "dummy-project",
+    storageBucket: "dummy-project.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "1:123456789:web:abcdef",
+    measurementId: "G-ABCDEF"
+  },
+  kakao: {
+    javascriptKey: "dummy-kakao-javascript-key",
+    mapApiKey: "dummy-kakao-map-key"
+  }
+}; 
+EOF
+```
+
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
