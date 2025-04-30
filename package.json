@@ -11,6 +11,7 @@
   "dependencies": {
     "autoprefixer": "^10.4.21",
     "firebase": "^10.14.1",
+    "framer-motion": "^12.9.2",
     "next": "^15.3.1",
     "postcss": "^8.5.3",
     "react": "^19.1.0",
