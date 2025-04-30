@@ -6,12 +6,47 @@ import styles from '../styles/sections.module.css';
 
 const WorldMap: React.FC = () => {
   const [hoveredPoint, setHoveredPoint] = useState<string | null>(null);
+  const [clickedPoint, setClickedPoint] = useState<string | null>(null);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const handlePointClick = (pointId: string) => {
+    setClickedPoint(clickedPoint === pointId ? null : pointId);
+    if (pointId === 'korea') {
+      scrollToSection('wedding-korea');
+    }
+  };
+
+  const renderTooltip = (pointId: string) => {
+    const tooltips = {
+      korea: {
+        title: 'Daejeon, Korea',
+        date: 'June 14, 2025'
+      },
+      bolivia: {
+        title: 'La Paz, Bolivia',
+        date: 'Coming Soon'
+      },
+      italy: {
+        title: 'Bologna, Italy',
+        date: 'Coming Soon'
+      }
+    };
+
+    const tooltip = tooltips[pointId as keyof typeof tooltips];
+    if (!tooltip) return null;
+
+    return (
+      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white p-2 rounded-lg shadow-lg whitespace-nowrap">
+        <p className="font-bold text-sm" style={{ color: '#72999d' }}>{tooltip.title}</p>
+        <p className="text-xs" style={{ color: '#72999d' }}>{tooltip.date}</p>
+      </div>
+    );
   };
 
   return (
@@ -33,39 +68,29 @@ const WorldMap: React.FC = () => {
           style={{ top: '44%', right: '17.5%' }}
           onMouseEnter={() => setHoveredPoint('korea')}
           onMouseLeave={() => setHoveredPoint(null)}
+          onClick={() => handlePointClick('korea')}
         >
-          {hoveredPoint === 'korea' && (
-            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white p-2 rounded-lg shadow-lg whitespace-nowrap">
-              <p className="font-bold text-sm" style={{ color: '#72999d' }}>Daejeon, Korea</p>
-              <p className="text-xs" style={{ color: '#72999d' }}>June 14, 2025</p>
-            </div>
-          )}
+          {(hoveredPoint === 'korea' || clickedPoint === 'korea') && renderTooltip('korea')}
         </div>
+        
         <div 
           className="absolute w-4 h-4 bg-red-500 rounded-full cursor-pointer transition-transform hover:scale-150"
           style={{ bottom: '25%', right: '67%' }}
           onMouseEnter={() => setHoveredPoint('bolivia')}
           onMouseLeave={() => setHoveredPoint(null)}
+          onClick={() => handlePointClick('bolivia')}
         >
-          {hoveredPoint === 'bolivia' && (
-            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white p-2 rounded-lg shadow-lg whitespace-nowrap">
-              <p className="font-bold text-sm" style={{ color: '#72999d' }}>La Paz, Bolivia</p>
-              <p className="text-xs" style={{ color: '#72999d' }}>Coming Soon</p>
-            </div>
-          )}
+          {(hoveredPoint === 'bolivia' || clickedPoint === 'bolivia') && renderTooltip('bolivia')}
         </div>
+        
         <div 
           className="absolute w-4 h-4 bg-red-500 rounded-full cursor-pointer transition-transform hover:scale-150"
           style={{ bottom: '55.5%', left: '51.5%' }}
           onMouseEnter={() => setHoveredPoint('italy')}
           onMouseLeave={() => setHoveredPoint(null)}
+          onClick={() => handlePointClick('italy')}
         >
-          {hoveredPoint === 'italy' && (
-            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white p-2 rounded-lg shadow-lg whitespace-nowrap">
-              <p className="font-bold text-sm" style={{ color: '#72999d' }}>Bologna, Italy</p>
-              <p className="text-xs" style={{ color: '#72999d' }}>Coming Soon</p>
-            </div>
-          )}
+          {(hoveredPoint === 'italy' || clickedPoint === 'italy') && renderTooltip('italy')}
         </div>
       </div>
 
