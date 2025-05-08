@@ -23,6 +23,9 @@ import Notification from './Notification';
 import ImagePopup from './ImagePopup';
 import AnimatedSection from './AnimatedSection';
 import AnimatedWaves from './AnimatedWaves';
+import LanguageSwitcher from './LanguageSwitcher';
+import { useTranslation, getLanguageFromCountry, Language, getStoredLanguage, setStoredLanguage, getBrowserLanguage } from '../utils/i18n';
+import ShareButtons from './ShareButtons';
 
 interface ClientPageProps {
   images: string[];
@@ -31,10 +34,40 @@ interface ClientPageProps {
 export default function ClientPage({ images }: ClientPageProps) {
   const [messages, setMessages] = useState<any[]>([]);
   const [showRSVPModal, setShowRSVPModal] = useState(false);
-  const [isEnglish, setIsEnglish] = useState(true);
+  const [language, setLanguage] = useState<Language>('en');
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const { t } = useTranslation(language);
 
   useEffect(() => {
+    // First try to get stored language
+    const storedLanguage = getStoredLanguage();
+    if (storedLanguage) {
+      setLanguage(storedLanguage);
+      return;
+    }
+
+    // If no stored language, try browser language
+    const browserLanguage = getBrowserLanguage();
+    if (browserLanguage !== 'en') {
+      setLanguage(browserLanguage);
+      setStoredLanguage(browserLanguage);
+      return;
+    }
+
+    // If browser language is English or not supported, try country detection
+    fetch('https://ipapi.co/json/')
+      .then(response => response.json())
+      .then(data => {
+        const detectedLanguage = getLanguageFromCountry(data.country_code);
+        setLanguage(detectedLanguage);
+        setStoredLanguage(detectedLanguage);
+      })
+      .catch(() => {
+        // Fallback to English if detection fails
+        setLanguage('en');
+        setStoredLanguage('en');
+      });
+
     // Load messages
     const q = query(collection(db, 'messages'), orderBy('timestamp', 'desc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -47,6 +80,11 @@ export default function ClientPage({ images }: ClientPageProps) {
 
     return () => unsubscribe();
   }, []);
+
+  const handleLanguageChange = (newLanguage: Language) => {
+    setLanguage(newLanguage);
+    setStoredLanguage(newLanguage);
+  };
 
   const renderMap = () => {
     if (typeof window !== 'undefined' && window.daum) {
@@ -62,57 +100,39 @@ export default function ClientPage({ images }: ClientPageProps) {
   const weddingDetailsSection = (
     <section id="wedding-korea" className="py-16">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-2xl font-bold mb-12 text-center" style={{ color: 'var(--button-color)' }}>Wedding in Korea</h2>
+        <h2 className="text-2xl font-bold mb-12 text-center" style={{ color: 'var(--button-color)' }}>{t.weddingInKorea}</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           <div className="bg-white p-8 rounded-lg shadow-lg">
-            <h3 className="text-2xl mb-6 text-center">Our Invitation</h3>
+            <h3 className="text-2xl mb-6 text-center">{t.ourInvitation}</h3>
             <p className="text-gray-700 leading-relaxed text-center">
-              Though we come from different corners of the world,
-              our paths crossed, and love found its way.
-              Now, hand in hand, we begin a new journey as one.
-              We invite you to celebrate our love
-              and happiness in our new beginning. ♡
+              {t.invitationText}
             </p>
           </div>
 
-          <div className="bg-white p-8 rounded-lg shadow-lg relative">
-            <button 
-              className="absolute top-4 right-4 bg-[#e0f0e0] text-[#72999d] border-none px-2 py-1 rounded-lg cursor-pointer transition-all text-sm font-bold"
-              onClick={() => setIsEnglish(!isEnglish)}
-            >
-              {isEnglish ? 'Kor' : 'Eng'}
-            </button>
-            <h3 className="text-2xl mb-6 text-center">Wedding Details</h3>
+          <div className="bg-white p-8 rounded-lg shadow-lg">
+            <h3 className="text-2xl mb-6 text-center">{t.weddingDetails}</h3>
             <div className="text-center">
-              {isEnglish ? (
-                <>
-                  <p className="text-xl mb-4">Saturday, June 14, 2025</p>
-                  <p className="text-xl mb-4">4:30 PM</p>
-                  <p className="mb-4">Hiel Place</p>
-                  <p className="mb-4">15-4, Gwanjeo-nam-ro 12beon-gil</p>
-                </>
-              ) : (
-                <>
-                  <p className="text-xl mb-4">2025년 6월 14일 토요일</p>
-                  <p className="text-xl mb-4">오후 4시 30분</p>
-                  <p className="mb-4">히엘플레이스</p>
-                  <p className="mb-4">대전 서구 관저남로12번길 15-4 1층</p>
-                </>
-              )}
+              <p className="text-xl mb-4">{t.date}</p>
+              <p className="text-xl mb-4">{t.time}</p>
+              <p className="mb-4">{t.venue}</p>
+              <p className="mb-4">{t.address}</p>
+              <div className="flex justify-center">
+                <ShareButtons language={language} />
+              </div>
             </div>
           </div>
 
           <div className="bg-white p-8 rounded-lg shadow-lg">
-            <h3 className="text-2xl mb-6 text-center">RSVP</h3>
-            <p className="text-center mb-4 text-gray-600">Please RSVP online and submit your response</p>
+            <h3 className="text-2xl mb-6 text-center">{t.rsvp}</h3>
+            <p className="text-center mb-4 text-gray-600">{t.rsvpText}</p>
             <div className="text-center">
               <button
                 onClick={() => setShowRSVPModal(true)}
                 className="text-white px-8 py-3 rounded-lg transition-colors text-lg"
                 style={{ backgroundColor: 'var(--button-color)' }}
               >
-                RSVP Now
+                {t.rsvpNow}
               </button>
             </div>
           </div>
@@ -123,7 +143,7 @@ export default function ClientPage({ images }: ClientPageProps) {
             <KakaoMap />
           </div>
           <div className="bg-white p-4 rounded-lg shadow-lg">
-            <Calendar />
+            <Calendar language={language} />
           </div>
         </div>
       </div>
@@ -139,11 +159,11 @@ export default function ClientPage({ images }: ClientPageProps) {
   //);
 
   const handleRSVPSubmit = () => {
-    setNotification({ message: 'Thank you for your RSVP!', type: 'success' });
+    setNotification({ message: t.thankYou, type: 'success' });
   };
 
   const handleMessageSubmit = () => {
-    setNotification({ message: 'Thank you for your message!', type: 'success' });
+    setNotification({ message: t.thankYou, type: 'success' });
   };
 
   const handleError = (message: string) => {
@@ -152,13 +172,18 @@ export default function ClientPage({ images }: ClientPageProps) {
 
   return (
     <main className={`min-h-screen ${styles.variables}`}>
+      <LanguageSwitcher 
+        currentLanguage={language}
+        onLanguageChange={handleLanguageChange}
+      />
+      
       <AnimatedSection>
         <header className={`${styles.headerImage} relative`}>
           <div className={styles.headerOverlay}></div>
           <div className={styles.headerContent}>
-            <h1 className="text-4xl md:text-6xl font-bold mb-5 text-white">Wedding Invitation</h1>
+            <h1 className="text-4xl md:text-6xl font-bold mb-5 text-white">{t.weddingInvitation}</h1>
             <p className="text-3xl md:text-4xl font-light mb-4 text-white">Federico & Cecilia</p>
-            <p className="text-2xl md:text-3xl text-white">Save the Date</p>
+            <p className="text-2xl md:text-3xl text-white">{t.saveTheDate}</p>
           </div>
           <AnimatedWaves />
         </header>
@@ -167,8 +192,8 @@ export default function ClientPage({ images }: ClientPageProps) {
       <AnimatedSection>
         <section className={`py-16 px-4 ${styles.worldMapSection}`}>
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-2xl font-bold mb-12 text-center" style={{ color: 'var(--button-color)' }}>Our Journey</h2>
-            <WorldMap />
+            <h2 className="text-2xl font-bold mb-12 text-center" style={{ color: 'var(--button-color)' }}>{t.ourJourney}</h2>
+            <WorldMap language={language} />
           </div>
         </section>
       </AnimatedSection>
@@ -178,7 +203,7 @@ export default function ClientPage({ images }: ClientPageProps) {
       </AnimatedSection>
 
       <AnimatedSection>
-        <Gallery images={images} />
+        <Gallery images={images} language={language} />
       </AnimatedSection>
 
       {/*{giftSection}*/}
@@ -187,7 +212,7 @@ export default function ClientPage({ images }: ClientPageProps) {
         <section className={`py-8 px-4 ${styles.messagesSection}`}>
           <div className="max-w-6xl mx-auto">
             <div className={styles.sectionContainer}>
-              <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: 'var(--button-color)' }}>Messages from Our Guests</h3>
+              <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: 'var(--button-color)' }}>{t.messagesFromGuests}</h3>
               <div className="space-y-4 mb-8">
                 {messages.map((message) => (
                   <div key={message.id} className="message-item">
@@ -205,10 +230,11 @@ export default function ClientPage({ images }: ClientPageProps) {
                 ))}
               </div>
 
-              <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: 'var(--button-color)' }}>Leave a Message</h3>
+              <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: 'var(--button-color)' }}>{t.leaveMessage}</h3>
               <MessageForm 
                 onSuccess={handleMessageSubmit}
                 onError={handleError}
+                language={language}
               />
             </div>
           </div>
@@ -218,11 +244,13 @@ export default function ClientPage({ images }: ClientPageProps) {
       <AnimatedSection>
         <footer className="py-8 text-center">
           <div className="max-w-6xl mx-auto">
-            <h3 className="text-2xl mb-6">소식공유</h3>
-            <KakaoShare />
-            <p className="text-gray-600 mb-4">Thank you!</p>
+            <h3 className="text-2xl mb-6">{t.shareNews}</h3>
+            <div className="flex justify-center gap-4">
+            <KakaoShare language={language} />
+            </div>
+            <p className="text-gray-600 mb-4">{t.thankYou}</p>
             <div className="text-4xl" style={{ color: 'var(--button-color)' }}>♥</div>
-            <p className="text-gray-600 mt-8">Developed by Federico Berto & Cecilia Callejas</p>
+            <p className="text-gray-600 mt-8">{t.developedBy}</p>
           </div>
         </footer>
       </AnimatedSection>
@@ -233,6 +261,7 @@ export default function ClientPage({ images }: ClientPageProps) {
         onClose={() => setShowRSVPModal(false)}
         onSuccess={handleRSVPSubmit}
         onError={handleError}
+        language={language}
       />
 
       {notification && (

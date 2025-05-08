@@ -4,15 +4,24 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import styles from '../styles/sections.module.css';
 import { secrets } from '../config/secrets';
+import { useTranslation, Language } from '../utils/i18n';
 
 declare global {
   interface Window {
-    Kakao: any;
+    Kakao: {
+      init: (key: string) => void;
+      isInitialized: () => boolean;
+      Share: {
+        sendDefault: (options: any) => void;
+      };
+    };
   }
 }
 
 const KakaoShare: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
+  const [language, setLanguage] = useState<Language>('en');
+  const { t } = useTranslation(language);
 
   useEffect(() => {
     // Load Kakao SDK
@@ -64,7 +73,7 @@ const KakaoShare: React.FC = () => {
         onClick={() => setShowModal(true)}
         className="bg-yellow-400 text-white px-8 py-3 rounded-lg transition-colors text-lg mb-8"
       >
-        KakaoTalk 공유
+        {t.kakaoShare.share}
       </button>
 
       {showModal && (
@@ -93,7 +102,7 @@ const KakaoShare: React.FC = () => {
                 }}
                 className="bg-yellow-400 text-white px-6 py-2 rounded-lg"
               >
-                전송하기
+                {t.kakaoShare.send}
               </button>
             </div>
           </div>

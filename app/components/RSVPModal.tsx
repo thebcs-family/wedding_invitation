@@ -3,17 +3,20 @@
 import { useState } from 'react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../config/firebase';
+import { useTranslation, Language } from '../utils/i18n';
 
 interface RSVPModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
   onError: (message: string) => void;
+  language: Language;
 }
 
-export default function RSVPModal({ isOpen, onClose, onSuccess, onError }: RSVPModalProps) {
+export default function RSVPModal({ isOpen, onClose, onSuccess, onError, language }: RSVPModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [numberOfPeople, setNumberOfPeople] = useState(1);
+  const { t } = useTranslation(language);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,18 +27,17 @@ export default function RSVPModal({ isOpen, onClose, onSuccess, onError }: RSVPM
     const attendanceInput = form.elements.namedItem('attendance') as HTMLSelectElement;
 
     try {
-      await addDoc(collection(db, 'rsvps'), {
+      await addDoc(collection(db, 'rsvp'), {
         name: nameInput.value.trim(),
         attendance: attendanceInput.value,
-        numberOfPeople: numberOfPeople,
+        numberOfPeople,
         timestamp: serverTimestamp()
       });
+      form.reset();
       onSuccess();
       onClose();
-      form.reset();
-      setNumberOfPeople(1);
     } catch (error) {
-      console.error('Error adding RSVP:', error);
+      console.error('Error submitting RSVP:', error);
       onError('There was an error submitting your RSVP. Please try again.');
     } finally {
       setIsSubmitting(false);
@@ -47,33 +49,33 @@ export default function RSVPModal({ isOpen, onClose, onSuccess, onError }: RSVPM
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-8 rounded-lg max-w-md w-full mx-4">
-        <h3 className="text-2xl mb-6 text-center">RSVP Form</h3>
+        <h3 className="text-2xl mb-6 text-center">{t.rsvpModal.title}</h3>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-gray-700 mb-2">Name</label>
+            <label className="block text-gray-700 mb-2">{t.rsvpModal.name}</label>
             <input
               type="text"
               name="name"
               className="w-full px-4 py-2 border rounded-lg"
-              placeholder="Your name"
+              placeholder={t.rsvpModal.namePlaceholder}
               required
               disabled={isSubmitting}
             />
           </div>
           <div>
-            <label className="block text-gray-700 mb-2">Will you attend?</label>
+            <label className="block text-gray-700 mb-2">{t.rsvpModal.attendance}</label>
             <select 
               name="attendance" 
               className="w-full px-4 py-2 border rounded-lg" 
               required
               disabled={isSubmitting}
             >
-              <option value="yes">Yes, I will attend</option>
-              <option value="no">No, I cannot attend</option>
+              <option value="yes">{t.rsvpModal.attendanceYes}</option>
+              <option value="no">{t.rsvpModal.attendanceNo}</option>
             </select>
           </div>
           <div>
-            <label className="block text-gray-700 mb-2">Number of People</label>
+            <label className="block text-gray-700 mb-2">{t.rsvpModal.numberOfPeople}</label>
             <div className="flex items-center space-x-4">
               <button
                 type="button"
@@ -102,7 +104,7 @@ export default function RSVPModal({ isOpen, onClose, onSuccess, onError }: RSVPM
             </div>
           </div>
           <div className="text-center text-sm text-gray-600 mb-4">
-            Please confirm your response
+            {t.rsvpModal.confirmResponse}
           </div>
           <div className="flex justify-end space-x-4 mt-6">
             <button
@@ -111,7 +113,7 @@ export default function RSVPModal({ isOpen, onClose, onSuccess, onError }: RSVPM
               className="px-4 py-2 border rounded-lg hover:bg-gray-100"
               disabled={isSubmitting}
             >
-              Cancel
+              {t.rsvpModal.cancel}
             </button>
             <button
               type="submit"
@@ -119,7 +121,7 @@ export default function RSVPModal({ isOpen, onClose, onSuccess, onError }: RSVPM
               style={{ backgroundColor: 'var(--button-color)' }}
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Submitting...' : 'Submit'}
+              {isSubmitting ? t.rsvpModal.submitting : t.rsvpModal.submit}
             </button>
           </div>
         </form>

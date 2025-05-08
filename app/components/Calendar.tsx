@@ -1,9 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslation, Language } from '../utils/i18n';
 
-export default function Calendar() {
+interface CalendarProps {
+  language: Language;
+}
+
+export default function Calendar({ language }: CalendarProps) {
   const [countdown, setCountdown] = useState('');
+  const { t } = useTranslation(language);
 
   useEffect(() => {
     const updateCountdown = () => {
@@ -26,15 +32,15 @@ export default function Calendar() {
 
   return (
     <div className="calendar-container">
-      <div className="calendar-header">June 2025</div>
+      <div className="calendar-header">{t.calendar.month}</div>
       <div className="calendar-grid">
-        <div className="calendar-day sunday">Su</div>
-        <div className="calendar-day">Mo</div>
-        <div className="calendar-day">Tu</div>
-        <div className="calendar-day">We</div>
-        <div className="calendar-day">Th</div>
-        <div className="calendar-day">Fr</div>
-        <div className="calendar-day saturday">Sa</div>
+        <div className="calendar-day sunday">{t.calendar.days.su}</div>
+        <div className="calendar-day">{t.calendar.days.mo}</div>
+        <div className="calendar-day">{t.calendar.days.tu}</div>
+        <div className="calendar-day">{t.calendar.days.we}</div>
+        <div className="calendar-day">{t.calendar.days.th}</div>
+        <div className="calendar-day">{t.calendar.days.fr}</div>
+        <div className="calendar-day saturday">{t.calendar.days.sa}</div>
         <div className="calendar-day sunday">1</div>
         <div className="calendar-day">2</div>
         <div className="calendar-day">3</div>
@@ -67,7 +73,7 @@ export default function Calendar() {
         <div className="calendar-day">30</div>
       </div>
       <div className="countdown">{countdown}</div>
-      <div className="countdown-text">Until our special day</div>
+      <div className="countdown-text">{t.calendar.untilSpecialDay}</div>
     </div>
   );
 } 

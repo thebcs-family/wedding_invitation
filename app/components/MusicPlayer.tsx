@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import MusicOffIcon from '@mui/icons-material/MusicOff';
 
 export default function MusicPlayer() {
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
@@ -21,15 +22,15 @@ export default function MusicPlayer() {
     <>
       <audio id="bgMusic" src="/music/wedding.mp3" loop />
       <button
-        className="fixed bottom-8 right-8 z-50 bg-[#b6cfa6] text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-[#72999d] transition-colors"
+        className="fixed bottom-4 left-4 z-50 bg-white/90 backdrop-blur-sm text-[#72999d] rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-[#72999d] hover:text-white transition-all duration-300"
         onClick={toggleMusic}
+        aria-label={isMusicPlaying ? "Pause music" : "Play music"}
       >
-        <Image
-          src={isMusicPlaying ? "/images/pause.png" : "/images/play.png"}
-          alt={isMusicPlaying ? "Pause" : "Play"}
-          width={32}
-          height={32}
-        />
+        {isMusicPlaying ? (
+          <MusicNoteIcon className="w-6 h-6" />
+        ) : (
+          <MusicOffIcon className="w-6 h-6" />
+        )}
       </button>
     </>
   );

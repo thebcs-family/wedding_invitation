@@ -1,131 +1,87 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { Suspense, useRef } from 'react';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import styles from '../styles/sections.module.css';
+import { useTranslation, Language } from '../utils/i18n';
 
-const WorldMap: React.FC = () => {
-  const [hoveredPoint, setHoveredPoint] = useState<string | null>(null);
-  const [clickedPoint, setClickedPoint] = useState<string | null>(null);
+// Dynamically import the Globe component with no SSR
+const Globe = dynamic(() => import('./Globe'), {
+  ssr: false,
+  loading: () => (
+    <div className="h-[600px] w-full bg-transparent rounded-lg overflow-hidden flex items-center justify-center">
+      <div className="text-gray-700 text-xl">Loading...</div>
+    </div>
+  )
+});
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+interface WorldMapProps {
+  language: Language;
+}
 
-  const handlePointClick = (pointId: string) => {
-    setClickedPoint(clickedPoint === pointId ? null : pointId);
-    if (pointId === 'korea') {
-      scrollToSection('wedding-korea');
-    }
-  };
+const WorldMap: React.FC<WorldMapProps> = ({ language }) => {
+  const { t } = useTranslation(language);
+  const koreaRef = useRef<HTMLDivElement>(null);
+  const boliviaRef = useRef<HTMLDivElement>(null);
+  const italyRef = useRef<HTMLDivElement>(null);
 
-  const renderTooltip = (pointId: string) => {
-    const tooltips = {
-      korea: {
-        title: 'Daejeon, Korea',
-        date: 'June 14, 2025'
-      },
-      bolivia: {
-        title: 'La Paz, Bolivia',
-        date: 'Coming Soon'
-      },
-      italy: {
-        title: 'Bologna, Italy',
-        date: 'Coming Soon'
-      }
+  const scrollToLocation = (location: string) => {
+    const refs = {
+      korea: koreaRef,
+      bolivia: boliviaRef,
+      italy: italyRef
     };
-
-    const tooltip = tooltips[pointId as keyof typeof tooltips];
-    if (!tooltip) return null;
-
-    return (
-      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 bg-white p-2 rounded-lg shadow-lg whitespace-nowrap">
-        <p className="font-bold text-sm" style={{ color: '#72999d' }}>{tooltip.title}</p>
-        <p className="text-xs" style={{ color: '#72999d' }}>{tooltip.date}</p>
-      </div>
-    );
+    
+    const ref = refs[location as keyof typeof refs];
+    if (ref?.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   };
 
   return (
-    <div>
-      <div className="relative mb-8">
-        <div className="bg-white p-4 rounded-lg shadow-lg">
-          <Image
-            src="/images/world-map.png"
-            alt="World Map with our locations"
-            width={1200}
-            height={600}
-            className="w-full h-auto rounded-lg"
-          />
-        </div>
-        
-        {/* Map Points */}
-        <div 
-          className="absolute w-4 h-4 bg-red-500 rounded-full cursor-pointer transition-transform hover:scale-150"
-          style={{ top: '44%', right: '17.5%' }}
-          onMouseEnter={() => setHoveredPoint('korea')}
-          onMouseLeave={() => setHoveredPoint(null)}
-          onClick={() => handlePointClick('korea')}
-        >
-          {(hoveredPoint === 'korea' || clickedPoint === 'korea') && renderTooltip('korea')}
-        </div>
-        
-        <div 
-          className="absolute w-4 h-4 bg-red-500 rounded-full cursor-pointer transition-transform hover:scale-150"
-          style={{ bottom: '25%', right: '67%' }}
-          onMouseEnter={() => setHoveredPoint('bolivia')}
-          onMouseLeave={() => setHoveredPoint(null)}
-          onClick={() => handlePointClick('bolivia')}
-        >
-          {(hoveredPoint === 'bolivia' || clickedPoint === 'bolivia') && renderTooltip('bolivia')}
-        </div>
-        
-        <div 
-          className="absolute w-4 h-4 bg-red-500 rounded-full cursor-pointer transition-transform hover:scale-150"
-          style={{ bottom: '55.5%', left: '51.5%' }}
-          onMouseEnter={() => setHoveredPoint('italy')}
-          onMouseLeave={() => setHoveredPoint(null)}
-          onClick={() => handlePointClick('italy')}
-        >
-          {(hoveredPoint === 'italy' || clickedPoint === 'italy') && renderTooltip('italy')}
-        </div>
+    <div className="world-map-container">
+      <div className="mb-12">
+        <Suspense fallback={
+          <div className="h-[600px] w-full bg-transparent rounded-lg overflow-hidden flex items-center justify-center">
+            <div className="text-gray-700 text-xl">Loading...</div>
+          </div>
+        }>
+          <Globe language={language} onLocationClick={scrollToLocation} />
+        </Suspense>
       </div>
 
-      {/* Country Boxes */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="location-box flex-1" onClick={() => scrollToSection('wedding-korea')}>
+        <div ref={koreaRef} className="location-box flex-1">
           <div className="h-64 overflow-hidden relative">
             <Image src="/images/korea.jpg" alt="Korea" width={400} height={256} className="w-full h-full object-cover" />
             <div className="location-date">June 14, 2025</div>
           </div>
           <div className="location-content p-6">
-            <h3 className="text-2xl font-bold mb-2">Daejeon, Korea</h3>
-            <p className="text-gray-600">Where our love story started</p>
+            <h3 className="text-2xl font-bold mb-2">{t.locations.korea.title}</h3>
+            <p className="text-gray-600">{t.locations.korea.description}</p>
           </div>
         </div>
         
-        <div className="location-box flex-1">
+        <div ref={boliviaRef} className="location-box flex-1">
           <div className="h-64 overflow-hidden relative">
             <Image src="/images/bolivia.jpg" alt="Bolivia" width={400} height={256} className="w-full h-full object-cover" />
             <div className="location-date">Coming Soon</div>
           </div>
           <div className="location-content p-6">
-            <h3 className="text-2xl font-bold mb-2">La Paz, Bolivia</h3>
-            <p className="text-gray-600">Cecilia's hometown</p>
+            <h3 className="text-2xl font-bold mb-2">{t.locations.bolivia.title}</h3>
+            <p className="text-gray-600">{t.locations.bolivia.description}</p>
           </div>
         </div>
         
-        <div className="location-box flex-1">
+        <div ref={italyRef} className="location-box flex-1">
           <div className="h-64 overflow-hidden relative">
             <Image src="/images/italy.jpg" alt="Italy" width={400} height={256} className="w-full h-full object-cover" />
             <div className="location-date">Coming Soon</div>
           </div>
           <div className="location-content p-6">
-            <h3 className="text-2xl font-bold mb-2">Bologna, Italy</h3>
-            <p className="text-gray-600">Federico's hometown</p>
+            <h3 className="text-2xl font-bold mb-2">{t.locations.italy.title}</h3>
+            <p className="text-gray-600">{t.locations.italy.description}</p>
           </div>
         </div>
       </div>
