@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import styles from '../styles/sections.module.css';
 import ImagePopup from './ImagePopup';
+import { useTranslation, Language } from '../utils/i18n';
 
 interface GalleryProps {
   images: string[];
@@ -12,6 +13,8 @@ interface GalleryProps {
 export function Gallery({ images }: GalleryProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showImagePopup, setShowImagePopup] = useState(false);
+  const [language, setLanguage] = useState<Language>('en');
+  const { t } = useTranslation(language);
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % images.length);
@@ -25,7 +28,7 @@ export function Gallery({ images }: GalleryProps) {
     <section id="gallery" className="py-0">
       <div className="max-w-6xl mx-auto px-4">
         <div className={styles.sectionContainer}>
-          <h2 className="text-2xl font-bold mb-4 text-center" style={{ color: 'var(--button-color)' }}>Our Gallery</h2>
+          <h2 className="text-2xl font-bold mb-4 text-center" style={{ color: 'var(--button-color)' }}>{t.gallery.title}</h2>
           <div className="relative">
             <div className="flex justify-center">
               <div 

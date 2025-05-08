@@ -3,14 +3,17 @@
 import { useState } from 'react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../config/firebase';
+import { useTranslation, Language } from '../utils/i18n';
 
 interface MessageFormProps {
   onSuccess: () => void;
   onError: (message: string) => void;
+  language: Language;
 }
 
-export default function MessageForm({ onSuccess, onError }: MessageFormProps) {
+export default function MessageForm({ onSuccess, onError, language }: MessageFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { t } = useTranslation(language);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,23 +42,23 @@ export default function MessageForm({ onSuccess, onError }: MessageFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-gray-700 mb-2">Name</label>
+        <label className="block text-gray-700 mb-2">{t.messageForm.name}</label>
         <input
           type="text"
           name="name"
           className="w-full px-4 py-2 border rounded-lg"
-          placeholder="Your name"
+          placeholder={t.messageForm.namePlaceholder}
           required
           disabled={isSubmitting}
         />
       </div>
       <div>
-        <label className="block text-gray-700 mb-2">Message</label>
+        <label className="block text-gray-700 mb-2">{t.messageForm.message}</label>
         <textarea
           name="message"
           className="w-full px-4 py-2 border rounded-lg"
           rows={4}
-          placeholder="Your message"
+          placeholder={t.messageForm.messagePlaceholder}
           required
           disabled={isSubmitting}
         />
@@ -67,7 +70,7 @@ export default function MessageForm({ onSuccess, onError }: MessageFormProps) {
           style={{ backgroundColor: 'var(--button-color)' }}
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Sending...' : 'Send Message'}
+          {isSubmitting ? t.messageForm.sending : t.messageForm.sendMessage}
         </button>
       </div>
     </form>
