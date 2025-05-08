@@ -8,12 +8,12 @@ import { useTranslation, Language } from '../utils/i18n';
 
 interface GalleryProps {
   images: string[];
+  language: Language;
 }
 
-export function Gallery({ images }: GalleryProps) {
+export function Gallery({ images, language }: GalleryProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showImagePopup, setShowImagePopup] = useState(false);
-  const [language, setLanguage] = useState<Language>('en');
   const { t } = useTranslation(language);
 
   const nextImage = () => {
