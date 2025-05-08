@@ -1,0 +1,84 @@
+{
+  "weddingInvitation": "웨딩 초대장",
+  "saveTheDate": "날짜를 기억해주세요",
+  "ourJourney": "우리의 여정",
+  "weddingInKorea": "한국에서의 결혼식",
+  "ourInvitation": "초대의 말씀",
+  "invitationText": "서로 다른 세계의 구석에서 왔지만, 우리의 길이 만나고 사랑이 찾아왔습니다. 이제 손을 맞잡고 하나가 되어 새로운 여정을 시작합니다. 우리의 새로운 시작에서 사랑과 행복을 함께 축하해주시길 초대합니다. ♡",
+  "weddingDetails": "결혼식 안내",
+  "date": "2025년 6월 14일 토요일",
+  "time": "오후 4시 30분",
+  "venue": "히엘플레이스",
+  "address": "대전 서구 관저남로12번길 15-4 1층",
+  "rsvp": "참석 여부",
+  "rsvpText": "온라인으로 참석 여부를 알려주세요",
+  "rsvpNow": "참석 여부 알리기",
+  "messagesFromGuests": "방문객들의 메시지",
+  "leaveMessage": "메시지 남기기",
+  "shareNews": "소식 공유하기",
+  "thankYou": "감사합니다!",
+  "developedBy": "Federico Berto & Cecilia Callejas 제작",
+  "calendar": {
+    "month": "2025년 6월",
+    "untilSpecialDay": "우리의 특별한 날까지",
+    "days": {
+      "su": "일",
+      "mo": "월",
+      "tu": "화",
+      "we": "수",
+      "th": "목",
+      "fr": "금",
+      "sa": "토"
+    },
+    "countdown": {
+      "days": "일",
+      "hours": "시간",
+      "minutes": "분",
+      "seconds": "초",
+      "format": "{days}일 {hours}시간 {minutes}분 {seconds}초"
+    },
+    "addToCalendar": "캘린더에 추가"
+  },
+  "messageForm": {
+    "name": "이름",
+    "namePlaceholder": "이름을 입력하세요",
+    "message": "메시지",
+    "messagePlaceholder": "메시지를 입력하세요",
+    "sending": "전송 중...",
+    "sendMessage": "메시지 보내기"
+  },
+  "rsvpModal": {
+    "title": "참석 여부",
+    "name": "이름",
+    "namePlaceholder": "이름을 입력하세요",
+    "attendance": "참석하시겠습니까?",
+    "attendanceYes": "네, 참석하겠습니다",
+    "attendanceNo": "아니요, 참석할 수 없습니다",
+    "numberOfPeople": "참석 인원",
+    "confirmResponse": "참석 여부를 확인해주세요",
+    "cancel": "취소",
+    "submitting": "제출 중...",
+    "submit": "제출"
+  },
+  "gallery": {
+    "title": "우리의 갤러리"
+  },
+  "locations": {
+    "korea": {
+      "title": "대전, 한국",
+      "description": "우리의 사랑이 시작된 곳"
+    },
+    "bolivia": {
+      "title": "라파스, 볼리비아",
+      "description": "세실리아의 고향"
+    },
+    "italy": {
+      "title": "볼로냐, 이탈리아",
+      "description": "페데리코의 고향"
+    }
+  },
+  "kakaoShare": {
+    "share": "카카오톡으로 공유하기",
+    "send": "전송하기"
+  }
+} 
