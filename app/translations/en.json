@@ -1,0 +1,84 @@
+{
+  "weddingInvitation": "Wedding Invitation",
+  "saveTheDate": "Save the Date",
+  "ourJourney": "Our Journey",
+  "weddingInKorea": "Wedding in Korea",
+  "ourInvitation": "Our Invitation",
+  "invitationText": "Though we come from different corners of the world, our paths crossed, and love found its way. Now, hand in hand, we begin a new journey as one. We invite you to celebrate our love and happiness in our new beginning. ♡",
+  "weddingDetails": "Wedding Details",
+  "date": "Saturday, June 14, 2025",
+  "time": "4:30 PM",
+  "venue": "Hiel Place",
+  "address": "15-4, Gwanjeo-nam-ro 12beon-gil",
+  "rsvp": "RSVP",
+  "rsvpText": "Please RSVP online and submit your response",
+  "rsvpNow": "RSVP Now",
+  "messagesFromGuests": "Messages from Our Guests",
+  "leaveMessage": "Leave a Message",
+  "shareNews": "Share News",
+  "thankYou": "Thank you!",
+  "developedBy": "Developed by Federico Berto & Cecilia Callejas",
+  "calendar": {
+    "month": "June 2025",
+    "untilSpecialDay": "Until our special day",
+    "days": {
+      "su": "Su",
+      "mo": "Mo",
+      "tu": "Tu",
+      "we": "We",
+      "th": "Th",
+      "fr": "Fr",
+      "sa": "Sa"
+    },
+    "countdown": {
+      "days": "days",
+      "hours": "hours",
+      "minutes": "minutes",
+      "seconds": "seconds",
+      "format": "{days} days, {hours} hours, {minutes} minutes, {seconds} seconds"
+    },
+    "addToCalendar": "Add to Calendar"
+  },
+  "messageForm": {
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "message": "Message",
+    "messagePlaceholder": "Your message",
+    "sending": "Sending...",
+    "sendMessage": "Send Message"
+  },
+  "rsvpModal": {
+    "title": "RSVP Form",
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "attendance": "Will you attend?",
+    "attendanceYes": "Yes, I will attend",
+    "attendanceNo": "No, I cannot attend",
+    "numberOfPeople": "Number of People",
+    "confirmResponse": "Please confirm your response",
+    "cancel": "Cancel",
+    "submitting": "Submitting...",
+    "submit": "Submit"
+  },
+  "gallery": {
+    "title": "Our Gallery"
+  },
+  "locations": {
+    "korea": {
+      "title": "Daejeon, Korea",
+      "description": "Where our love story started"
+    },
+    "bolivia": {
+      "title": "La Paz, Bolivia",
+      "description": "Cecilia's hometown"
+    },
+    "italy": {
+      "title": "Bologna, Italy",
+      "description": "Federico's hometown"
+    }
+  },
+  "kakaoShare": {
+    "share": "Share on KakaoTalk",
+    "send": "Send"
+  }
+} 
