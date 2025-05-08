@@ -16,44 +16,70 @@ export default function AnimatedWaves() {
           left: 0;
           width: 100%;
           height: 28px;
+          min-height: 28px;
           overflow: hidden;
+          pointer-events: none;
+          margin: 0;
+          padding: 0;
+          display: block;
+          line-height: 0;
         }
         
         .wave {
           position: absolute;
-          bottom: 0;
+          bottom: -1px; /* Add a 1px overlap to eliminate any gap */
           left: 0;
           width: 200%;
-          height: 28px;
+          height: 100%;
           background-image: url('/wave.svg');
           background-repeat: repeat-x;
-          background-size: 1600px 28px;
+          background-size: 1600px 100%;
+          margin: 0;
+          padding: 0;
         }
         
         .wave-1 {
           z-index: 3;
           opacity: 1;
-          animation: wave-animation 20s infinite linear;
+          animation: wave-animation 10s infinite;
+          animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
         }
         
         .wave-2 {
           z-index: 2;
           opacity: 0.5;
-          animation: wave-animation 15s infinite linear reverse;
+          animation: wave-animation 5s infinite reverse;
+          animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
         }
         
         .wave-3 {
           z-index: 1;
           opacity: 0.3;
-          animation: wave-animation 25s infinite linear;
+          animation: wave-animation 15s infinite;
+          animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
         }
         
         @keyframes wave-animation {
           0% {
-            transform: translateX(0);
+            transform: translateX(-100px);
+          }
+          50% {
+            transform: translateX(-400px);
           }
           100% {
-            transform: translateX(-1600px);
+            transform: translateX(-100px);
+          }
+        }
+        
+        @media (max-width: 600px) {
+          .wave-container {
+            height: 7vw;
+            min-height: 20px;
+            max-height: 40px;
+          }
+          .wave {
+            background-size: 1600px 7vw;
+            bottom: -1px; /* Maintain the overlap at smaller screens */
           }
         }
       `}</style>
