@@ -18,9 +18,12 @@ declare global {
   }
 }
 
-const KakaoShare: React.FC = () => {
+interface KakaoShareProps {
+  language: Language;
+}
+
+const KakaoShare: React.FC<KakaoShareProps> = ({ language }) => {
   const [showModal, setShowModal] = useState(false);
-  const [language, setLanguage] = useState<Language>('en');
   const { t } = useTranslation(language);
 
   useEffect(() => {
