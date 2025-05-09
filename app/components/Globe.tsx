@@ -29,6 +29,187 @@ const latLngToVector3 = (lat: number, lng: number, radius: number) => {
   return new THREE.Vector3(x, y, z);
 };
 
+function createCurvedLine(start: THREE.Vector3, end: THREE.Vector3, radius: number = 1.01) {
+  const points: THREE.Vector3[] = [];
+  const segments = 50;
+  
+  // Calculate the midpoint and raise it above the sphere
+  const midpoint = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
+  const midpointLength = midpoint.length();
+  const height = 0.15; // Increased from 0.05 to 0.15 to make the curve higher
+  midpoint.normalize().multiplyScalar(radius + height);
+  
+  // Create points along the curve
+  for (let i = 0; i <= segments; i++) {
+    const t = i / segments;
+    const point = new THREE.Vector3();
+    
+    // Quadratic Bezier curve
+    point.x = Math.pow(1 - t, 2) * start.x + 2 * (1 - t) * t * midpoint.x + Math.pow(t, 2) * end.x;
+    point.y = Math.pow(1 - t, 2) * start.y + 2 * (1 - t) * t * midpoint.y + Math.pow(t, 2) * end.y;
+    point.z = Math.pow(1 - t, 2) * start.z + 2 * (1 - t) * t * midpoint.z + Math.pow(t, 2) * end.z;
+    
+    // Project the point back onto the sphere's surface
+    const length = point.length();
+    point.multiplyScalar(radius / length);
+    
+    points.push(point);
+  }
+  
+  return points;
+}
+
+function ConnectionLines({ locations }: { locations: typeof LOCATIONS }) {
+  const linesRef = useRef<THREE.Group>(null);
+  const materialRef = useRef<THREE.LineBasicMaterial>(null);
+  
+  useFrame(({ clock }) => {
+    if (linesRef.current) {
+      // Rotate the lines with the Earth
+      linesRef.current.rotation.y = clock.getElapsedTime() * 0.05;
+    }
+
+    // Animate the line color
+    if (materialRef.current) {
+      const time = clock.getElapsedTime();
+      // Create a pulsing effect with the opacity
+      const opacity = 0.3 + Math.sin(time * 2) * 0.1;
+      materialRef.current.opacity = opacity;
+    }
+  });
+
+  const locationEntries = Object.entries(locations);
+  const lines: THREE.Vector3[][] = [];
+
+  // Create lines between each pair of locations
+  for (let i = 0; i < locationEntries.length; i++) {
+    for (let j = i + 1; j < locationEntries.length; j++) {
+      const start = latLngToVector3(locationEntries[i][1].lat, locationEntries[i][1].lng, 1.01);
+      const end = latLngToVector3(locationEntries[j][1].lat, locationEntries[j][1].lng, 1.01);
+      lines.push(createCurvedLine(start, end));
+    }
+  }
+
+  return (
+    <group ref={linesRef}>
+      {lines.map((points, index) => (
+        <line key={index}>
+          <bufferGeometry>
+            <bufferAttribute
+              attach="attributes-position"
+              count={points.length}
+              array={new Float32Array(points.flatMap(p => [p.x, p.y, p.z]))}
+              itemSize={3}
+            />
+          </bufferGeometry>
+          <lineBasicMaterial 
+            ref={materialRef}
+            color="#ffffff" 
+            transparent 
+            opacity={0.4}
+            linewidth={2}
+          />
+        </line>
+      ))}
+    </group>
+  );
+}
+
+function AnimatedConnectionLines({ locations }: { locations: typeof LOCATIONS }) {
+  const linesRef = useRef<THREE.Group>(null);
+  const materialRef = useRef<THREE.ShaderMaterial>(null);
+  
+  useFrame(({ clock }) => {
+    if (linesRef.current) {
+      linesRef.current.rotation.y = clock.getElapsedTime() * 0.05;
+    }
+    if (materialRef.current) {
+      materialRef.current.uniforms.time.value = clock.getElapsedTime();
+    }
+  });
+
+  const locationEntries = Object.entries(locations);
+  const lines: THREE.Vector3[][] = [];
+
+  // Create lines between each pair of locations
+  for (let i = 0; i < locationEntries.length; i++) {
+    for (let j = i + 1; j < locationEntries.length; j++) {
+      const start = latLngToVector3(locationEntries[i][1].lat, locationEntries[i][1].lng, 1.01);
+      const end = latLngToVector3(locationEntries[j][1].lat, locationEntries[j][1].lng, 1.01);
+      lines.push(createCurvedLine(start, end));
+    }
+  }
+
+  // Custom shader material for animated gradient
+  const shaderMaterial = {
+    uniforms: {
+      time: { value: 0 },
+      color1: { value: new THREE.Color('#ff4d4d') }, // Korea color
+      color2: { value: new THREE.Color('#4dff4d') }, // Bolivia color
+      color3: { value: new THREE.Color('#4d4dff') }, // Italy color
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform float time;
+      uniform vec3 color1;
+      uniform vec3 color2;
+      uniform vec3 color3;
+      varying vec2 vUv;
+      
+      void main() {
+        float t = mod(time * 0.1, 1.0);
+        vec3 color;
+        
+        if (t < 0.33) {
+          color = mix(color1, color2, t * 3.0);
+        } else if (t < 0.66) {
+          color = mix(color2, color3, (t - 0.33) * 3.0);
+        } else {
+          color = mix(color3, color1, (t - 0.66) * 3.0);
+        }
+        
+        gl_FragColor = vec4(color, 0.7);
+      }
+    `,
+  };
+
+  return (
+    <group ref={linesRef}>
+      {lines.map((points, index) => (
+        <line key={index}>
+          <bufferGeometry>
+            <bufferAttribute
+              attach="attributes-position"
+              count={points.length}
+              array={new Float32Array(points.flatMap(p => [p.x, p.y, p.z]))}
+              itemSize={3}
+            />
+            <bufferAttribute
+              attach="attributes-uv"
+              count={points.length}
+              array={new Float32Array(points.map((_, i) => [i / (points.length - 1), 0]).flat())}
+              itemSize={2}
+            />
+          </bufferGeometry>
+          <shaderMaterial
+            ref={materialRef}
+            attach="material"
+            args={[shaderMaterial]}
+            transparent
+            linewidth={3}
+          />
+        </line>
+      ))}
+    </group>
+  );
+}
+
 function LoadingScreen() {
   const { progress } = useProgress();
   return (
@@ -197,6 +378,9 @@ function Earth({ language, onLocationClick }: GlobeProps) {
           blending={THREE.AdditiveBlending}
         />
       </mesh>
+
+      {/* Animated connection lines */}
+      <AnimatedConnectionLines locations={LOCATIONS} />
 
       {/* Location markers - now properly synced with Earth rotation */}
       <group ref={markersRef}>

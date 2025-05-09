@@ -67,18 +67,39 @@ export default function ClientPage({ images }: ClientPageProps) {
         setLanguage('en');
         setStoredLanguage('en');
       });
+  }, []);
 
-    // Load messages
+  // Separate useEffect for Firebase messages
+  useEffect(() => {
+    console.log('Setting up Firebase listener...');
     const q = query(collection(db, 'messages'), orderBy('timestamp', 'desc'));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const newMessages = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setMessages(newMessages);
-    });
+    const unsubscribe = onSnapshot(q, 
+      (snapshot) => {
+        console.log('Firebase snapshot received');
+        console.log('Snapshot empty?', snapshot.empty);
+        console.log('Number of docs:', snapshot.docs.length);
+        
+        const newMessages = snapshot.docs.map(doc => {
+          const data = doc.data();
+          console.log('Document data:', data);
+          return {
+            id: doc.id,
+            ...data
+          };
+        });
+        
+        console.log('Setting messages state with:', newMessages);
+        setMessages(newMessages);
+      }, 
+      (error) => {
+        console.error('Firebase error:', error);
+      }
+    );
 
-    return () => unsubscribe();
+    return () => {
+      console.log('Cleaning up Firebase listener');
+      unsubscribe();
+    };
   }, []);
 
   const handleLanguageChange = (newLanguage: Language) => {
@@ -113,20 +134,20 @@ export default function ClientPage({ images }: ClientPageProps) {
           <div className="bg-white p-8 rounded-lg shadow-lg">
             <h3 className="text-2xl mb-6 text-center">{t.weddingDetails}</h3>
             <div className="text-center">
-              <p className="text-xl mb-4">{t.date}</p>
-              <p className="text-xl mb-4">{t.time}</p>
-              <p className="mb-4">{t.venue}</p>
-              <p className="mb-4">{t.address}</p>
+              <p className="text-xl mb-2">{t.date}</p>
+              <p className="text-xl mb-2">{t.time}</p>
+              <p className="mb-2">{t.venue}</p>
+              <p className="mb-2">{t.address}</p>
               <div className="flex justify-center">
                 <ShareButtons language={language} />
               </div>
             </div>
           </div>
 
-          <div className="bg-white p-8 rounded-lg shadow-lg">
+          <div className="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center justify-center min-h-[300px]">
             <h3 className="text-2xl mb-6 text-center">{t.rsvp}</h3>
-            <p className="text-center mb-4 text-gray-600">{t.rsvpText}</p>
-            <div className="text-center">
+            <p className="mb-4 text-gray-600 text-center">{t.rsvpText}</p>
+            <div>
               <button
                 onClick={() => setShowRSVPModal(true)}
                 className="text-white px-8 py-3 rounded-lg transition-colors text-lg"
@@ -142,7 +163,7 @@ export default function ClientPage({ images }: ClientPageProps) {
           <div className="md:col-span-2">
             <KakaoMap />
           </div>
-          <div className="bg-white p-4 rounded-lg shadow-lg">
+          <div className="bg-white p-4 rounded-lg shadow-lg flex items-center justify-center min-h-[400px]">
             <Calendar language={language} />
           </div>
         </div>
@@ -214,20 +235,24 @@ export default function ClientPage({ images }: ClientPageProps) {
             <div className={styles.sectionContainer}>
               <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: 'var(--button-color)' }}>{t.messagesFromGuests}</h3>
               <div className="space-y-4 mb-8">
-                {messages.map((message) => (
-                  <div key={message.id} className="message-item">
-                    <div className="message-header">
-                      <div className="message-author">
-                        <span className="text-[#b6cfa6] mr-2">♥</span>
-                        {message.name}
+                {messages.length === 0 ? (
+                  <div className="text-center text-gray-500">No messages yet</div>
+                ) : (
+                  messages.map((message) => (
+                    <div key={message.id} className="bg-white p-4 rounded-lg shadow">
+                      <div className="flex justify-between items-center mb-2">
+                        <div className="font-semibold text-gray-800">
+                          <span className="text-[#b6cfa6] mr-2">♥</span>
+                          {message.name}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          {message.timestamp?.toDate().toLocaleDateString() || 'Just now'}
+                        </div>
                       </div>
-                      <div className="message-time">
-                        {message.timestamp?.toDate().toLocaleDateString() || 'Just now'}
-                      </div>
+                      <div className="text-gray-700">{message.message}</div>
                     </div>
-                    <div className="message-text">{message.message}</div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
 
               <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: 'var(--button-color)' }}>{t.leaveMessage}</h3>
