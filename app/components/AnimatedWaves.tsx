@@ -61,13 +61,13 @@ export default function AnimatedWaves() {
         
         @keyframes wave-animation {
           0% {
-            transform: translateX(-100px);
+            transform: translateX(-50px);
           }
           50% {
-            transform: translateX(-400px);
+            transform: translateX(-300px);
           }
           100% {
-            transform: translateX(-100px);
+            transform: translateX(-50px);
           }
         }
         
