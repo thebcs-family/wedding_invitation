@@ -281,7 +281,7 @@ function AnimatedConnectionLines({ locations }: { locations: typeof LOCATIONS })
         
         // TODO: fix this
         // If less than 10000km, rotate 180 degrees along z-axis (super duper monkey patch)
-        const rotation = distance < 10000 ? [-Math.PI/2, 0, Math.PI] : [-Math.PI/2, 0, 0];
+        const rotation: [number, number, number] = distance < 10000 ? [-Math.PI/2, 0, Math.PI] : [-Math.PI/2, 0, 0];
 
         return (
           <group key={`distance-${index}`} position={textPosition} quaternion={quaternion}>
