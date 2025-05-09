@@ -82,7 +82,7 @@ export default function FallingPetals() {
         petal.rotation += petal.rotationSpeed;
 
         // Reset petal if it goes off screen or reaches the bottom of waves
-        if (petal.y > waveBottom) {
+        if (petal.y > waveBottom - 8) { // Minor offset so petals don't flicker in the waves
           petalsRef.current[index] = createPetal();
         }
 
