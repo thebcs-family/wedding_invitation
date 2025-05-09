@@ -10,7 +10,7 @@ import { useTranslation, Language } from '../utils/i18n';
 const Globe = dynamic(() => import('./Globe'), {
   ssr: false,
   loading: () => (
-    <div className="h-[600px] w-full bg-transparent rounded-lg overflow-hidden flex items-center justify-center">
+    <div className="h-[400px] w-full bg-transparent rounded-lg overflow-hidden flex items-center justify-center">
       <div className="text-gray-700 text-xl">Loading...</div>
     </div>
   )
@@ -43,7 +43,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ language }) => {
     <div className="world-map-container">
       <div className="mb-12">
         <Suspense fallback={
-          <div className="h-[600px] w-full bg-transparent rounded-lg overflow-hidden flex items-center justify-center">
+          <div className="h-[400px] w-full bg-transparent rounded-lg overflow-hidden flex items-center justify-center">
             <div className="text-gray-700 text-xl">Loading...</div>
           </div>
         }>
