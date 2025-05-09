@@ -40,13 +40,32 @@ function LoadingScreen() {
   );
 }
 
-function LocationCard({ content, isBehind }: { content: string; isBehind: boolean }) {
+function LocationCard({ content, isBehind, isDaejeon, onClick }: { content: string; isBehind: boolean; isDaejeon?: boolean; onClick?: () => void }) {
   return (
-    <div className={`bg-white p-2 rounded-lg shadow-lg whitespace-nowrap transform transition-all duration-300 ${
-      isBehind ? 'opacity-50 scale-90' : 'opacity-100 scale-100'
-    }`}>
-      <div className="text-sm font-medium text-gray-800">{content}</div>
-    </div>
+    <>
+      <style jsx>{`
+        @keyframes glow {
+          0%, 100% {
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+          }
+          50% {
+            text-shadow: 0 0 20px rgba(239, 68, 68, 0.8);
+          }
+        }
+      `}</style>
+      <div 
+        className={`bg-white p-2 rounded-lg shadow-lg whitespace-nowrap transform transition-all duration-300 cursor-pointer ${
+          isBehind ? 'opacity-50 scale-90' : 'opacity-100 scale-100'
+        } ${isDaejeon ? 'border-2 border-red-500' : ''}`}
+        onClick={onClick}
+      >
+        <div 
+          className={`text-sm font-medium ${isDaejeon ? 'text-red-500 animate-[glow_2s_ease-in-out_infinite]' : 'text-gray-800'}`}
+        >
+          {content}
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -54,10 +73,19 @@ function LocationMarker({ position, color, name, isHovered, onClick, tooltipCont
   const markerRef = useRef<THREE.Mesh>(null);
   const glowRef = useRef<THREE.Mesh>(null);
   const [isBehind, setIsBehind] = useState(false);
+  const isDaejeon = name === 'korea';
   
   useFrame(({ camera, clock }) => {
     if (glowRef.current) {
-      glowRef.current.scale.setScalar(1 + Math.sin(clock.getElapsedTime() * 2) * 0.1);
+      // Special animation for Daejeon
+      if (isDaejeon) {
+        const time = clock.getElapsedTime();
+        const pulseScale = 1 + Math.sin(time * 3) * 0.3; // Faster, more pronounced pulse
+        glowRef.current.scale.setScalar(pulseScale);
+      } else {
+        // Regular animation for other markers
+        glowRef.current.scale.setScalar(1 + Math.sin(clock.getElapsedTime() * 2) * 0.1);
+      }
     }
 
     // Check if location is behind the globe
@@ -83,7 +111,12 @@ function LocationMarker({ position, color, name, isHovered, onClick, tooltipCont
         />
       </mesh>
       <Html center position={[0, 0.1, 0]}>
-        <LocationCard content={tooltipContent} isBehind={isBehind} />
+        <LocationCard 
+          content={tooltipContent} 
+          isBehind={isBehind} 
+          isDaejeon={isDaejeon}
+          onClick={onClick}
+        />
       </Html>
     </group>
   );
@@ -192,9 +225,39 @@ function Earth({ language, onLocationClick }: GlobeProps) {
 
 export default function Globe({ language, onLocationClick }: GlobeProps) {
   const [mounted, setMounted] = useState(false);
+  const [cameraPosition, setCameraPosition] = useState(2.2);
+  const [fov, setFov] = useState(60);
 
   useEffect(() => {
     setMounted(true);
+
+    const handleResize = () => {
+      const width = window.innerWidth;
+      // More gradual transitions with additional breakpoints
+      if (width <= 384) {
+        setCameraPosition(2.8);
+        setFov(60);
+      } else if (width <= 480) {
+        setCameraPosition(2.5);
+        setFov(50);
+      } else if (width <= 640) {
+        setCameraPosition(2.8);
+        setFov(45);
+      } else if (width <= 768) {
+        setCameraPosition(2.5);
+        setFov(50);
+      } else if (width <= 1024) {
+        setCameraPosition(2.3);
+        setFov(55);
+      } else {
+        setCameraPosition(2.2);
+        setFov(60);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   if (!mounted) {
@@ -206,10 +269,10 @@ export default function Globe({ language, onLocationClick }: GlobeProps) {
   }
 
   return (
-    <div className="h-[600px] w-full bg-transparent rounded-lg overflow-hidden">
+    <div className="h-[400px] w-full bg-transparent rounded-lg overflow-hidden">
       <Suspense fallback={<LoadingScreen />}>
         <Canvas 
-          camera={{ position: [0, 0, 2.2], fov: 60 }}
+          camera={{ position: [0, 0, cameraPosition], fov }}
           gl={{ alpha: true, antialias: true }}
         >
           <color attach="background" args={['transparent']} />
