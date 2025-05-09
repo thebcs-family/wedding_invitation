@@ -3,7 +3,7 @@
 import React, { useRef, useState, useEffect, Suspense } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three';
-import { OrbitControls, Html, useProgress } from '@react-three/drei';
+import { OrbitControls, Html, useProgress, Text } from '@react-three/drei';
 import { useTranslation, Language } from '../utils/i18n';
 import * as THREE from 'three';
 
@@ -27,6 +27,19 @@ const latLngToVector3 = (lat: number, lng: number, radius: number) => {
   const z = radius * Math.sin(phi) * Math.sin(theta);
   const y = radius * Math.cos(phi);
   return new THREE.Vector3(x, y, z);
+};
+
+// Calculate distance between two points on Earth in kilometers
+const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: number) => {
+  const R = 6371; // Earth's radius in kilometers
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+    Math.sin(dLng/2) * Math.sin(dLng/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return Math.round(R * c);
 };
 
 function createCurvedLine(start: THREE.Vector3, end: THREE.Vector3, radius: number = 1.01) {
@@ -80,13 +93,27 @@ function ConnectionLines({ locations }: { locations: typeof LOCATIONS }) {
 
   const locationEntries = Object.entries(locations);
   const lines: THREE.Vector3[][] = [];
+  const distances: { points: THREE.Vector3[], distance: number }[] = [];
 
   // Create lines between each pair of locations
   for (let i = 0; i < locationEntries.length; i++) {
     for (let j = i + 1; j < locationEntries.length; j++) {
       const start = latLngToVector3(locationEntries[i][1].lat, locationEntries[i][1].lng, 1.01);
       const end = latLngToVector3(locationEntries[j][1].lat, locationEntries[j][1].lng, 1.01);
-      lines.push(createCurvedLine(start, end));
+      const points = createCurvedLine(start, end);
+      lines.push(points);
+      
+      // Calculate distance for this connection
+      const distance = calculateDistance(
+        locationEntries[i][1].lat,
+        locationEntries[i][1].lng,
+        locationEntries[j][1].lat,
+        locationEntries[j][1].lng
+      );
+      
+      // Get midpoint for label placement
+      const midpoint = points[Math.floor(points.length / 2)];
+      distances.push({ points: [midpoint], distance });
     }
   }
 
@@ -111,6 +138,15 @@ function ConnectionLines({ locations }: { locations: typeof LOCATIONS }) {
           />
         </line>
       ))}
+      
+      {/* Distance Labels */}
+      {distances.map(({ points, distance }, index) => (
+        <Html key={`distance-${index}`} position={points[0]} center>
+          <div className="bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-medium text-gray-700">
+            {distance} km
+          </div>
+        </Html>
+      ))}
     </group>
   );
 }
@@ -130,13 +166,27 @@ function AnimatedConnectionLines({ locations }: { locations: typeof LOCATIONS })
 
   const locationEntries = Object.entries(locations);
   const lines: THREE.Vector3[][] = [];
+  const distances: { points: THREE.Vector3[], distance: number, curve: THREE.Curve<THREE.Vector3> }[] = [];
 
   // Create lines between each pair of locations
   for (let i = 0; i < locationEntries.length; i++) {
     for (let j = i + 1; j < locationEntries.length; j++) {
       const start = latLngToVector3(locationEntries[i][1].lat, locationEntries[i][1].lng, 1.01);
       const end = latLngToVector3(locationEntries[j][1].lat, locationEntries[j][1].lng, 1.01);
-      lines.push(createCurvedLine(start, end));
+      const points = createCurvedLine(start, end);
+      lines.push(points);
+      
+      // Calculate distance for this connection
+      const distance = calculateDistance(
+        locationEntries[i][1].lat,
+        locationEntries[i][1].lng,
+        locationEntries[j][1].lat,
+        locationEntries[j][1].lng
+      );
+      
+      // Create a curve for the text to follow
+      const curve = new THREE.CatmullRomCurve3(points);
+      distances.push({ points, distance, curve });
     }
   }
 
@@ -206,6 +256,52 @@ function AnimatedConnectionLines({ locations }: { locations: typeof LOCATIONS })
           />
         </line>
       ))}
+      
+      {/* Distance Labels */}
+      {distances.map(({ points, distance, curve }, index) => {
+        const midpoint = points[Math.floor(points.length / 2)];
+        const tangent = curve.getTangent(0.5);
+        
+        // Calculate the normal vector pointing from the center of the sphere to the midpoint
+        const normal = midpoint.clone().normalize();
+        
+        // Calculate the binormal (perpendicular to both tangent and normal)
+        const binormal = new THREE.Vector3().crossVectors(tangent, normal).normalize();
+        
+        // Recalculate the tangent to be perpendicular to both normal and binormal
+        const adjustedTangent = new THREE.Vector3().crossVectors(normal, binormal).normalize();
+        
+        // Create a rotation matrix that aligns the text with the surface
+        const rotationMatrix = new THREE.Matrix4();
+        rotationMatrix.makeBasis(adjustedTangent, normal, binormal);
+        const quaternion = new THREE.Quaternion().setFromRotationMatrix(rotationMatrix);
+        
+        // Position the text slightly above the surface
+        const textPosition = midpoint.clone().normalize().multiplyScalar(1.02);
+        
+        // TODO: fix this
+        // If less than 10000km, rotate 180 degrees along z-axis (super duper monkey patch)
+        const rotation = distance < 10000 ? [-Math.PI/2, 0, Math.PI] : [-Math.PI/2, 0, 0];
+
+        return (
+          <group key={`distance-${index}`} position={textPosition} quaternion={quaternion}>
+            <Text
+              position={[0, 0, 0]}
+              rotation={rotation}
+              fontSize={0.08}
+              color="white"
+              anchorX="center"
+              anchorY="middle"
+              outlineWidth={0.003}
+              outlineColor="#000000"
+              outlineBlur={0.003}
+              renderOrder={1}
+            >
+              {`${distance} km`}
+            </Text>
+          </group>
+        );
+      })}
     </group>
   );
 }
@@ -444,38 +540,28 @@ export default function Globe({ language, onLocationClick }: GlobeProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  if (!mounted) {
-    return (
-      <div className="h-[600px] w-full bg-transparent rounded-lg overflow-hidden flex items-center justify-center">
-        <div className="text-gray-700 text-xl">Loading...</div>
-      </div>
-    );
-  }
-
   return (
     <div className="h-[400px] w-full bg-transparent rounded-lg overflow-hidden">
-      <Suspense fallback={<LoadingScreen />}>
-        <Canvas 
-          camera={{ position: [0, 0, cameraPosition], fov }}
-          gl={{ alpha: true, antialias: true }}
-        >
-          <color attach="background" args={['transparent']} />
-          <ambientLight intensity={1.5} />
-          <pointLight position={[10, 10, 10]} intensity={1.5} />
-          <pointLight position={[-10, -10, -10]} intensity={0.5} />
-          <Earth language={language} onLocationClick={onLocationClick} />
-          <OrbitControls 
-            enableZoom={false}
-            enablePan={false}
-            rotateSpeed={0.5}
-            autoRotate={false}
-            minPolarAngle={0}
-            maxPolarAngle={Math.PI}
-            enableRotate={true}
-            dampingFactor={0.05}
-          />
-        </Canvas>
-      </Suspense>
+      <Canvas 
+        camera={{ position: [0, 0, cameraPosition], fov }}
+        gl={{ alpha: true, antialias: true }}
+      >
+        <color attach="background" args={['transparent']} />
+        <ambientLight intensity={1.5} />
+        <pointLight position={[10, 10, 10]} intensity={1.5} />
+        <pointLight position={[-10, -10, -10]} intensity={0.5} />
+        <Earth language={language} onLocationClick={onLocationClick} />
+        <OrbitControls 
+          enableZoom={false}
+          enablePan={false}
+          rotateSpeed={0.5}
+          autoRotate={false}
+          minPolarAngle={0}
+          maxPolarAngle={Math.PI}
+          enableRotate={true}
+          dampingFactor={0.05}
+        />
+      </Canvas>
     </div>
   );
 } 
