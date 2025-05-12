@@ -7,21 +7,29 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js (version 18 or higher)
+- npm, yarn, pnpm, or bun (package manager of your choice)
+
+### Installation Steps
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/thebcs-family/wedding_invitation.git
+cd wedding_invitation
 ```
 
-We need also a `secrets.ts` file in `app/config/secrets.ts` with the following content. You can just run this to create a dummy one, which should be replaced with the actual values when deploying:
+2. Install dependencies (npm, yarn, pnpm, or bun):
+```bash
+npm install
+```
+
+3. We use Firebase for collecting RSVPs, and Kakao Map for the map. Create the required secrets file:
+
 
 ```bash
+mkdir -p app/config
 cat > app/config/secrets.ts << 'EOF'
 export const secrets = {
   firebase: {
@@ -41,8 +49,14 @@ export const secrets = {
 EOF
 ```
 
+4. Start the development server (npm, yarn, pnpm, or bun):
+```bash
+npm run dev
+```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+Note: The secrets file contains dummy values. For production deployment, you'll need to replace these with actual API keys for Firebase and Kakao services.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
