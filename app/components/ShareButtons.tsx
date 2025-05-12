@@ -13,7 +13,7 @@ export default function ShareButtons({ language }: ShareButtonsProps) {
   return (
     <add-to-calendar-button
       name="Federico & Cecilia's Wedding"
-      description={t.invitationText}
+      description={`${t.invitationText}\n\nWebsite: [url]https://fedececy.com|fedececy.com[/url]`}
       startDate="2025-06-14"
       startTime="16:30"
       endTime="20:30"
