@@ -18,6 +18,7 @@
     "@mui/material": "^7.1.0",
     "@react-three/drei": "^10.0.7",
     "@react-three/fiber": "^9.1.2",
+    "add-to-calendar-button": "^2.8.9",
     "autoprefixer": "^10.4.21",
     "firebase": "^10.14.1",
     "framer-motion": "^12.9.2",
