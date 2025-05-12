@@ -34,7 +34,7 @@ export default function AnimatedWaves() {
           background-image: url('/wave.svg');
           background-repeat: repeat-x;
           background-size: 1600px 100%;
-          margin: 0;
+          margin: -2px; /* fix bugs on Iphone and the likes */
           padding: 0;
         }
         
