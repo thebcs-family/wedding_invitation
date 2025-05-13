@@ -1,21 +1,21 @@
 {
   "weddingInvitation": "Invitación de Boda",
   "saveTheDate": "Reserva la Fecha",
-  "ourJourney": "Nuestro Viaje",
+  "ourJourney": "Nuestra Historia",
   "weddingInKorea": "Boda en Corea",
   "ourInvitation": "Nuestra Invitación",
   "invitationText": "Aunque venimos de diferentes rincones del mundo, nuestros caminos se cruzaron y el amor encontró su camino. Ahora, de la mano, comenzamos un nuevo viaje como uno solo. Te invitamos a celebrar nuestro amor y felicidad en nuestro nuevo comienzo. ♡",
   "weddingDetails": "Detalles de la Boda",
-  "date": "2025년 6월 14일 토요일",
-  "time": "오후 4시 30분",
-  "venue": "히엘플레이스",
-  "address": "대전 서구 관저남로12번길 15-4 1층",
+  "date": "Sábado, 14 de Junio de 2025",
+  "time": "4:30 PM",
+  "venue": "Hiel Place",
+  "address": "15-4, Gwanjeo-nam-ro 12beon-gil, Daejeon",
   "rsvp": "Confirmar Asistencia",
   "rsvpText": "Por favor, confirma tu asistencia en línea",
   "rsvpNow": "Confirmar Ahora",
   "messagesFromGuests": "Mensajes de Nuestros Invitados",
   "leaveMessage": "Deja un Mensaje",
-  "shareNews": "Compartir Noticias",
+  "shareNews": "Compartir Noticia",
   "thankYou": "¡Gracias!",
   "developedBy": "Desarrollado por Federico Berto & Cecilia Callejas",
   "calendar": {
@@ -48,16 +48,16 @@
     "sendMessage": "Enviar Mensaje"
   },
   "rsvpModal": {
-    "title": "Formulario RSVP",
+    "title": "Confirmar Asistencia",
     "name": "Nombre",
     "namePlaceholder": "Tu nombre",
     "attendance": "¿Asistirás?",
     "attendanceYes": "Sí, asistiré",
     "attendanceNo": "No, no podré asistir",
-    "numberOfPeople": "Número de Personas",
+    "numberOfPeople": "Cantidad de Personas",
     "confirmResponse": "Por favor, confirma tu respuesta",
     "cancel": "Cancelar",
-    "submitting": "Enviando...",
+    "submitting": "Procesando...",
     "submit": "Enviar"
   },
   "gallery": {
@@ -73,7 +73,7 @@
       "description": "Ciudad natal de Cecilia"
     },
     "italy": {
-      "title": "Bolonia, Italia",
+      "title": "Bologna, Italia",
       "description": "Ciudad natal de Federico"
     }
   },
@@ -81,4 +81,4 @@
     "share": "Compartir en KakaoTalk",
     "send": "Enviar"
   }
-} 
+}

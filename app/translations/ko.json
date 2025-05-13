@@ -1,7 +1,7 @@
 {
-  "weddingInvitation": "웨딩 초대장",
-  "saveTheDate": "날짜를 기억해주세요",
-  "ourJourney": "우리의 여정",
+  "weddingInvitation": "결혼식 초대장",
+  "saveTheDate": "일정을 확인해주세요",
+  "ourJourney": "우리의 이야기",
   "weddingInKorea": "한국에서의 결혼식",
   "ourInvitation": "초대의 말씀",
   "invitationText": "서로 다른 세계의 구석에서 왔지만, 우리의 길이 만나고 사랑이 찾아왔습니다. 이제 손을 맞잡고 하나가 되어 새로운 여정을 시작합니다. 우리의 새로운 시작에서 사랑과 행복을 함께 축하해주시길 초대합니다. ♡",
@@ -10,12 +10,12 @@
   "time": "오후 4시 30분",
   "venue": "히엘플레이스",
   "address": "대전 서구 관저남로12번길 15-4 1층",
-  "rsvp": "참석 여부",
+  "rsvp": "참석 확인",
   "rsvpText": "온라인으로 참석 여부를 알려주세요",
-  "rsvpNow": "참석 여부 알리기",
-  "messagesFromGuests": "방문객들의 메시지",
+  "rsvpNow": "참석 확인하기",
+  "messagesFromGuests": "축하 메시지",
   "leaveMessage": "메시지 남기기",
-  "shareNews": "소식 공유하기",
+  "shareNews": "소식 전하기",
   "thankYou": "감사합니다!",
   "developedBy": "Federico Berto & Cecilia Callejas 제작",
   "calendar": {
@@ -48,7 +48,7 @@
     "sendMessage": "메시지 보내기"
   },
   "rsvpModal": {
-    "title": "참석 여부",
+    "title": "참석 확인",
     "name": "이름",
     "namePlaceholder": "이름을 입력하세요",
     "attendance": "참석하시겠습니까?",
@@ -61,7 +61,7 @@
     "submit": "제출"
   },
   "gallery": {
-    "title": "우리의 갤러리"
+    "title": "웨딩 갤러리"
   },
   "locations": {
     "korea": {
@@ -81,4 +81,4 @@
     "share": "카카오톡으로 공유하기",
     "send": "전송하기"
   }
-} 
+}

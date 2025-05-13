@@ -1,21 +1,21 @@
 {
   "weddingInvitation": "Invito di Nozze",
   "saveTheDate": "Salva la Data",
-  "ourJourney": "Il Nostro Viaggio",
+  "ourJourney": "La Nostra Storia",
   "weddingInKorea": "Matrimonio in Corea",
   "ourInvitation": "Il Nostro Invito",
   "invitationText": "Anche se veniamo da angoli diversi del mondo, i nostri percorsi si sono incrociati e l'amore ha trovato la sua strada. Ora, mano nella mano, iniziamo un nuovo viaggio come una cosa sola. Ti invitiamo a celebrare il nostro amore e la nostra felicità nel nostro nuovo inizio. ♡",
   "weddingDetails": "Dettagli del Matrimonio",
-  "date": "2025년 6월 14일 토요일",
-  "time": "오후 4시 30분",
-  "venue": "히엘플레이스",
-  "address": "대전 서구 관저남로12번길 15-4 1층",
-  "rsvp": "RSVP",
+  "date": "Sabato 14 Giugno 2025",
+  "time": "16:30",
+  "venue": "Hiel Place",
+  "address": "15-4, Gwanjeo-nam-ro 12beon-gil, Daejeon",
+  "rsvp": "Conferma la Tua Presenza",
   "rsvpText": "Per favore, conferma la tua presenza online",
   "rsvpNow": "Conferma Ora",
-  "messagesFromGuests": "Messaggi dai Nostri Ospiti",
+  "messagesFromGuests": "Messaggi dagli Invitati",
   "leaveMessage": "Lascia un Messaggio",
-  "shareNews": "Condividi Notizie",
+  "shareNews": "Condividi la Notizia",
   "thankYou": "Grazie!",
   "developedBy": "Sviluppato da Federico Berto & Cecilia Callejas",
   "calendar": {
@@ -48,7 +48,7 @@
     "sendMessage": "Invia Messaggio"
   },
   "rsvpModal": {
-    "title": "Modulo RSVP",
+    "title": "Conferma di Partecipazione",
     "name": "Nome",
     "namePlaceholder": "Il tuo nome",
     "attendance": "Parteciperai?",
@@ -57,7 +57,7 @@
     "numberOfPeople": "Numero di Persone",
     "confirmResponse": "Per favore, conferma la tua risposta",
     "cancel": "Annulla",
-    "submitting": "Invio in corso...",
+    "submitting": "Elaborazione in corso...",
     "submit": "Invia"
   },
   "gallery": {
@@ -81,4 +81,4 @@
     "share": "Condividi su KakaoTalk",
     "send": "Invia"
   }
-} 
+}
