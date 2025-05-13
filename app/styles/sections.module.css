@@ -8,7 +8,7 @@
   height: 70vh;
   background-image: url('/images/header-bg.jpg');
   background-size: cover;
-  background-position: center;
+  background-position: center 15%;
   position: relative;
   display: flex;
   align-items: center;

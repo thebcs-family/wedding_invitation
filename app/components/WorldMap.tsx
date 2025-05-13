@@ -51,10 +51,10 @@ const WorldMap: React.FC<WorldMapProps> = ({ language }) => {
         </Suspense>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
         <div ref={koreaRef} className="location-box flex-1">
           <div className="h-64 overflow-hidden relative">
-            <Image src="/images/korea.jpg" alt="Korea" width={400} height={256} className="w-full h-full object-cover" />
+            <Image src="/images/korea.jpg" alt="Korea" width={400} height={256} className="w-full h-full object-cover object-center" />
             <div className="location-date">June 14, 2025</div>
           </div>
           <div className="location-content p-6">
@@ -65,7 +65,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ language }) => {
         
         <div ref={boliviaRef} className="location-box flex-1">
           <div className="h-64 overflow-hidden relative">
-            <Image src="/images/bolivia.jpg" alt="Bolivia" width={400} height={256} className="w-full h-full object-cover" />
+            <Image src="/images/bolivia.jpg" alt="Bolivia" width={400} height={256} className="w-full h-full object-cover object-center" />
             <div className="location-date">Coming Soon</div>
           </div>
           <div className="location-content p-6">
@@ -76,7 +76,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ language }) => {
         
         <div ref={italyRef} className="location-box flex-1">
           <div className="h-64 overflow-hidden relative">
-            <Image src="/images/italy.jpg" alt="Italy" width={400} height={256} className="w-full h-full object-cover" />
+            <Image src="/images/italy.jpg" alt="Italy" width={400} height={256} className="w-full h-full object-cover object-center scale-150" />
             <div className="location-date">Coming Soon</div>
           </div>
           <div className="location-content p-6">
