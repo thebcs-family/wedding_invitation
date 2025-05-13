@@ -25,14 +25,14 @@ export default function RootLayout({
         {/* Open Graph Meta Tags */}
         <meta property="og:title" content="Federico & Cecilia's Wedding" />
         <meta property="og:description" content="Join us in celebrating our love on June 14, 2025!" />
-        <meta property="og:image" content="https://fedececy.com/images/gallery/photo_1.png" />
+        <meta property="og:image" content="https://fedececy.com/images/optimized/gallery/photo_1.webp" />
         <meta property="og:url" content="https://fedececy.com" />
         <meta property="og:type" content="website" />
         {/* Twitter Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Federico & Cecilia's Wedding" />
         <meta name="twitter:description" content="Join us in celebrating our love on June 14, 2025!" />
-        <meta name="twitter:image" content="https://fedececy.com/images/gallery/photo_1.png" />
+        <meta name="twitter:image" content="https://fedececy.com/images/optimized/gallery/photo_1.webp" />
       </head>
       <body className={playfair.className}>
         {children}

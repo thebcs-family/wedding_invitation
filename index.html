@@ -21,7 +21,7 @@
         
         .header-image {
             height: 70vh;
-            background-image: url('public/images/header-bg.jpg');
+            background-image: url('public/images/optimized/header-bg.jpg');
             background-size: cover;
             background-position: center;
             position: relative;
@@ -536,7 +536,7 @@
             <div class="flex flex-col md:flex-row gap-8">
                 <div class="location-box flex-1" onclick="scrollToSection('wedding-korea')">
                     <div class="h-64 overflow-hidden relative">
-                        <img src="public/images/korea.jpg" alt="Korea" class="w-full h-full object-cover">
+                        <img src="public/images/optimized/korea.jpg" alt="Korea" class="w-full h-full object-cover">
                         <div class="location-date">June 14, 2025</div>
                     </div>
                     <div class="location-content p-6">
@@ -547,7 +547,7 @@
                 
                 <div class="location-box flex-1">
                     <div class="h-64 overflow-hidden relative">
-                        <img src="public/images/bolivia.jpg" alt="Bolivia" class="w-full h-full object-cover">
+                        <img src="public/images/optimized/bolivia.jpg" alt="Bolivia" class="w-full h-full object-cover">
                         <div class="location-date">Coming Soon</div>
                     </div>
                     <div class="location-content p-6">
@@ -558,7 +558,7 @@
                 
                 <div class="location-box flex-1">
                     <div class="h-64 overflow-hidden relative">
-                        <img src="public/images/italy.jpg" alt="Italy" class="w-full h-full object-cover">
+                        <img src="public/images/optimized/italy.jpg" alt="Italy" class="w-full h-full object-cover">
                         <div class="location-date">Coming Soon</div>
                     </div>
                     <div class="location-content p-6">
@@ -702,27 +702,27 @@
                             </button>
                         </div>
                         <div class="gallery-main" onclick="showImagePopup(document.getElementById('main-gallery-image').src)">
-                            <img src="public/images/gallery/photo_1.png" alt="Main gallery image" id="main-gallery-image">
+                            <img src="public/images/optimized/gallery/photo_1.webp" alt="Main gallery image" id="main-gallery-image">
                         </div>
                     </div>
                     <div class="gallery-thumbnails">
-                        <div class="gallery-thumbnail" onclick="changeMainImage('public/images/gallery/photo_1.png')">
-                            <img src="public/images/gallery/photo_1.png" alt="Gallery thumbnail 1">
+                        <div class="gallery-thumbnail" onclick="changeMainImage('public/images/optimized/gallery/photo_1.webp')">
+                            <img src="public/images/optimized/gallery/photo_1.webp" alt="Gallery thumbnail 1">
                         </div>
-                        <div class="gallery-thumbnail" onclick="changeMainImage('public/images/gallery/photo_2.png')">
-                            <img src="public/images/gallery/photo_2.png" alt="Gallery thumbnail 2">
+                        <div class="gallery-thumbnail" onclick="changeMainImage('public/images/optimized/gallery/photo_2.webp')">
+                            <img src="public/images/optimized/gallery/photo_2.webp" alt="Gallery thumbnail 2">
                         </div>
-                        <div class="gallery-thumbnail" onclick="changeMainImage('public/images/gallery/photo_3.png')">
-                            <img src="public/images/gallery/photo_3.png" alt="Gallery thumbnail 3">
+                        <div class="gallery-thumbnail" onclick="changeMainImage('public/images/optimized/gallery/photo_3.webp')">
+                            <img src="public/images/optimized/gallery/photo_3.webp" alt="Gallery thumbnail 3">
                         </div>
-                        <div class="gallery-thumbnail" onclick="changeMainImage('public/images/gallery/photo_4.png')">
-                            <img src="public/images/gallery/photo_4.png" alt="Gallery thumbnail 4">
+                        <div class="gallery-thumbnail" onclick="changeMainImage('public/images/optimized/gallery/photo_4.webp')">
+                            <img src="public/images/optimized/gallery/photo_4.webp" alt="Gallery thumbnail 4">
                         </div>
-                        <div class="gallery-thumbnail" onclick="changeMainImage('public/images/gallery/photo_5.png')">
-                            <img src="public/images/gallery/photo_5.png" alt="Gallery thumbnail 5">
+                        <div class="gallery-thumbnail" onclick="changeMainImage('public/images/optimized/gallery/photo_5.webp')">
+                            <img src="public/images/optimized/gallery/photo_5.webp" alt="Gallery thumbnail 5">
                         </div>
-                        <div class="gallery-thumbnail" onclick="changeMainImage('public/images/gallery/photo_6.png')">
-                            <img src="public/images/gallery/photo_6.png" alt="Gallery thumbnail 6">
+                        <div class="gallery-thumbnail" onclick="changeMainImage('public/images/optimized/gallery/photo_6.webp')">
+                            <img src="public/images/optimized/gallery/photo_6.webp" alt="Gallery thumbnail 6">
                         </div>
                     </div>
                 </div>
@@ -854,7 +854,7 @@
     <div id="kakaoShareModalBg" class="kakao-share-modal-bg" style="display:none;">
         <div class="kakao-share-modal">
             <span class="kakao-share-close" onclick="closeKakaoShareModal()">&times;</span>
-            <img src="public/images/header-bg.jpg" alt="Preview">
+            <img src="public/images/optimized/header-bg.jpg" alt="Preview">
             <div class="kakao-share-title">Federico &amp; Cecilia's Wedding</div>
             <div class="kakao-share-desc">Join us in celebrating on June 14, 2025</div>
             <button class="bg-yellow-400 text-white px-8 kakao-share-send-btn" onclick="sendKakaoShare()">전송하기</button>
@@ -1072,12 +1072,12 @@
 
         // Gallery navigation logic
         const galleryImages = [
-            'public/images/gallery/photo_1.png',
-            'public/images/gallery/photo_2.png',
-            'public/images/gallery/photo_3.png',
-            'public/images/gallery/photo_4.png',
-            'public/images/gallery/photo_5.png',
-            'public/images/gallery/photo_6.png'
+            'public/images/optimized/gallery/photo_1.webp',
+            'public/images/optimized/gallery/photo_2.webp',
+            'public/images/optimized/gallery/photo_3.webp',
+            'public/images/optimized/gallery/photo_4.webp',
+            'public/images/optimized/gallery/photo_5.webp',
+            'public/images/optimized/gallery/photo_6.webp'
         ];
         let currentGalleryIndex = 0;
 
@@ -1212,7 +1212,7 @@
                 content: {
                     title: `Federico & Cecilia's Wedding`,
                     description: 'Join us in celebrating our love on June 14, 2025',
-                    imageUrl: window.location.origin + '/public/images/header-bg.jpg',
+                    imageUrl: window.location.origin + '/public/images/optimized/header-bg.jpg',
                     link: {
                         mobileWebUrl: window.location.href,
                         webUrl: window.location.href,

@@ -51,7 +51,7 @@ const KakaoShare: React.FC<KakaoShareProps> = ({ language }) => {
         content: {
           title: `Federico & Cecilia's Wedding`,
           description: 'Join us in celebrating our love on June 14, 2025',
-          imageUrl: window.location.origin + '/images/header-bg.jpg',
+          imageUrl: window.location.origin + '/images/optimized/header-bg.jpg',
           link: {
             mobileWebUrl: window.location.href,
             webUrl: window.location.href,
@@ -90,7 +90,7 @@ const KakaoShare: React.FC<KakaoShareProps> = ({ language }) => {
             </button>
             <div className="flex flex-col items-center">
               <Image
-                src="/images/header-bg.jpg"
+                src="/images/optimized/header-bg.jpg"
                 alt="Wedding Preview"
                 width={300}
                 height={200}

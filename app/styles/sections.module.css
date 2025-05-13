@@ -6,7 +6,7 @@
 
 .headerImage {
   height: 70vh;
-  background-image: url('/images/header-bg.jpg');
+  background-image: url('/images/optimized/header-bg.jpg');
   background-size: cover;
   background-position: center 15%;
   position: relative;
