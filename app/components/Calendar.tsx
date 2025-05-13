@@ -22,13 +22,17 @@ export default function Calendar({ language }: CalendarProps) {
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-      setCountdown(`${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`);
+      setCountdown(t.calendar.countdown.format
+        .replace('{days}', days.toString())
+        .replace('{hours}', hours.toString())
+        .replace('{minutes}', minutes.toString())
+        .replace('{seconds}', seconds.toString()));
     };
 
     updateCountdown();
     const interval = setInterval(updateCountdown, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [language, t]);
 
   return (
     <div className="calendar-container">
