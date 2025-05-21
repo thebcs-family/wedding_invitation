@@ -8,7 +8,7 @@
   height: 70vh;
   background-image: url('/images/optimized/header-bg.jpg');
   background-size: cover;
-  background-position: center 15%;
+  background-position: 80% 50%;
   position: relative;
   display: flex;
   align-items: center;
@@ -31,6 +31,17 @@
   z-index: 10;
   text-align: center;
   width: 100%;
+  padding-top: 2rem;
+  align-self: flex-start;
+}
+
+.headerContent h1 {
+  font-size: 3.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.headerContent p {
+  font-size: 1.2rem;
 }
 
 .sectionContainer {
@@ -91,4 +102,22 @@
 .giftContainer {
   max-width: 600px;
   margin: 0 auto;
+}
+
+@media screen and (max-width: 768px) {
+  .headerImage {
+    background-position: center 100%;
+  }
+
+  .headerContent {
+    padding-top: 4rem;
+  }
+
+  .headerContent h1 {
+    font-size: 2.5rem;
+  }
+
+  .headerContent p {
+    font-size: 1rem;
+  }
 } 

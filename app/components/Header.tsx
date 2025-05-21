@@ -9,7 +9,6 @@ export default function Header() {
       <div className="relative z-10 text-center px-4">
         <h1 className="text-7xl md:text-6xl font-bold mb-5 text-white">Wedding Invitation</h1>
         <p className="text-5xl md:text-4xl font-light mb-4 text-white">Federico & Cecilia</p>
-        <p className="text-3xl md:text-3xl text-white">Save the Date</p>
       </div>
     </header>
   );

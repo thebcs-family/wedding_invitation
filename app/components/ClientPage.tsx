@@ -204,7 +204,7 @@ export default function ClientPage({ images }: ClientPageProps) {
           <div className={styles.headerContent}>
             <h1 className="text-4xl md:text-6xl font-bold mb-5 text-white">{t.weddingInvitation}</h1>
             <p className="text-3xl md:text-4xl font-light mb-4 text-white">Federico & Cecilia</p>
-            <p className="text-2xl md:text-3xl text-white">{t.saveTheDate}</p>
+          
           </div>
           <AnimatedWaves />
         </header>
