@@ -80,5 +80,15 @@
   "kakaoShare": {
     "share": "Compartir en KakaoTalk",
     "send": "Enviar"
-  }
+  },
+  "moreDetails": {
+    "title": "Más Detalles",
+    "partySizeTitle": "Sobre la Fiesta",
+    "giftsTitle": "Sobre los Regalos",
+    "wannaHelp": "¿Necesitas ayuda con algo?",
+    "partySize": "Será una pequeña reunión de amigos, más que una ceremonia tradicional. Queremos mantenerlo íntimo y casual.",
+    "noGifts": "Por favor, ten en cuenta que no se requieren regalos ni dinero. Tu presencia es el mejor regalo que podríamos pedir.",
+    "help": "¡Si has leído hasta aquí, felicitaciones! Te has ganado algunas tareas ;) Bromas aparte, no tuvimos tiempo de preparar mucho: si tienes ideas para hacer nuestro día más especial, ¡haznoslo saber! <3"
+  },
+  "backToHome": "Volver al Inicio"
 }

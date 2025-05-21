@@ -138,7 +138,14 @@ export default function ClientPage({ images }: ClientPageProps) {
               <p className="text-xl mb-2">{t.time}</p>
               <p className="mb-2">{t.venue}</p>
               <p className="mb-2">{t.address}</p>
-              <div className="flex justify-center">
+              <div className="flex flex-col items-center gap-4">
+                <Link
+                  href="/details"
+                  className="text-white px-6 py-2 rounded-lg transition-colors text-sm hover:opacity-90"
+                  style={{ backgroundColor: 'var(--button-color)' }}
+                >
+                  {t.moreDetails?.title || 'More Details'}
+                </Link>
                 <ShareButtons language={language} />
               </div>
             </div>

@@ -80,5 +80,15 @@
   "kakaoShare": {
     "share": "Share on KakaoTalk",
     "send": "Send"
-  }
+  },
+  "moreDetails": {
+    "title": "More Details",
+    "partySizeTitle": "About the Party",
+    "giftsTitle": "Do I need to bring gifts or money?",
+    "wannaHelp": "Do you need help with anything?",
+    "partySize": "This will be a small gathering of friends, rather than a traditional ceremony. We want to keep it intimate and casual.",
+    "noGifts": "Please note that no gifts or money (축의금,祝儀金) are required. Your presence is the greatest gift we could ask for.",
+    "help": "If you read until here, congratulations! You earned some chores ;) Jokes aside, we did not have time to prepare much: if you have ideas to make our day more special, please let us know! <3"
+  },
+  "backToHome": "Back to Home"
 } 
