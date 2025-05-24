@@ -34,23 +34,72 @@ export function Gallery({ images, language }: GalleryProps) {
   useEffect(() => {
     if (typeof window !== 'undefined' && (window as any).jQuery) {
       const $ = (window as any).jQuery;
-      $('.magnific-zoom-gallery').magnificPopup({
-        type: 'image',
-        gallery: {
-          enabled: true,
-          navigateByImgClick: true,
-          preload: [0, 2], // Preload the current image and next 2
-          tCounter: '%curr% / %total%', // Counter format
-        },
-        mainClass: 'mfp-with-zoom',
-        zoom: {
-          enabled: true,
-          duration: 300,
-          easing: 'ease-in-out',
-        }
-      });
+      
+      // Wait for images to load before initializing
+      const images = $('.magnific-zoom-gallery img');
+      let loadedImages = 0;
+      
+      const initializePopup = () => {
+        // Destroy any existing instances
+        $.magnificPopup.close();
+        
+        // Initialize Magnific Popup
+        $('.magnific-zoom-gallery').magnificPopup({
+          type: 'image',
+          gallery: {
+            enabled: true,
+            navigateByImgClick: true,
+            preload: [0, 2],
+            tCounter: '%curr% / %total%',
+          },
+          mainClass: 'mfp-with-zoom',
+          zoom: {
+            enabled: true,
+            duration: 300,
+            easing: 'ease-in-out',
+          },
+          callbacks: {
+            beforeOpen: function() {
+              // Ensure the image is loaded before opening
+              const img = new Image();
+              img.src = this.st.image.src;
+              return img.complete || new Promise(resolve => {
+                img.onload = resolve;
+              });
+            }
+          }
+        });
+      };
+
+      // Check if images are already loaded
+      if (images.length === 0 || images.filter(function() { return this.complete; }).length === images.length) {
+        initializePopup();
+      } else {
+        // Wait for all images to load
+        images.each(function() {
+          if (this.complete) {
+            loadedImages++;
+            if (loadedImages === images.length) {
+              initializePopup();
+            }
+          } else {
+            $(this).on('load', function() {
+              loadedImages++;
+              if (loadedImages === images.length) {
+                initializePopup();
+              }
+            });
+          }
+        });
+      }
+
+      // Cleanup function
+      return () => {
+        $.magnificPopup.close();
+        images.off('load');
+      };
     }
-  }, [showMore]); // Reinitialize when showMore changes
+  }, [displayImages]);
 
   return (
     <section id="gallery" className="py-16 px-4" style={{ backgroundColor: 'var(--section-bg)' }}>
@@ -64,18 +113,18 @@ export function Gallery({ images, language }: GalleryProps) {
             {/* Visible Images */}
             {displayImages.map((image, index) => (
               <div key={index} className={styles.photoItem}>
-                <img 
-                  src={image} 
-                  alt={`Gallery ${index + 1}`} 
-                  className="aspect-square"
-                />
-                <div className={styles.photoOverlay} />
-                <div className={styles.iconLink}>
-                  <a 
-                    href={image.replace('w400-h400', 's2400')} 
-                    className="magnific-zoom-gallery"
-                    data-index={index}
-                  >
+                <a 
+                  href={image.replace('w400-h400', 's2400')} 
+                  className="magnific-zoom-gallery"
+                  data-index={index}
+                >
+                  <img 
+                    src={image} 
+                    alt={`Gallery ${index + 1}`} 
+                    className="aspect-square"
+                  />
+                  <div className={styles.photoOverlay} />
+                  <div className={styles.iconLink}>
                     <div className={styles.iconCircle}>
                       <svg 
                         xmlns="http://www.w3.org/2000/svg" 
@@ -92,8 +141,8 @@ export function Gallery({ images, language }: GalleryProps) {
                         />
                       </svg>
                     </div>
-                  </a>
-                </div>
+                  </div>
+                </a>
               </div>
             ))}
 
