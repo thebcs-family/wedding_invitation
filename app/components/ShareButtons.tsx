@@ -1,17 +1,19 @@
 'use client';
 
 import { useTranslation, Language } from '../utils/i18n';
-import 'add-to-calendar-button';
+import dynamic from 'next/dynamic';
 
 interface ShareButtonsProps {
   language: Language;
 }
 
+const AddToCalendarClient = dynamic(() => import('./AddToCalendarClient'), { ssr: false });
+
 export default function ShareButtons({ language }: ShareButtonsProps) {
   const { t } = useTranslation(language);
 
   return (
-    <add-to-calendar-button
+    <AddToCalendarClient
       name="Federico & Cecilia's Wedding"
       description={`${t.invitationText}\n\nWebsite: [url]https://fedececy.com|fedececy.com[/url]`}
       startDate="2025-06-14"
@@ -28,8 +30,6 @@ export default function ShareButtons({ language }: ShareButtonsProps) {
       size="3"
       label={t.calendar?.addToCalendar || 'Add to Calendar'}
       language={language}
-      styleLight="--btn-background: white; --btn-text-color: #333; --btn-border: 1px solid #ddd; --btn-shadow: 0 2px 4px rgba(0,0,0,0.1); --btn-hover-background: #f8f8f8;"
-      styleDark="--btn-background: #333; --btn-text-color: white; --btn-border: 1px solid #444; --btn-shadow: 0 2px 4px rgba(0,0,0,0.2); --btn-hover-background: #444;"
-    />
+      styleLight="--btn-background: var(--button-color); --btn-text: white; --btn-text-color: white; --btn-border: none; --btn-shadow: none; --btn-border-radius: 0.5rem; --btn-padding: 0.75rem 1.5rem; --btn-font-size: 1.125rem; --btn-line-height: 1.25rem; --font-family: inherit; --font: inherit; --font-weight: 400; --btn-font: inherit; --btn-font-weight: 400; --btn-white-space: nowrap; --btn-width: 12rem; --btn-min-width: 12rem; --btn-max-width: 12rem; --btn-display: inline-flex; --btn-align-items: center; --btn-justify-content: center; --icon-display: inline-flex; --icon-margin: 0 0.25rem 0 0; --text-display: inline-flex; --checkmark-display: inline-flex; --checkmark-margin: 0 0 0 0.25rem; --dropdown-anchor-display: none; --btn-flex-direction: row; --btn-flex-wrap: nowrap; --btn-height: 3rem; --list-style: modal;"    />
   );
 } 
