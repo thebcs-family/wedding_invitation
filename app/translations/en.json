@@ -43,6 +43,8 @@
     "name": "Name",
     "namePlaceholder": "Your name",
     "country": "Country",
+    "countryPlaceholder": "Select country...",
+    "countryInfo": "Feel free to select where you are from, or where you are at right now. We want as many flags as possible in our world :)",
     "message": "Message",
     "messagePlaceholder": "Your message",
     "sending": "Sending...",

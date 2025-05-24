@@ -31,18 +31,26 @@ export function getBrowserLanguage(): Language {
   
   // Get browser language
   const browserLang = navigator.language || (navigator as any).userLanguage;
+  console.log('Browser language:', browserLang);
+  console.log('All browser languages:', navigator.languages);
+  console.log('User language:', (navigator as any).userLanguage);
+  console.log('Browser language:', navigator.language);
   
   // Try to match the full language code
   if (languageMap[browserLang]) {
+    console.log('Matched full language code:', browserLang);
     return languageMap[browserLang];
   }
   
   // Try to match just the primary language code
   const primaryLang = browserLang.split('-')[0];
+  console.log('Primary language code:', primaryLang);
   if (languageMap[primaryLang]) {
+    console.log('Matched primary language code:', primaryLang);
     return languageMap[primaryLang];
   }
   
+  console.log('No language match found, defaulting to English');
   return 'en';
 }
 

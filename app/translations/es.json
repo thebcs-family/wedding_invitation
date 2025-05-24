@@ -43,6 +43,8 @@
     "name": "Nombre",
     "namePlaceholder": "Tu nombre",
     "country": "País",
+    "countryPlaceholder": "Seleccionar país...",
+    "countryInfo": "Siéntete libre de seleccionar de dónde eres o dónde te encuentras ahora. Queremos tantas banderas como sea posible en nuestro mundo :)",
     "message": "Mensaje",
     "messagePlaceholder": "Tu mensaje",
     "sending": "Enviando...",

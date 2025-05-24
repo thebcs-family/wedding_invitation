@@ -43,6 +43,8 @@
     "name": "이름",
     "namePlaceholder": "이름을 입력하세요",
     "country": "국가",
+    "countryPlaceholder": "국가 선택...",
+    "countryInfo": "출신지나 현재 계신 곳을 선택해 주세요. 우리의 세계에 가능한 많은 국기를 모으고 싶습니다 :)",
     "message": "메시지",
     "messagePlaceholder": "메시지를 입력하세요",
     "sending": "전송 중...",

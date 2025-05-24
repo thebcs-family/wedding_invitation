@@ -10,6 +10,7 @@ import ReactCountryFlag from 'react-country-flag';
 const countries = [
   { code: 'KR', name: 'South Korea' },
   { code: 'IT', name: 'Italy' },
+  { code: 'BO', name: 'Bolivia' },
   { code: 'ES', name: 'Spain' },
   { code: 'AR', name: 'Argentina' },
   { code: 'US', name: 'United States' },
@@ -30,7 +31,6 @@ const countries = [
   { code: 'BZ', name: 'Belize' },
   { code: 'BJ', name: 'Benin' },
   { code: 'BT', name: 'Bhutan' },
-  { code: 'BO', name: 'Bolivia' },
   { code: 'BA', name: 'Bosnia and Herzegovina' },
   { code: 'BW', name: 'Botswana' },
   { code: 'BR', name: 'Brazil' },
@@ -268,6 +268,25 @@ export default function MessageForm({ onSuccess, onError, language }: MessageFor
         <div className="w-full md:w-72">
           <label className="block text-gray-700 mb-2">
             {t.messageForm.country} <span className="text-gray-400 text-sm">(optional)</span>
+            <span className="relative inline-block ml-1 group">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 text-gray-400 cursor-help inline-block"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20 max-w-[250px] w-[250px] break-words">
+                {t.messageForm.countryInfo}
+              </span>
+            </span>
           </label>
           <Combobox value={selectedCountry} onChange={setSelectedCountry} nullable disabled={isSubmitting}>
             <div className="relative mt-1">
@@ -276,7 +295,7 @@ export default function MessageForm({ onSuccess, onError, language }: MessageFor
                   className="w-full h-[42px] border-none px-4 text-sm text-gray-900 focus:ring-0 focus:outline-none"
                   displayValue={(country: typeof countries[0] | null) => country?.name ?? ''}
                   onChange={(event) => setQuery(event.target.value)}
-                  placeholder="Select country..."
+                  placeholder={t.messageForm.countryPlaceholder}
                 />
                 <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
                   {selectedCountry ? (

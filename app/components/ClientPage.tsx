@@ -41,16 +41,22 @@ export default function ClientPage({ images }: ClientPageProps) {
 
   useEffect(() => {
     const initializeLanguage = async () => {
-      // First try to get stored language
-      const storedLanguage = getStoredLanguage();
-      if (storedLanguage) {
-        setLanguage(storedLanguage);
-        return;
-      }
+      console.log('Initializing language...');
+      
+      // // First try to get stored language
+      // const storedLanguage = getStoredLanguage();
+      // console.log('Stored language:', storedLanguage);
+      // if (storedLanguage) {
+      //   console.log('Using stored language:', storedLanguage);
+      //   setLanguage(storedLanguage);
+      //   return;
+      // }
 
       // If no stored language, try browser language
       const browserLanguage = getBrowserLanguage();
+      console.log('Browser language detected:', browserLanguage);
       if (browserLanguage !== 'en') {
+        console.log('Using browser language:', browserLanguage);
         setLanguage(browserLanguage);
         setStoredLanguage(browserLanguage);
         return;
@@ -58,12 +64,16 @@ export default function ClientPage({ images }: ClientPageProps) {
 
       // If browser language is English or not supported, try country detection
       try {
+        console.log('Attempting country detection...');
         const response = await fetch('https://ipapi.co/json/');
         const data = await response.json();
+        console.log('Country detection result:', data);
         const detectedLanguage = getLanguageFromCountry(data.country_code);
+        console.log('Detected language from country:', detectedLanguage);
         setLanguage(detectedLanguage);
         setStoredLanguage(detectedLanguage);
       } catch (error) {
+        console.log('Country detection failed, falling back to English');
         // Fallback to English if detection fails
         setLanguage('en');
         setStoredLanguage('en');
