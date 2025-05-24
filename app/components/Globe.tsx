@@ -430,6 +430,7 @@ function Earth({ language, onLocationClick, messages }: GlobeProps) {
   const cloudRef = useRef<THREE.Mesh>(null);
   const markersRef = useRef<THREE.Group>(null);
   const [hoveredLocation, setHoveredLocation] = useState<string | null>(null);
+  const behindStatesRef = useRef<{ [key: string]: boolean }>({});
   const { t } = useTranslation(language);
   
   // Load earth textures
@@ -459,7 +460,7 @@ function Earth({ language, onLocationClick, messages }: GlobeProps) {
   }, {});
 
   // Animate cloud rotation and Earth rotation
-  useFrame(({ clock }) => {
+  useFrame(({ clock, camera }) => {
     if (cloudRef.current && earthRef.current && markersRef.current) {
       const time = clock.getElapsedTime();
       
@@ -478,6 +479,18 @@ function Earth({ language, onLocationClick, messages }: GlobeProps) {
       const earthRotation = time * 0.05;
       earthRef.current.rotation.y = earthRotation;
       markersRef.current.rotation.y = earthRotation;
+
+      // Update behind states for all message indicators
+      Object.entries(messageCounts).forEach(([countryCode, _]) => {
+        const countryCoords = getCountryCoordinates(countryCode);
+        if (!countryCoords) return;
+
+        const position = latLngToVector3(countryCoords.lat, countryCoords.lng, 1.02);
+        const cameraDirection = new THREE.Vector3().subVectors(camera.position, new THREE.Vector3(0, 0, 0)).normalize();
+        const markerDirection = new THREE.Vector3().subVectors(position, new THREE.Vector3(0, 0, 0)).normalize();
+        const dotProduct = cameraDirection.dot(markerDirection);
+        behindStatesRef.current[countryCode] = dotProduct < 0;
+      });
     }
   });
 
@@ -539,14 +552,7 @@ function Earth({ language, onLocationClick, messages }: GlobeProps) {
           if (!countryCoords) return null;
 
           const position = latLngToVector3(countryCoords.lat, countryCoords.lng, 1.02);
-          const [isBehind, setIsBehind] = useState(false);
-
-          useFrame(({ camera }) => {
-            const cameraDirection = new THREE.Vector3().subVectors(camera.position, new THREE.Vector3(0, 0, 0)).normalize();
-            const markerDirection = new THREE.Vector3().subVectors(position, new THREE.Vector3(0, 0, 0)).normalize();
-            const dotProduct = cameraDirection.dot(markerDirection);
-            setIsBehind(dotProduct < 0);
-          });
+          const isBehind = behindStatesRef.current[countryCode] || false;
 
           return (
             <group key={`message-${countryCode}`} position={position}>
