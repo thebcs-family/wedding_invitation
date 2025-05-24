@@ -214,7 +214,7 @@ export default function ClientPage({ images }: ClientPageProps) {
               alt="Header Text"
               width={600}
               height={200}
-              className="mx-auto brightness-0 invert mt-0"
+              className="mx-auto brightness-0 invert mt-0 w-[90%] md:w-[600px]"
               priority
             />
             <Image
@@ -222,7 +222,7 @@ export default function ClientPage({ images }: ClientPageProps) {
               alt="Federico and Cecilia"
               width={350}
               height={200}
-              className="mx-auto brightness-0 invert absolute bottom-10 left-1/2 -translate-x-1/2"
+              className="mx-auto brightness-0 invert absolute bottom-10 left-1/2 -translate-x-1/2 w-[80%] md:w-[350px]"
               priority
             />
           </div>
@@ -233,8 +233,9 @@ export default function ClientPage({ images }: ClientPageProps) {
       <AnimatedSection>
         <section className={`py-16 px-4 ${styles.worldMapSection}`}>
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-2xl font-bold mb-12 text-center" style={{ color: 'var(--button-color)' }}>{t.ourJourney}</h2>
-            <WorldMap language={language} />
+            <h2 className="text-2xl font-bold mb-4 text-center" style={{ color: 'var(--button-color)' }}>{t.ourJourney}</h2>
+            <p className="text-gray-600 text-center mb-8">{t.journeyMessage}</p>
+            <WorldMap language={language} messages={messages} />
           </div>
         </section>
       </AnimatedSection>
@@ -254,7 +255,7 @@ export default function ClientPage({ images }: ClientPageProps) {
           <div className="max-w-6xl mx-auto">
             <div className={styles.sectionContainer}>
               <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: 'var(--button-color)' }}>{t.messagesFromGuests}</h3>
-              <div className="space-y-4 h-[300px] overflow-y-auto custom-scrollbar bg-[#f8fff8] rounded-lg p-4">
+              <div className="space-y-4 h-[400px] overflow-y-auto custom-scrollbar bg-[#f8fff8] rounded-lg p-4">
                 {messages.length === 0 ? (
                   <div className="text-center text-gray-500">No messages yet</div>
                 ) : (
@@ -266,7 +267,7 @@ export default function ClientPage({ images }: ClientPageProps) {
                       <div className="flex justify-between items-center mb-1">
                         <div className="font-semibold text-gray-800 text-sm flex items-center gap-2">
                           <span className="text-[#b6cfa6]">♥</span>
-                          {message.country && message.country !== 'NO_COUNTRY' && (
+                          {message.country && message.country !== 'NO_COUNTRY' ? (
                             <ReactCountryFlag
                               countryCode={message.country}
                               svg
@@ -275,6 +276,20 @@ export default function ClientPage({ images }: ClientPageProps) {
                                 height: '1.2em',
                               }}
                             />
+                          ) : (
+                            <svg
+                              className="w-4 h-4 text-gray-500"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
                           )}
                           {message.name}
                         </div>

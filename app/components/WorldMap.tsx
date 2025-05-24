@@ -18,9 +18,10 @@ const Globe = dynamic(() => import('./Globe'), {
 
 interface WorldMapProps {
   language: Language;
+  messages: any[];
 }
 
-const WorldMap: React.FC<WorldMapProps> = ({ language }) => {
+const WorldMap: React.FC<WorldMapProps> = ({ language, messages }) => {
   const { t } = useTranslation(language);
   const koreaRef = useRef<HTMLDivElement>(null);
   const boliviaRef = useRef<HTMLDivElement>(null);
@@ -47,7 +48,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ language }) => {
             <div className="text-gray-700 text-xl">Loading...</div>
           </div>
         }>
-          <Globe language={language} onLocationClick={scrollToLocation} />
+          <Globe language={language} onLocationClick={scrollToLocation} messages={messages} />
         </Suspense>
       </div>
 
