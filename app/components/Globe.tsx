@@ -808,7 +808,7 @@ export default function Globe({ language, onLocationClick, messages }: GlobeProp
         camera={{ position: [0, 0, cameraPosition], fov }}
         gl={{ alpha: true, antialias: true }}
       >
-        <color attach="background" args={['transparent']} />
+        <color attach="background" args={['#f7fff7']} />
         <ambientLight intensity={1.5} />
         <pointLight position={[10, 10, 10]} intensity={1.5} />
         <pointLight position={[-10, -10, -10]} intensity={0.5} />

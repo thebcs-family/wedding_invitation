@@ -40,34 +40,37 @@ export default function ClientPage({ images }: ClientPageProps) {
   const { t } = useTranslation(language);
 
   useEffect(() => {
-    // First try to get stored language
-    const storedLanguage = getStoredLanguage();
-    if (storedLanguage) {
-      setLanguage(storedLanguage);
-      return;
-    }
+    const initializeLanguage = async () => {
+      // First try to get stored language
+      const storedLanguage = getStoredLanguage();
+      if (storedLanguage) {
+        setLanguage(storedLanguage);
+        return;
+      }
 
-    // If no stored language, try browser language
-    const browserLanguage = getBrowserLanguage();
-    if (browserLanguage !== 'en') {
-      setLanguage(browserLanguage);
-      setStoredLanguage(browserLanguage);
-      return;
-    }
+      // If no stored language, try browser language
+      const browserLanguage = getBrowserLanguage();
+      if (browserLanguage !== 'en') {
+        setLanguage(browserLanguage);
+        setStoredLanguage(browserLanguage);
+        return;
+      }
 
-    // If browser language is English or not supported, try country detection
-    fetch('https://ipapi.co/json/')
-      .then(response => response.json())
-      .then(data => {
+      // If browser language is English or not supported, try country detection
+      try {
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
         const detectedLanguage = getLanguageFromCountry(data.country_code);
         setLanguage(detectedLanguage);
         setStoredLanguage(detectedLanguage);
-      })
-      .catch(() => {
+      } catch (error) {
         // Fallback to English if detection fails
         setLanguage('en');
         setStoredLanguage('en');
-      });
+      }
+    };
+
+    initializeLanguage();
   }, []);
 
   // Separate useEffect for Firebase messages
