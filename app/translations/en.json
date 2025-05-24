@@ -1,5 +1,4 @@
 {
-  "weddingInvitation": "Wedding Invitation",
   "saveTheDate": "Save the Date",
   "ourJourney": "Our Journey",
   "weddingInKorea": "Wedding in Korea",
@@ -42,6 +41,7 @@
   "messageForm": {
     "name": "Name",
     "namePlaceholder": "Your name",
+    "country": "Country",
     "message": "Message",
     "messagePlaceholder": "Your message",
     "sending": "Sending...",
@@ -61,7 +61,9 @@
     "submit": "Submit"
   },
   "gallery": {
-    "title": "Our Gallery"
+    "title": "Our Gallery",
+    "showMore": "Show more",
+    "showLess": "Show less"
   },
   "locations": {
     "korea": {

@@ -1,5 +1,4 @@
 {
-  "weddingInvitation": "Invitación de Boda",
   "saveTheDate": "Reserva la Fecha",
   "ourJourney": "Nuestra Historia",
   "weddingInKorea": "Boda en Corea",
@@ -42,6 +41,7 @@
   "messageForm": {
     "name": "Nombre",
     "namePlaceholder": "Tu nombre",
+    "country": "País",
     "message": "Mensaje",
     "messagePlaceholder": "Tu mensaje",
     "sending": "Enviando...",
@@ -61,7 +61,9 @@
     "submit": "Enviar"
   },
   "gallery": {
-    "title": "Nuestra Galería"
+    "title": "Nuestra Galería",
+    "showMore": "Ver más",
+    "showLess": "Ver menos"
   },
   "locations": {
     "korea": {

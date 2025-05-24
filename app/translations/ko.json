@@ -1,5 +1,4 @@
 {
-  "weddingInvitation": "결혼식 초대장",
   "saveTheDate": "일정을 확인해주세요",
   "ourJourney": "우리의 이야기",
   "weddingInKorea": "한국에서의 결혼식",
@@ -42,6 +41,7 @@
   "messageForm": {
     "name": "이름",
     "namePlaceholder": "이름을 입력하세요",
+    "country": "국가",
     "message": "메시지",
     "messagePlaceholder": "메시지를 입력하세요",
     "sending": "전송 중...",
@@ -61,7 +61,9 @@
     "submit": "제출"
   },
   "gallery": {
-    "title": "웨딩 갤러리"
+    "title": "웨딩 갤러리",
+    "showMore": "더보기",
+    "showLess": "접기"
   },
   "locations": {
     "korea": {
