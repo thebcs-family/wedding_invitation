@@ -39,21 +39,21 @@ export default function AnimatedWaves() {
         }
         
         .wave-1 {
-          z-index: 13;
+          z-index: 113;
           opacity: 1;
           animation: wave-animation 10s infinite;
           animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
         }
         
         .wave-2 {
-          z-index: 12;
+          z-index: 112;
           opacity: 0.5;
           animation: wave-animation 5s infinite reverse;
           animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
         }
         
         .wave-3 {
-          z-index: 11;
+          z-index: 111;
           opacity: 0.3;
           animation: wave-animation 15s infinite;
           animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);

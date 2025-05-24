@@ -211,7 +211,7 @@ export default function ClientPage({ images }: ClientPageProps) {
       <AnimatedSection>
         <header className={`${styles.headerImage} relative`}>
           <div className={styles.headerOverlay}></div>
-          <div className={`${styles.headerContent} flex flex-col h-full relative`}>
+          <div className={`${styles.headerContent} flex flex-col h-full relative`} style={{ zIndex: 10000 }}>
             <Image
               src="/images/header_text.webp"
               alt="Header Text"
