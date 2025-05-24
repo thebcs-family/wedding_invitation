@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Playfair_Display } from 'next/font/google';
 import './globals.css';
 import Footer from './components/Footer';
+import Script from 'next/script';
 
 const playfair = Playfair_Display({ subsets: ['latin'] });
 
@@ -22,6 +23,10 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/favicon.ico" />
+        {/* Magnific Popup */}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js" />
         {/* Open Graph Meta Tags */}
         <meta property="og:title" content="Federico & Cecilia's Wedding" />
         <meta property="og:description" content="Join us in celebrating our love on June 14, 2025!" />
@@ -37,6 +42,18 @@ export default function RootLayout({
       <body className={playfair.className}>
         {children}
         <Footer />
+        <Script id="magnific-popup-init">
+          {`
+            $(document).ready(function() {
+              $('.magnific-zoom-gallery').magnificPopup({
+                type: 'image',
+                gallery: {
+                  enabled: true
+                }
+              });
+            });
+          `}
+        </Script>
       </body>
     </html>
   );

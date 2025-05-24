@@ -26,6 +26,7 @@ import AnimatedWaves from './AnimatedWaves';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslation, getLanguageFromCountry, Language, getStoredLanguage, setStoredLanguage, getBrowserLanguage } from '../utils/i18n';
 import ShareButtons from './ShareButtons';
+import ReactCountryFlag from 'react-country-flag';
 
 interface ClientPageProps {
   images: string[];
@@ -124,29 +125,28 @@ export default function ClientPage({ images }: ClientPageProps) {
         <h2 className="text-2xl font-bold mb-12 text-center" style={{ color: 'var(--button-color)' }}>{t.weddingInKorea}</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          <div className="bg-white p-8 rounded-lg shadow-lg">
+          <div className="bg-white p-8 rounded-lg shadow-lg flex flex-col justify-center h-full">
             <h3 className="text-2xl mb-6 text-center">{t.ourInvitation}</h3>
             <p className="text-gray-700 leading-relaxed text-center">
               {t.invitationText}
             </p>
           </div>
 
-          <div className="bg-white p-8 rounded-lg shadow-lg">
+          <div className="bg-white p-8 rounded-lg shadow-lg flex flex-col justify-center h-full">
             <h3 className="text-2xl mb-6 text-center">{t.weddingDetails}</h3>
             <div className="text-center">
               <p className="text-xl mb-2">{t.date}</p>
               <p className="text-xl mb-2">{t.time}</p>
               <p className="mb-2">{t.venue}</p>
-              <p className="mb-2">{t.address}</p>
-              <div className="flex flex-col items-center gap-4">
+              <p className="mb-4">{t.address}</p>
+              <div className="w-full flex flex-col md:flex-row items-center justify-center gap-4 mt-6">
+                <ShareButtons language={language} />
                 <Link
                   href="/details"
-                  className="text-white px-6 py-2 rounded-lg transition-colors text-sm hover:opacity-90"
-                  style={{ backgroundColor: 'var(--button-color)' }}
+                  className="text-white rounded-lg transition-colors leading-[1rem] hover:bg-white hover:text-black flex items-center justify-center h-[2.25rem] md:w-auto w-[9.5rem] min-w-[7rem] max-w-[12rem] bg-[var(--button-color)] shadow-xl"
                 >
-                  {t.moreDetails?.title || 'More Details'}
+                  <span className="leading-tight text-center whitespace-pre-line">{(t.moreDetails?.title || 'More Details')}</span>
                 </Link>
-                <ShareButtons language={language} />
               </div>
             </div>
           </div>
@@ -208,10 +208,23 @@ export default function ClientPage({ images }: ClientPageProps) {
       <AnimatedSection>
         <header className={`${styles.headerImage} relative`}>
           <div className={styles.headerOverlay}></div>
-          <div className={styles.headerContent}>
-            <h1 className="text-4xl md:text-6xl font-bold mb-5 text-white">{t.weddingInvitation}</h1>
-            <p className="text-3xl md:text-4xl font-light mb-4 text-white">Federico & Cecilia</p>
-          
+          <div className={`${styles.headerContent} flex flex-col h-full relative`}>
+            <Image
+              src="/images/header_text.webp"
+              alt="Header Text"
+              width={600}
+              height={200}
+              className="mx-auto brightness-0 invert mt-0"
+              priority
+            />
+            <Image
+              src="/images/header_text_2.webp"
+              alt="Federico and Cecilia"
+              width={350}
+              height={200}
+              className="mx-auto brightness-0 invert absolute bottom-10 left-1/2 -translate-x-1/2"
+              priority
+            />
           </div>
           <AnimatedWaves />
         </header>
@@ -251,8 +264,18 @@ export default function ClientPage({ images }: ClientPageProps) {
                       className={`bg-white border border-[#e5e7eb] p-2 md:p-3 rounded-2xl shadow my-3 ${idx === messages.length - 1 ? 'mb-8' : ''}`}
                     >
                       <div className="flex justify-between items-center mb-1">
-                        <div className="font-semibold text-gray-800 text-sm">
-                          <span className="text-[#b6cfa6] mr-2">♥</span>
+                        <div className="font-semibold text-gray-800 text-sm flex items-center gap-2">
+                          <span className="text-[#b6cfa6]">♥</span>
+                          {message.country && message.country !== 'NO_COUNTRY' && (
+                            <ReactCountryFlag
+                              countryCode={message.country}
+                              svg
+                              style={{
+                                width: '1.2em',
+                                height: '1.2em',
+                              }}
+                            />
+                          )}
                           {message.name}
                         </div>
                         <div className="text-xs text-gray-500">

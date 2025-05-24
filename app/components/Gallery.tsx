@@ -1,10 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import Image from 'next/image';
-import styles from '../styles/sections.module.css';
-import ImagePopup from './ImagePopup';
+import { useState, useEffect } from 'react';
 import { useTranslation, Language } from '../utils/i18n';
+import styles from '../styles/sections.module.css';
 
 interface GalleryProps {
   images: string[];
@@ -12,84 +10,118 @@ interface GalleryProps {
 }
 
 export function Gallery({ images, language }: GalleryProps) {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [showImagePopup, setShowImagePopup] = useState(false);
+  const [showMore, setShowMore] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const { t } = useTranslation(language);
+  
+  // Handle window resize
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % images.length);
-  };
+  // Initial number of images to show
+  const initialImages = isMobile ? 6 : 12; // Show 6 images on mobile (3 rows of 2), 12 on desktop
+  const displayImages = showMore ? images : images.slice(0, initialImages);
 
-  const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
-  };
+  // Initialize Magnific Popup with all images
+  useEffect(() => {
+    if (typeof window !== 'undefined' && (window as any).jQuery) {
+      const $ = (window as any).jQuery;
+      $('.magnific-zoom-gallery').magnificPopup({
+        type: 'image',
+        gallery: {
+          enabled: true,
+          navigateByImgClick: true,
+          preload: [0, 2], // Preload the current image and next 2
+          tCounter: '%curr% / %total%', // Counter format
+        },
+        mainClass: 'mfp-with-zoom',
+        zoom: {
+          enabled: true,
+          duration: 300,
+          easing: 'ease-in-out',
+        }
+      });
+    }
+  }, [showMore]); // Reinitialize when showMore changes
 
   return (
-    <section id="gallery" className="py-0">
-      <div className="max-w-6xl mx-auto px-4">
+    <section id="gallery" className="py-16 px-4" style={{ backgroundColor: 'var(--section-bg)' }}>
+      <div className="container max-w-6xl mx-auto">
         <div className={styles.sectionContainer}>
-          <h2 className="text-2xl font-bold mb-4 text-center" style={{ color: 'var(--button-color)' }}>{t.gallery.title}</h2>
-          <div className="relative">
-            <div className="flex justify-center">
-              <div 
-                className="w-[600px] h-[400px] flex items-center justify-center cursor-pointer"
-                onClick={() => setShowImagePopup(true)}
-              >
-                <Image
-                  src={images[currentImageIndex]}
-                  alt={`Gallery ${currentImageIndex + 1}`}
-                  width={600}
-                  height={400}
-                  className="rounded-lg object-contain max-w-full max-h-full"
-                  priority={currentImageIndex === 0}
+          <h2 className="text-2xl font-bold mb-8 text-center" style={{ color: 'var(--button-color)' }}>
+            {t.gallery.title}
+          </h2>
+
+          <div className="row grid grid-cols-2 md:grid-cols-4 gap-4">
+            {/* Visible Images */}
+            {displayImages.map((image, index) => (
+              <div key={index} className={styles.photoItem}>
+                <img 
+                  src={image} 
+                  alt={`Gallery ${index + 1}`} 
+                  className="aspect-square"
                 />
+                <div className={styles.photoOverlay} />
+                <div className={styles.iconLink}>
+                  <a 
+                    href={image.replace('w400-h400', 's2400')} 
+                    className="magnific-zoom-gallery"
+                    data-index={index}
+                  >
+                    <div className={styles.iconCircle}>
+                      <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        className="h-6 w-6" 
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                      >
+                        <path 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round" 
+                          strokeWidth={2} 
+                          d="M12 4v16m8-8H4" 
+                        />
+                      </svg>
+                    </div>
+                  </a>
+                </div>
               </div>
-            </div>
-            <div className="absolute left-0 right-0 flex justify-between px-4 top-1/2 -translate-y-1/2">
-              <button
-                onClick={prevImage}
-                className={styles.galleryArrow}
-              >
-                <Image src="/images/arrow_left.png" alt="Previous" width={24} height={24} />
-              </button>
-              <button
-                onClick={nextImage}
-                className={styles.galleryArrow}
-              >
-                <Image src="/images/arrow_right.png" alt="Next" width={24} height={24} />
-              </button>
-            </div>
-          </div>
-          <div className="mt-4 overflow-x-auto">
-            <div className="flex gap-4 min-w-max px-4">
-              {images.map((image, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentImageIndex(index)}
-                  className={`w-20 h-16 rounded-lg overflow-hidden flex-shrink-0 ${
-                    index === currentImageIndex ? 'ring-2 ring-[#72999d]' : ''
-                  }`}
-                >
-                  <Image
-                    src={image}
-                    alt={`Thumbnail ${index + 1}`}
-                    width={80}
-                    height={60}
-                    className="object-cover w-full h-full"
-                  />
-                </button>
+            ))}
+
+            {/* Hidden Images (for Magnific Popup) */}
+            <div className="hidden">
+              {!showMore && images.slice(initialImages).map((image, index) => (
+                <a 
+                  key={`hidden-${index}`}
+                  href={image.replace('w400-h400', 's2400')} 
+                  className="magnific-zoom-gallery"
+                  data-index={initialImages + index}
+                />
               ))}
             </div>
           </div>
+
+          {images.length > initialImages && (
+            <div className="flex justify-center mt-8">
+              <button
+                onClick={() => setShowMore(!showMore)}
+                className="px-6 py-2 bg-[var(--button-color)] text-white rounded-lg hover:opacity-90 transition-opacity"
+              >
+                {showMore ? t.gallery.showLess : t.gallery.showMore}
+              </button>
+            </div>
+          )}
         </div>
       </div>
-
-      {showImagePopup && (
-        <ImagePopup
-          imageUrl={images[currentImageIndex]}
-          onClose={() => setShowImagePopup(false)}
-        />
-      )}
     </section>
   );
 } 
