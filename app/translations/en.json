@@ -13,7 +13,7 @@
   "rsvp": "RSVP",
   "rsvpText": "Please RSVP online and submit your response",
   "rsvpNow": "RSVP Now",
-  "messagesFromGuests": "Messages from Our Guests",
+  "messagesFromGuests": "Messages from Our Friends",
   "leaveMessage": "Leave a Message",
   "shareNews": "Share News",
   "thankYou": "Thank you!",
@@ -85,6 +85,10 @@
   "kakaoShare": {
     "share": "Share on KakaoTalk",
     "send": "Send"
+  },
+  "whatsappShare": {
+    "share": "Share on WhatsApp",
+    "send": "Share"
   },
   "moreDetails": {
     "title": "More Details",

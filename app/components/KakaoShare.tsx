@@ -18,12 +18,13 @@ declare global {
   }
 }
 
-interface KakaoShareProps {
+interface ShareButtonsProps {
   language: Language;
 }
 
-const KakaoShare: React.FC<KakaoShareProps> = ({ language }) => {
+const ShareButtons: React.FC<ShareButtonsProps> = ({ language }) => {
   const [showModal, setShowModal] = useState(false);
+  const [sharePlatform, setSharePlatform] = useState<'kakao' | 'whatsapp'>('kakao');
   const { t } = useTranslation(language);
 
   useEffect(() => {
@@ -44,7 +45,7 @@ const KakaoShare: React.FC<KakaoShareProps> = ({ language }) => {
     };
   }, []);
 
-  const handleShare = () => {
+  const handleKakaoShare = () => {
     if (typeof window !== 'undefined' && window.Kakao) {
       window.Kakao.Share.sendDefault({
         objectType: 'feed',
@@ -70,14 +71,43 @@ const KakaoShare: React.FC<KakaoShareProps> = ({ language }) => {
     }
   };
 
+  const handleWhatsAppShare = () => {
+    const text = encodeURIComponent('Join us in celebrating Federico & Cecilia\'s Wedding on June 14, 2025!');
+    const url = `https://wa.me/?text=${text}%20${encodeURIComponent(window.location.href)}`;
+    window.open(url, '_blank');
+  };
+
+  const handleShare = () => {
+    if (sharePlatform === 'kakao') {
+      handleKakaoShare();
+    } else {
+      handleWhatsAppShare();
+    }
+    setShowModal(false);
+  };
+
   return (
     <>
-      <button
-        onClick={() => setShowModal(true)}
-        className="bg-yellow-400 text-white px-8 py-3 rounded-lg transition-colors text-lg mb-8"
-      >
-        {t.kakaoShare.share}
-      </button>
+      <div className="flex gap-4 mb-8">
+        <button
+          onClick={() => {
+            setSharePlatform('kakao');
+            setShowModal(true);
+          }}
+          className="bg-yellow-400 text-white px-8 py-3 rounded-lg transition-colors text-lg"
+        >
+          {t.kakaoShare.share}
+        </button>
+        <button
+          onClick={() => {
+            setSharePlatform('whatsapp');
+            setShowModal(true);
+          }}
+          className="bg-green-500 text-white px-8 py-3 rounded-lg transition-colors text-lg"
+        >
+          {t.whatsappShare.share}
+        </button>
+      </div>
 
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -99,13 +129,12 @@ const KakaoShare: React.FC<KakaoShareProps> = ({ language }) => {
               <h3 className="text-xl font-bold mb-2">Federico & Cecilia's Wedding</h3>
               <p className="text-gray-600 mb-4">Join us in celebrating on June 14, 2025</p>
               <button
-                onClick={() => {
-                  handleShare();
-                  setShowModal(false);
-                }}
-                className="bg-yellow-400 text-white px-6 py-2 rounded-lg"
+                onClick={handleShare}
+                className={`${
+                  sharePlatform === 'kakao' ? 'bg-yellow-400' : 'bg-green-500'
+                } text-white px-6 py-2 rounded-lg`}
               >
-                {t.kakaoShare.send}
+                {sharePlatform === 'kakao' ? t.kakaoShare.send : t.whatsappShare.send}
               </button>
             </div>
           </div>
@@ -115,4 +144,4 @@ const KakaoShare: React.FC<KakaoShareProps> = ({ language }) => {
   );
 };
 
-export default KakaoShare; 
+export default ShareButtons; 

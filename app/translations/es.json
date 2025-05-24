@@ -13,7 +13,7 @@
   "rsvp": "Confirmar Asistencia",
   "rsvpText": "Por favor, confirma tu asistencia en línea",
   "rsvpNow": "Confirmar Ahora",
-  "messagesFromGuests": "Mensajes de Nuestros Invitados",
+  "messagesFromGuests": "Mensajes de Nuestros Amigos",
   "leaveMessage": "Deja un Mensaje",
   "shareNews": "Compartir Noticia",
   "thankYou": "¡Gracias!",
@@ -85,6 +85,10 @@
   "kakaoShare": {
     "share": "Compartir en KakaoTalk",
     "send": "Enviar"
+  },
+  "whatsappShare": {
+    "share": "Compartir en WhatsApp",
+    "send": "Compartir"
   },
   "moreDetails": {
     "title": "Más Detalles",

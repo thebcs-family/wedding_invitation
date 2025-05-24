@@ -36,7 +36,7 @@ export default function LanguageSwitcher({ currentLanguage, onLanguageChange }: 
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-50" ref={menuRef}>
+    <div className="fixed bottom-4 right-4 z-[10001]" ref={menuRef}>
       {/* Language Icon Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}

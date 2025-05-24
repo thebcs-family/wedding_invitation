@@ -13,7 +13,7 @@
   "rsvp": "Conferma la Tua Presenza",
   "rsvpText": "Per favore, conferma la tua presenza online",
   "rsvpNow": "Conferma Ora",
-  "messagesFromGuests": "Messaggi dagli Invitati",
+  "messagesFromGuests": "Messaggi dagli Amici",
   "leaveMessage": "Lascia un Messaggio",
   "shareNews": "Condividi la Notizia",
   "thankYou": "Grazie!",
@@ -86,8 +86,12 @@
     "share": "Condividi su KakaoTalk",
     "send": "Invia"
   },
+  "whatsappShare": {
+    "share": "Condividi su WhatsApp",
+    "send": "Condividi"
+  },
   "moreDetails": {
-    "title": "Ulteriori Dettagli",
+    "title": "Dettagli",
     "partySizeTitle": "Informazioni sulla Festa",
     "giftsTitle": "Informazioni sui Regali",
     "wannaHelp": "Hai bisogno di aiuto con qualcosa?",

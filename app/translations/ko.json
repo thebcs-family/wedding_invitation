@@ -86,6 +86,10 @@
     "share": "카카오톡으로 공유하기",
     "send": "전송하기"
   },
+  "whatsappShare": {
+    "share": "왓츠앱으로 공유하기",
+    "send": "공유하기"
+  },
   "moreDetails": {
     "title": "추가 안내",
     "partySizeTitle": "파티 안내",

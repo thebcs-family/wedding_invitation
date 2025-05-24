@@ -43,41 +43,19 @@ export default function ClientPage({ images }: ClientPageProps) {
     const initializeLanguage = async () => {
       console.log('Initializing language...');
       
-      // // First try to get stored language
-      // const storedLanguage = getStoredLanguage();
-      // console.log('Stored language:', storedLanguage);
-      // if (storedLanguage) {
-      //   console.log('Using stored language:', storedLanguage);
-      //   setLanguage(storedLanguage);
-      //   return;
-      // }
-
-      // If no stored language, try browser language
+      // Get browser language
       const browserLanguage = getBrowserLanguage();
       console.log('Browser language detected:', browserLanguage);
-      if (browserLanguage !== 'en') {
+      
+      if (browserLanguage) {
         console.log('Using browser language:', browserLanguage);
         setLanguage(browserLanguage);
-        setStoredLanguage(browserLanguage);
         return;
       }
 
-      // If browser language is English or not supported, try country detection
-      try {
-        console.log('Attempting country detection...');
-        const response = await fetch('https://ipapi.co/json/');
-        const data = await response.json();
-        console.log('Country detection result:', data);
-        const detectedLanguage = getLanguageFromCountry(data.country_code);
-        console.log('Detected language from country:', detectedLanguage);
-        setLanguage(detectedLanguage);
-        setStoredLanguage(detectedLanguage);
-      } catch (error) {
-        console.log('Country detection failed, falling back to English');
-        // Fallback to English if detection fails
-        setLanguage('en');
-        setStoredLanguage('en');
-      }
+      // If no browser language detected, default to English
+      console.log('No browser language detected, defaulting to English');
+      setLanguage('en');
     };
 
     initializeLanguage();
@@ -156,7 +134,7 @@ export default function ClientPage({ images }: ClientPageProps) {
                 <ShareButtons language={language} />
                 <Link
                   href="/details"
-                  className="text-white rounded-lg transition-colors leading-[1rem] hover:bg-white hover:text-black flex items-center justify-center h-[2.25rem] md:w-auto w-[9.5rem] min-w-[7rem] max-w-[12rem] bg-[var(--button-color)] shadow-xl"
+                  className="text-white rounded-lg transition-colors leading-[1rem] hover:bg-white hover:text-black flex items-center justify-center h-[2.5rem] md:w-auto w-[9.5rem] min-w-[7rem] max-w-[12rem] bg-[var(--button-color)] shadow-xl"
                 >
                   <span className="leading-tight text-center whitespace-pre-line">{(t.moreDetails?.title || 'More Details')}</span>
                 </Link>
