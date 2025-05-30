@@ -406,9 +406,31 @@ function MessageCountIndicator({ position, count, isBehind, countryCode }: { pos
   const isSpecialLocation = ['KR', 'BO', 'IT'].includes(countryCode);
   
   return (
-    <Html center position={[0, isSpecialLocation ? 0.25 : 0.15, 0]}>
-      <div className={`bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-gray-700 flex items-center gap-1 ${isBehind ? 'opacity-60' : 'opacity-90'}`}>
-        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <Html 
+      center 
+      position={[0, isSpecialLocation ? 0.25 : 0.15, 0]}
+      style={{
+        pointerEvents: 'none',
+        transform: isBehind ? 'scale(0.9)' : 'scale(1)',
+        transition: 'transform 300ms ease-in-out',
+      }}
+    >
+      <div 
+        className={`bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium text-gray-700 flex items-center gap-1 transition-all duration-300 ${
+          isBehind ? 'opacity-30' : 'opacity-100'
+        }`}
+        style={{
+          transform: isBehind ? 'scale(0.9)' : 'scale(1)',
+          filter: isBehind ? 'blur(0.8px)' : 'none',
+          transition: 'all 300ms ease-in-out',
+        }}
+      >
+        <svg 
+          className={`w-3 h-3 transition-all duration-300 ${isBehind ? 'opacity-40' : 'opacity-100'}`} 
+          fill="none" 
+          stroke="currentColor" 
+          viewBox="0 0 24 24"
+        >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
         </svg>
         <ReactCountryFlag
@@ -417,9 +439,16 @@ function MessageCountIndicator({ position, count, isBehind, countryCode }: { pos
           style={{
             width: '1em',
             height: '1em',
+            opacity: isBehind ? 0.4 : 1,
+            filter: isBehind ? 'blur(0.8px) saturate(0.8)' : 'none',
+            transition: 'all 300ms ease-in-out',
           }}
         />
-        {count}
+        <span 
+          className={`transition-all duration-300 ${isBehind ? 'opacity-40' : 'opacity-100'}`}
+        >
+          {count}
+        </span>
       </div>
     </Html>
   );
@@ -430,7 +459,7 @@ function Earth({ language, onLocationClick, messages }: GlobeProps) {
   const cloudRef = useRef<THREE.Mesh>(null);
   const markersRef = useRef<THREE.Group>(null);
   const [hoveredLocation, setHoveredLocation] = useState<string | null>(null);
-  const behindStatesRef = useRef<{ [key: string]: boolean }>({});
+  const [behindStates, setBehindStates] = useState<{ [key: string]: boolean }>({});
   const { t } = useTranslation(language);
   
   // Load earth textures
@@ -481,6 +510,7 @@ function Earth({ language, onLocationClick, messages }: GlobeProps) {
       markersRef.current.rotation.y = earthRotation;
 
       // Update behind states for all message indicators
+      const newBehindStates: { [key: string]: boolean } = {};
       Object.entries(messageCounts).forEach(([countryCode, _]) => {
         const countryCoords = getCountryCoordinates(countryCode);
         if (!countryCoords) return;
@@ -489,8 +519,17 @@ function Earth({ language, onLocationClick, messages }: GlobeProps) {
         const cameraDirection = new THREE.Vector3().subVectors(camera.position, new THREE.Vector3(0, 0, 0)).normalize();
         const markerDirection = new THREE.Vector3().subVectors(position, new THREE.Vector3(0, 0, 0)).normalize();
         const dotProduct = cameraDirection.dot(markerDirection);
-        behindStatesRef.current[countryCode] = dotProduct < 0;
+        newBehindStates[countryCode] = dotProduct < 0;
       });
+
+      // Only update state if there are changes
+      const hasChanges = Object.keys(newBehindStates).some(
+        key => newBehindStates[key] !== behindStates[key]
+      );
+      
+      if (hasChanges) {
+        setBehindStates(newBehindStates);
+      }
     }
   });
 
@@ -552,7 +591,7 @@ function Earth({ language, onLocationClick, messages }: GlobeProps) {
           if (!countryCoords) return null;
 
           const position = latLngToVector3(countryCoords.lat, countryCoords.lng, 1.02);
-          const isBehind = behindStatesRef.current[countryCode] || false;
+          const isBehind = behindStates[countryCode] || false;
 
           return (
             <group key={`message-${countryCode}`} position={position}>
