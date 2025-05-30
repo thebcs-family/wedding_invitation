@@ -15,7 +15,7 @@
   "rsvpNow": "Conferma Ora",
   "messagesFromGuests": "Messaggi dagli Amici",
   "leaveMessage": "Lascia un Messaggio",
-  "shareNews": "Condividi la Notizia",
+  "shareNews": "Contatti & Condivisione",
   "thankYou": "Grazie!",
   "developedBy": "Sviluppato da Federico Berto & Cecilia Callejas",
   "calendar": {
@@ -89,6 +89,11 @@
   "whatsappShare": {
     "share": "Condividi su WhatsApp",
     "send": "Condividi"
+  },
+  "contact": {
+    "title": "Contattaci",
+    "bride": "Cecilia",
+    "groom": "Federico"
   },
   "moreDetails": {
     "title": "Dettagli",

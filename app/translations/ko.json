@@ -15,7 +15,7 @@
   "rsvpNow": "참석 확인하기",
   "messagesFromGuests": "축하 메시지",
   "leaveMessage": "메시지 남기기",
-  "shareNews": "소식 전하기",
+  "shareNews": "연락처 & 공유하기",
   "thankYou": "감사합니다!",
   "developedBy": "Federico Berto & Cecilia Callejas 제작",
   "calendar": {
@@ -84,11 +84,16 @@
   },
   "kakaoShare": {
     "share": "카카오톡으로 공유하기",
-    "send": "전송하기"
+    "send": "보내기"
   },
   "whatsappShare": {
     "share": "왓츠앱으로 공유하기",
     "send": "공유하기"
+  },
+  "contact": {
+    "title": "연락하기",
+    "bride": "세실리아",
+    "groom": "페데리코"
   },
   "moreDetails": {
     "title": "추가 안내",

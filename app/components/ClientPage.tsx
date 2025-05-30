@@ -308,7 +308,7 @@ export default function ClientPage({ images }: ClientPageProps) {
       <AnimatedSection>
         <footer className="py-8 text-center">
           <div className="max-w-6xl mx-auto">
-            <h3 className="text-2xl mb-6">{t.shareNews}</h3>
+            <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: '#668eaa' }}>{t.shareNews}</h3>
             <div className="flex justify-center gap-4">
             <KakaoShare language={language} />
             </div>

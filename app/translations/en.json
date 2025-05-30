@@ -15,7 +15,7 @@
   "rsvpNow": "RSVP Now",
   "messagesFromGuests": "Messages from Our Friends",
   "leaveMessage": "Leave a Message",
-  "shareNews": "Share News",
+  "shareNews": "Contact & Share",
   "thankYou": "Thank you!",
   "developedBy": "Developed by Federico Berto & Cecilia Callejas",
   "calendar": {
@@ -89,6 +89,11 @@
   "whatsappShare": {
     "share": "Share on WhatsApp",
     "send": "Share"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "bride": "Cecilia",
+    "groom": "Federico"
   },
   "moreDetails": {
     "title": "More Details",
