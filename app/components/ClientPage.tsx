@@ -314,7 +314,6 @@ export default function ClientPage({ images }: ClientPageProps) {
             </div>
             <p className="text-gray-600 mb-4">{t.thankYou}</p>
             <div className="text-4xl" style={{ color: 'var(--button-color)' }}>♥</div>
-            <p className="text-gray-600 mt-8">{t.developedBy}</p>
           </div>
         </footer>
       </AnimatedSection>
