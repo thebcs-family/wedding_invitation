@@ -73,8 +73,22 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ language }) => {
 
   const handleWhatsAppShare = () => {
     const text = encodeURIComponent('Join us in celebrating Federico & Cecilia\'s Wedding on June 14, 2025!');
-    const url = `https://wa.me/?text=${text}%20${encodeURIComponent(window.location.href)}`;
-    window.open(url, '_blank');
+    const url = `https://api.whatsapp.com/send?text=${text}%20${encodeURIComponent(window.location.href)}`;
+    
+    // Try to open WhatsApp app first
+    const whatsappAppUrl = `whatsapp://send?text=${text}%20${encodeURIComponent(window.location.href)}`;
+    
+    // Create a temporary link to detect if the app is installed
+    const link = document.createElement('a');
+    link.href = whatsappAppUrl;
+    
+    // If the app is not installed, it will fall back to the web version
+    link.onclick = (e) => {
+      e.preventDefault();
+      window.open(url, '_blank');
+    };
+    
+    link.click();
   };
 
   const handleShare = () => {
