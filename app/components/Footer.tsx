@@ -23,6 +23,9 @@ const Footer: React.FC = () => {
           </p>
           <div className="text-xs text-gray-400 mt-2">
             © {new Date().getFullYear()} Federico & Cecilia
+            <p className="text-xs text-gray-400">
+            Images Designed by Freepik
+          </p>
           </div>
         </div>
       </div>
