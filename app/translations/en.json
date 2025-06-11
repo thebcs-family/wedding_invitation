@@ -66,7 +66,10 @@
   "gallery": {
     "title": "Our Gallery",
     "showMore": "Show more",
-    "showLess": "Show less"
+    "showLess": "Show less",
+    "captureLove": "Capture the Love",
+    "sharePhotos": "Share your photos of the event with us! Click the button below to view the gallery.",
+    "viewGallery": "View Gallery"
   },
   "locations": {
     "korea": {

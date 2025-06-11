@@ -66,7 +66,10 @@
   "gallery": {
     "title": "웨딩 갤러리",
     "showMore": "더보기",
-    "showLess": "접기"
+    "showLess": "접기",
+    "captureLove": "사랑을 담아",
+    "sharePhotos": "이벤트 사진을 공유해주세요! 아래 버튼을 클릭하여 갤러리를 확인하세요.",
+    "viewGallery": "갤러리 보기"
   },
   "locations": {
     "korea": {

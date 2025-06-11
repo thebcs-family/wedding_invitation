@@ -30,9 +30,10 @@ import ReactCountryFlag from 'react-country-flag';
 
 interface ClientPageProps {
   images: string[];
+  showGalleryLink?: boolean;
 }
 
-export default function ClientPage({ images }: ClientPageProps) {
+export default function ClientPage({ images, showGalleryLink = false }: ClientPageProps) {
   const [messages, setMessages] = useState<any[]>([]);
   const [showRSVPModal, setShowRSVPModal] = useState(false);
   const [language, setLanguage] = useState<Language>('en');
@@ -143,17 +144,37 @@ export default function ClientPage({ images }: ClientPageProps) {
           </div>
 
           <div className="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center justify-center min-h-[300px]">
-            <h3 className="text-2xl mb-6 text-center">{t.rsvp}</h3>
-            <p className="mb-4 text-gray-600 text-center">{t.rsvpText}</p>
-            <div>
-              <button
-                onClick={() => setShowRSVPModal(true)}
-                className="text-white px-8 py-3 rounded-lg transition-colors text-lg"
-                style={{ backgroundColor: 'var(--button-color)' }}
-              >
-                {t.rsvpNow}
-              </button>
-            </div>
+            {showGalleryLink ? (
+              <>
+                <h3 className="text-2xl mb-6 text-center">{t.gallery.captureLove}</h3>
+                <p className="mb-4 text-gray-600 text-center">{t.gallery.sharePhotos}</p>
+                <div>
+                  <a
+                    href="https://photos.app.goo.gl/y38E6SiF7cWpEVsN6"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white px-8 py-3 rounded-lg transition-colors text-lg inline-block"
+                    style={{ backgroundColor: 'var(--button-color)' }}
+                  >
+                    {t.gallery.viewGallery}
+                  </a>
+                </div>
+              </>
+            ) : (
+              <>
+                <h3 className="text-2xl mb-6 text-center">{t.rsvp}</h3>
+                <p className="mb-4 text-gray-600 text-center">{t.rsvpText}</p>
+                <div>
+                  <button
+                    onClick={() => setShowRSVPModal(true)}
+                    className="text-white px-8 py-3 rounded-lg transition-colors text-lg"
+                    style={{ backgroundColor: 'var(--button-color)' }}
+                  >
+                    {t.rsvpNow}
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
 

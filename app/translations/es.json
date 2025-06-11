@@ -66,7 +66,10 @@
   "gallery": {
     "title": "Nuestra Galería",
     "showMore": "Ver más",
-    "showLess": "Ver menos"
+    "showLess": "Ver menos",
+    "captureLove": "Captura el Amor",
+    "sharePhotos": "¡Comparte tus fotos del evento con nosotros! Haz clic en el botón de abajo para ver la galería.",
+    "viewGallery": "Ver Galería"
   },
   "locations": {
     "korea": {
