@@ -1,6 +1,4 @@
-'use client';
-
-import React, { useRef, useState, useEffect, Suspense } from 'react';
+import React, { useRef, useState, useEffect, useMemo, Suspense } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three';
 import { OrbitControls, Html, useProgress, Text } from '@react-three/drei';
@@ -19,6 +17,39 @@ const LOCATIONS = {
   korea: { lat: 36.3504, lng: 127.3845, color: '#ff4d4d' },    // Daejeon
   bolivia: { lat: -16.4897, lng: -68.1193, color: '#4dff4d' }, // La Paz
   italy: { lat: 44.4949, lng: 11.3426, color: '#4d4dff' }      // Bologna
+};
+
+// Message positions around the globe (in percentage of container)
+const getRandomPosition = (isMobile: boolean) => {
+  if (isMobile) {
+    const positions = [
+      { top: '1%', left: '1%' },      // Top-left corner
+      { top: '1%', right: '1%' },     // Top-right corner
+      { bottom: '1%', left: '1%' },   // Bottom-left corner
+      { bottom: '1%', right: '1%' },  // Bottom-right corner
+      { top: '1%', left: '50%' },     // Top-center
+      { top: '1%', right: '50%' },    // Top-center
+      { bottom: '1%', left: '50%' },  // Bottom-center
+      { bottom: '1%', right: '50%' }  // Bottom-center
+    ];
+    return positions[Math.floor(Math.random() * positions.length)];
+  } else {
+    const positions = [
+      { top: '8%', left: '8%' },
+      { top: '8%', right: '8%' },
+      { top: '15%', left: '15%' },
+      { top: '15%', right: '15%' },
+      { bottom: '8%', left: '8%' },
+      { bottom: '8%', right: '8%' },
+      { bottom: '15%', left: '15%' },
+      { bottom: '15%', right: '15%' },
+      { top: '25%', left: '5%' },
+      { top: '25%', right: '5%' },
+      { bottom: '25%', left: '5%' },
+      { bottom: '25%', right: '5%' }  // Bottom-center
+    ];
+    return positions[Math.floor(Math.random() * positions.length)];
+  }
 };
 
 // Convert lat/lng to 3D coordinates on a sphere
@@ -454,6 +485,146 @@ function MessageCountIndicator({ position, count, isBehind, countryCode }: { pos
   );
 }
 
+// Enhanced message bubble component with sequential animations
+function FloatingMessageBubble({ 
+  message, 
+  countryCode, 
+  messageId, 
+  position,
+  delay = 0,
+  onComplete
+}: { 
+  message: any;
+  countryCode: string;
+  messageId: string;
+  position: { top?: string, bottom?: string, left?: string, right?: string };
+  delay?: number;
+  onComplete?: () => void;
+}) {
+  const [isVisible, setIsVisible] = useState(false);
+  const [isExiting, setIsExiting] = useState(false);
+  const bubbleRef = useRef<HTMLDivElement>(null);
+  const mountedRef = useRef(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const timersRef = useRef<{ mount?: NodeJS.Timeout; fade?: NodeJS.Timeout; remove?: NodeJS.Timeout }>({});
+  const animationStartTimeRef = useRef<number>(Date.now());
+
+  // Check if mobile on mount
+  useEffect(() => {
+    setIsMobile(window.innerWidth <= 768);
+  }, []);
+
+  // Randomize position slightly to avoid overlap, with minimal offset for mobile
+  const randomOffset = useMemo(() => {
+    const margin = isMobile ? 2 : 10;
+    return {
+      top: position.top ? `${parseFloat(position.top) + (Math.random() * margin)}%` : undefined,
+      bottom: position.bottom ? `${parseFloat(position.bottom) + (Math.random() * margin)}%` : undefined,
+      left: position.left ? `${parseFloat(position.left) + (Math.random() * margin)}%` : undefined,
+      right: position.right ? `${parseFloat(position.right) + (Math.random() * margin)}%` : undefined,
+    };
+  }, [position, isMobile]);
+
+  useEffect(() => {
+    if (mountedRef.current) return; // Prevent multiple initializations
+    
+    mountedRef.current = true;
+    animationStartTimeRef.current = Date.now();
+    
+    // Clear any existing timers
+    Object.values(timersRef.current).forEach(timer => timer && clearTimeout(timer));
+    
+    // Start fade in immediately
+    timersRef.current.mount = setTimeout(() => {
+      if (mountedRef.current) {
+        setIsVisible(true);
+      }
+    }, 50);
+
+    // Start fade out after display time
+    timersRef.current.fade = setTimeout(() => {
+      if (mountedRef.current) {
+        setIsExiting(true);
+      }
+    }, delay + 3000);
+
+    // Remove from DOM after fade out animation completes
+    timersRef.current.remove = setTimeout(() => {
+      if (mountedRef.current) {
+        setIsVisible(false);
+        onComplete?.();
+      }
+    }, delay + 5000);
+
+    return () => {
+      mountedRef.current = false;
+      Object.values(timersRef.current).forEach(timer => timer && clearTimeout(timer));
+    };
+  }, [messageId]); // Only depend on messageId to prevent unnecessary effect runs
+
+  // Add effect to log state changes
+  useEffect(() => {
+  }, [isVisible, isExiting, messageId]);
+
+  const truncatedMessage = message.message.length > (isMobile ? 80 : 150) 
+    ? message.message.substring(0, isMobile ? 80 : 150) + '...'
+    : message.message;
+
+  if (!isVisible) {
+    return null;
+  }
+
+
+  return (
+    <div 
+      ref={bubbleRef}
+      className="absolute z-20 pointer-events-none"
+      style={{
+        ...randomOffset,
+        opacity: isExiting ? 0 : 1,
+        transform: isExiting ? 'translateY(-20px) scale(0.9)' : 'translateY(0) scale(1)',
+        transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+        willChange: 'opacity, transform',
+        animation: isVisible ? 'fadeIn 0.8s ease-out' : 'none'
+      }}
+    >
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+      `}</style>
+      <div 
+        className="bg-white/95 backdrop-blur-sm px-2.5 py-1.5 rounded-md shadow-lg border border-white/20 max-w-[240px]"
+        style={{
+          transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+          opacity: isExiting ? 0 : 1,
+          transform: isExiting ? 'scale(0.95)' : 'scale(1)'
+        }}
+      >
+        <div className="flex items-center gap-1 mb-0.5">
+          <ReactCountryFlag
+            countryCode={countryCode}
+            svg
+            style={{
+              width: '0.8em',
+              height: '0.8em',
+            }}
+          />
+          <span className="font-medium text-gray-800 text-xs">{message.name}</span>
+        </div>
+        <div className="text-gray-700 leading-snug text-xs whitespace-pre-wrap">{truncatedMessage}</div>
+      </div>
+    </div>
+  );
+}
+
 function Earth({ language, onLocationClick, messages }: GlobeProps) {
   const earthRef = useRef<THREE.Mesh>(null);
   const cloudRef = useRef<THREE.Mesh>(null);
@@ -564,7 +735,7 @@ function Earth({ language, onLocationClick, messages }: GlobeProps) {
       {/* Animated connection lines */}
       <AnimatedConnectionLines locations={LOCATIONS} />
 
-      {/* Location markers - now properly synced with Earth rotation */}
+      {/* Location markers and message indicators */}
       <group ref={markersRef}>
         {Object.entries(LOCATIONS).map(([name, data]) => {
           const position = latLngToVector3(data.lat, data.lng, 1.01);
@@ -814,13 +985,150 @@ export default function Globe({ language, onLocationClick, messages }: GlobeProp
   const [mounted, setMounted] = useState(false);
   const [cameraPosition, setCameraPosition] = useState(2.2);
   const [fov, setFov] = useState(60);
+  const [isMobile, setIsMobile] = useState(false);
+  const [activeMessages, setActiveMessages] = useState<Array<{
+    message: any;
+    id: string;
+    position: { top?: string, bottom?: string, left?: string, right?: string };
+    startTime: number;
+  }>>([]);
+  const messageCounterRef = useRef(0);
+  const cleanupIntervalRef = useRef<NodeJS.Timeout>();
+  const messageIntervalRef = useRef<NodeJS.Timeout>();
 
+  // Memoize the filtered messages to prevent recreation on every render
+  const sideMessages = useMemo(() => 
+    messages.filter(message => 
+      message.country && ['KR', 'BO', 'IT'].includes(message.country)
+    ), [messages]
+  );
+
+  // Function to check if a position overlaps with existing messages
+  const isPositionOverlapping = (newPos: { top?: string, bottom?: string, left?: string, right?: string }, existingMessages: any[]) => {
+    return existingMessages.some(msg => {
+      const pos = msg.position;
+      return (
+        (newPos.top === pos.top && newPos.left === pos.left) ||
+        (newPos.top === pos.top && newPos.right === pos.right) ||
+        (newPos.bottom === pos.bottom && newPos.left === pos.left) ||
+        (newPos.bottom === pos.bottom && newPos.right === pos.right)
+      );
+    });
+  };
+
+  // Function to get a non-overlapping position
+  const getNonOverlappingPosition = (existingMessages: any[]) => {
+    const positions = getRandomPosition(isMobile);
+    let attempts = 0;
+    let newPos = positions;
+    
+    while (isPositionOverlapping(newPos, existingMessages) && attempts < 20) {
+      newPos = getRandomPosition(isMobile);
+      attempts++;
+    }
+    
+    return newPos;
+  };
+
+  // Prevent hydration mismatch by only starting animations after mount
   useEffect(() => {
     setMounted(true);
+    setIsMobile(window.innerWidth <= 768);
+  }, []);
 
+  // Update the message cycling system
+  useEffect(() => {
+    if (!mounted || sideMessages.length === 0) return;
+
+    const maxMessages = isMobile ? 3 : 5;
+    const messageInterval = isMobile ? 6000 : 5000; // 6s for mobile, 5s for desktop
+    const messageLifetime = isMobile ? 6000 : 5000; // 6s for mobile, 5s for desktop
+    const staggerDelay = 4000; // 2 seconds between messages
+
+    const addNewMessage = () => {
+      if (sideMessages.length === 0) return;
+
+      setActiveMessages(prev => {
+        const now = Date.now();
+        const filtered = prev.filter(msg => now - msg.startTime < messageLifetime);
+        
+        if (filtered.length >= maxMessages) {
+          return filtered;
+        }
+
+        const message = sideMessages[messageCounterRef.current % sideMessages.length];
+        const position = getNonOverlappingPosition(filtered);
+        const messageId = `${message.country}-${messageCounterRef.current}-${now}`;
+
+        const newMessage = {
+          message,
+          id: messageId,
+          position,
+          startTime: now
+        };
+
+        messageCounterRef.current++;
+        
+        return [...filtered, newMessage];
+      });
+    };
+
+    // Start with first message immediately
+    addNewMessage();
+
+    // Add new messages at staggered intervals
+    const addStaggeredMessage = () => {
+      setTimeout(addNewMessage, staggerDelay);
+    };
+
+    // Set up the main interval for the first message of each pair
+    messageIntervalRef.current = setInterval(() => {
+      addNewMessage();
+      addStaggeredMessage();
+    }, messageInterval);
+
+    return () => {
+      if (messageIntervalRef.current) {
+        clearInterval(messageIntervalRef.current);
+      }
+    };
+  }, [mounted, sideMessages, isMobile]);
+
+  // Handle message cleanup with a longer interval
+  useEffect(() => {
+    if (!mounted) return;
+
+    cleanupIntervalRef.current = setInterval(() => {
+      setActiveMessages(prev => {
+        const now = Date.now();
+        return prev.filter(msg => now - msg.startTime < 10000);
+      });
+    }, 2000); // Check less frequently
+
+    return () => {
+      if (cleanupIntervalRef.current) {
+        clearInterval(cleanupIntervalRef.current);
+      }
+    };
+  }, [mounted]);
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [mounted]);
+
+  // Camera positioning effect
+  useEffect(() => {
+    if (!mounted) return;
+    
     const handleResize = () => {
       const width = window.innerWidth;
-      // More gradual transitions with additional breakpoints
       if (width <= 384) {
         setCameraPosition(2.8);
         setFov(60);
@@ -845,30 +1153,62 @@ export default function Globe({ language, onLocationClick, messages }: GlobeProp
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [mounted]);
+
+  // Don't render Canvas until mounted to prevent hydration issues
+  if (!mounted) {
+    return (
+      <div className="h-[500px] w-full bg-transparent rounded-lg overflow-visible relative">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-gray-500">Loading globe...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="h-[400px] w-full bg-transparent rounded-lg overflow-hidden">
-      <Canvas 
-        camera={{ position: [0, 0, cameraPosition], fov }}
-        gl={{ alpha: true, antialias: true }}
-      >
-        <color attach="background" args={['#f7fff7']} />
-        <ambientLight intensity={1.5} />
-        <pointLight position={[10, 10, 10]} intensity={1.5} />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} />
-        <Earth language={language} onLocationClick={onLocationClick} messages={messages} />
-        <OrbitControls 
-          enableZoom={false}
-          enablePan={false}
-          rotateSpeed={0.5}
-          autoRotate={false}
-          minPolarAngle={0}
-          maxPolarAngle={Math.PI}
-          enableRotate={true}
-          dampingFactor={0.05}
-        />
-      </Canvas>
+    <div className="h-[500px] w-full bg-transparent rounded-lg overflow-visible relative">
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="w-full h-[400px] relative">
+          <Canvas 
+            camera={{ position: [0, 0, cameraPosition], fov }}
+            gl={{ alpha: true, antialias: true }}
+          >
+            <color attach="background" args={['#f7fff7']} />
+            <ambientLight intensity={1.5} />
+            <pointLight position={[10, 10, 10]} intensity={1.5} />
+            <pointLight position={[-10, -10, -10]} intensity={0.5} />
+            <Earth language={language} onLocationClick={onLocationClick} messages={messages} />
+            <OrbitControls 
+              enableZoom={false}
+              enablePan={false}
+              rotateSpeed={0.5}
+              autoRotate={false}
+              minPolarAngle={0}
+              maxPolarAngle={Math.PI}
+              enableRotate={true}
+              dampingFactor={0.05}
+            />
+          </Canvas>
+        </div>
+      </div>
+
+      {/* Sequential message bubbles - only render after mount */}
+      <div className="absolute inset-0 pointer-events-none">
+        {activeMessages.map((activeMessage) => (
+          <FloatingMessageBubble 
+            key={activeMessage.id}
+            message={activeMessage.message}
+            countryCode={activeMessage.message.country}
+            messageId={activeMessage.id}
+            position={activeMessage.position}
+            delay={0}
+            onComplete={() => {
+              setActiveMessages(prev => prev.filter(msg => msg.id !== activeMessage.id));
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
-} 
+}
