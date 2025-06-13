@@ -107,5 +107,13 @@
     "noGifts": "Si prega di notare che non sono richiesti regali o denaro. La tua presenza è il regalo più grande che potremmo desiderare.",
     "help": "Se hai letto fin qui, congratulazioni! Ti sei guadagnato alcune faccende ;) Scherzi a parte, non abbiamo avuto molto tempo per preparare: se hai idee per rendere il nostro giorno più speciale, faccelo sapere! <3"
   },
-  "backToHome": "Torna alla Home"
+  "backToHome": "Torna alla Home",
+  "photos": {
+    "title": "Foto della Celebrazione del Matrimonio",
+    "dateLocation": "14 Giugno 2025 a Daejeon",
+    "description": "Rivivi i nostri momenti speciali attraverso questi ricordi catturati. Clicca qui sotto per condividere e visualizzare tutte le foto nel nostro album di Google Photos.",
+    "sharePhotos": "Condividi Foto",
+    "previewTitle": "Anteprima Foto",
+    "comingSoon": "Galleria foto in arrivo..."
+  }
 }

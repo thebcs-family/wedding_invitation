@@ -146,18 +146,49 @@ export default function ClientPage({ images, showGalleryLink = false }: ClientPa
           <div className="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center justify-center min-h-[300px]">
             {showGalleryLink ? (
               <>
-                <h3 className="text-2xl mb-6 text-center">{t.gallery.captureLove}</h3>
+                <h3 className="text-2xl mb-6 text-center flex items-center justify-center gap-2">
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    width="24" 
+                    height="24" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                  >
+                    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+                    <circle cx="12" cy="13" r="3"/>
+                  </svg>
+                  {t.gallery.captureLove}
+                </h3>
                 <p className="mb-4 text-gray-600 text-center">{t.gallery.sharePhotos}</p>
                 <div>
-                  <a
-                    href="https://photos.app.goo.gl/y38E6SiF7cWpEVsN6"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-white px-8 py-3 rounded-lg transition-colors text-lg inline-block"
+                  <Link
+                    href="/photos"
+                    className="text-white px-8 py-3 rounded-lg transition-colors text-lg inline-flex items-center gap-2"
                     style={{ backgroundColor: 'var(--button-color)' }}
                   >
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      width="18" 
+                      height="18" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="2" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                    >
+                      <circle cx="18" cy="5" r="3"/>
+                      <circle cx="6" cy="12" r="3"/>
+                      <circle cx="18" cy="19" r="3"/>
+                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                    </svg>
                     {t.gallery.viewGallery}
-                  </a>
+                  </Link>
                 </div>
               </>
             ) : (

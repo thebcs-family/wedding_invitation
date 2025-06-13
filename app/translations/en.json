@@ -107,5 +107,13 @@
     "noGifts": "Please note that no gifts or money (축의금,祝儀金) are required. Your presence is the greatest gift we could ask for.",
     "help": "If you read until here, congratulations! You earned some chores ;) Jokes aside, we did not have time to prepare much: if you have ideas to make our day more special, please let us know! <3"
   },
-  "backToHome": "Back to Home"
+  "backToHome": "Back to Home",
+  "photos": {
+    "title": "Wedding Celebration Photos",
+    "dateLocation": "June 14, 2025 in Daejeon",
+    "description": "Relive our special moments through these captured memories. Click below to share and view all photos in our Google Photos album.",
+    "sharePhotos": "Share Photos",
+    "previewTitle": "Photo Preview",
+    "comingSoon": "Photo gallery coming soon..."
+  }
 } 

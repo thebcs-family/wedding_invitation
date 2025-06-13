@@ -107,5 +107,13 @@
     "noGifts": "Por favor, ten en cuenta que no se requieren regalos ni dinero. Tu presencia es el mejor regalo que podríamos pedir.",
     "help": "¡Si has leído hasta aquí, felicitaciones! Te has ganado algunas tareas ;) Bromas aparte, no tuvimos tiempo de preparar mucho: si tienes ideas para hacer nuestro día más especial, ¡haznoslo saber! <3"
   },
-  "backToHome": "Volver al Inicio"
+  "backToHome": "Volver al Inicio",
+  "photos": {
+    "title": "Fotos de la Celebración de Boda",
+    "dateLocation": "14 de Junio de 2025 en Daejeon",
+    "description": "Revive nuestros momentos especiales a través de estos recuerdos capturados. Haz clic abajo para compartir y ver todas las fotos en nuestro álbum de Google Photos.",
+    "sharePhotos": "Compartir Fotos",
+    "previewTitle": "Vista Previa de Fotos",
+    "comingSoon": "Galería de fotos próximamente..."
+  }
 }

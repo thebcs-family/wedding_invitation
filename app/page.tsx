@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <>
       <FallingPetals />
-      <ClientPage images={images} />
+      <ClientPage images={images} showGalleryLink={true} />
     </>
   );
 }
