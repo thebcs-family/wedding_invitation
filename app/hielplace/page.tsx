@@ -1,11 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function HielplacePage() {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
+  const [canShare, setCanShare] = useState(false);
+
+  useEffect(() => {
+    setCanShare(!!navigator.share);
+  }, []);
 
   const wifiInfo = {
     ssid: 'U+Net9EB8_5G',
@@ -145,7 +150,7 @@ export default function HielplacePage() {
               {copied ? '✓ Copied!' : 'Connect to WiFi'}
             </button>
             <p className="mt-3 text-sm text-gray-500">
-              {navigator.share ? 
+              {canShare ? 
                 'Click to connect directly to the WiFi network' : 
                 'Click to copy WiFi configuration to your clipboard'}
             </p>
