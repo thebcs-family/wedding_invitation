@@ -143,6 +143,31 @@ export default function ClientPage({ images, showGalleryLink = false }: ClientPa
             </div>
           </div>
 
+          <div className="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center justify-center min-h-[200px] mt-8">
+            <h3 className="text-2xl mb-6 text-center">Venue Information</h3>
+            <p className="mb-4 text-gray-600 text-center">Find WiFi and parking details for the venue</p>
+            <Link
+              href="/hielplace"
+              className="text-white px-8 py-3 rounded-lg transition-colors text-lg inline-flex items-center gap-2"
+              style={{ backgroundColor: 'var(--button-color)' }}
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="20" 
+                height="20" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+              >
+                <path d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
+              </svg>
+              View Venue Info
+            </Link>
+          </div>
+
           <div className="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center justify-center min-h-[300px]">
             {showGalleryLink ? (
               <>
