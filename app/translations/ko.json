@@ -115,5 +115,11 @@
     "sharePhotos": "사진 공유하기",
     "previewTitle": "사진 미리보기",
     "comingSoon": "사진 갤러리가 곧 공개됩니다..."
+  },
+  "photosPopup": {
+    "title": "사진을 공유해주세요!",
+    "message": "여러분의 소중한 순간을 함께 나누어 우리의 특별한 날을 더욱 아름답게 만들어주세요.",
+    "later": "나중에",
+    "shareNow": "지금 공유하기"
   }
 }

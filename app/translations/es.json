@@ -115,5 +115,11 @@
     "sharePhotos": "Compartir Fotos",
     "previewTitle": "Vista Previa de Fotos",
     "comingSoon": "Galería de fotos próximamente..."
+  },
+  "photosPopup": {
+    "title": "¡Comparte tus Fotos!",
+    "message": "Ayúdanos a crear hermosos recuerdos compartiendo tus fotos de nuestro día especial.",
+    "later": "Más tarde",
+    "shareNow": "Compartir Ahora"
   }
 }

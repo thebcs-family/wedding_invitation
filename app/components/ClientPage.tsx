@@ -27,6 +27,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslation, getLanguageFromCountry, Language, getStoredLanguage, setStoredLanguage, getBrowserLanguage } from '../utils/i18n';
 import ShareButtons from './ShareButtons';
 import ReactCountryFlag from 'react-country-flag';
+import PhotosPopup from './PhotosPopup';
 
 interface ClientPageProps {
   images: string[];
@@ -378,6 +379,7 @@ export default function ClientPage({ images, showGalleryLink = false }: ClientPa
         onError={handleError}
         language={language}
       />
+      <PhotosPopup language={language} />
 
       {notification && (
         <Notification
