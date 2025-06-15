@@ -69,18 +69,13 @@ export default function PhotosPage() {
         </AnimatedSection>
 
         <AnimatedSection className="mt-12">
-          <h2 className="text-2xl font-semibold mb-6 text-center text-[var(--button-color)]">{t.photos.previewTitle}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Placeholder for future photo gallery implementation */}
-            <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-              <p className="text-gray-500">{t.photos.comingSoon}</p>
-            </div>
-            <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-              <p className="text-gray-500">{t.photos.comingSoon}</p>
-            </div>
-            <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-              <p className="text-gray-500">{t.photos.comingSoon}</p>
-            </div>
+          <div className="flex justify-center">
+            <img
+              src="/images/fedececy_sign.jpeg"
+              alt="Fede and Cecy Sign"
+              className="max-w-full md:max-w-2xl rounded-xl shadow-lg border-4 border-white"
+              style={{ objectFit: 'cover' }}
+            />
           </div>
         </AnimatedSection>
 
